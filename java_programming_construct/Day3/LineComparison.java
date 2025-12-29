@@ -23,10 +23,14 @@ public class LineComparison {
                         Math.pow(y4 - y3, 2)
         );
 
-        if (length1.equals(length2)) {
+        int result = length1.compareTo(length2);
+
+        if (result == 0) {
             System.out.println("Both lines are equal");
+        } else if (result > 0) {
+            System.out.println("Line 1 is greater than Line 2");
         } else {
-            System.out.println("Both lines are NOT equal");
+            System.out.println("Line 1 is less than Line 2");
         }
     }
 }
