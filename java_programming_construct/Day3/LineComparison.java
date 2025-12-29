@@ -2,17 +2,31 @@ package Day3;
 
 public class LineComparison {
     public static void main(String[] args) {
-        System.out.println("Enter Line points");
+        System.out.println("Enter line points");
         Scanner sc=new Scanner(System.in);
         int x1=sc.nextInt();
         int y1=sc.nextInt();
         int x2=sc.nextInt();
         int y2=sc.nextInt();
-        double length = Math.sqrt(
+        int x3=sc.nextInt();
+        int y3=sc.nextInt();
+        int x4=sc.nextInt();
+        int y4=sc.nextInt();
+
+        Double length1 = Math.sqrt(
                 Math.pow(x2 - x1, 2) +
                         Math.pow(y2 - y1, 2)
         );
 
-        System.out.println("Length of the line: " + length);
+        Double length2 = Math.sqrt(
+                Math.pow(x4 - x3, 2) +
+                        Math.pow(y4 - y3, 2)
+        );
+
+        if (length1.equals(length2)) {
+            System.out.println("Both lines are equal");
+        } else {
+            System.out.println("Both lines are NOT equal");
+        }
     }
 }
