@@ -15,10 +15,10 @@ class Point {
     }
 }
 
-class Line {
+class Line implements Comparable<Line> {
 
-    Point p1;
-    Point p2;
+    private Point p1;
+    private Point p2;
 
     Line(Point p1, Point p2) {
         this.p1 = p1;
@@ -33,19 +33,11 @@ class Line {
     }
 
     @Override
-    public boolean equals(Object obj) {
-
-        if (this == obj)
-            return true;
-
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-
-        Line other = (Line) obj;
-
-        return Double.compare(this.getLength(), other.getLength()) == 0;
+    public int compareTo(Line other) {
+        return Double.compare(this.getLength(), other.getLength());
     }
 }
+
 
 public class LineComparison {
 
@@ -61,12 +53,14 @@ public class LineComparison {
                 new Point(5, 7)
         );
 
-        if (line1.equals(line2)) {
+        int result = line1.compareTo(line2);
+
+        if (result == 0) {
             System.out.println("Both lines are equal");
+        } else if (result > 0) {
+            System.out.println("Line 1 is greater than Line 2");
         } else {
-            System.out.println("Both lines are not equal");
+            System.out.println("Line 1 is less than Line 2");
         }
     }
 }
-
-
