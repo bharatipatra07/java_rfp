@@ -1,4 +1,3 @@
-// Point.java
 class Point {
     private double x, y;
 
@@ -16,33 +15,58 @@ class Point {
     }
 }
 
- class Line {
-    private Point start, end;
+class Line {
 
-    public Line(Point start, Point end) {
-        this.start = start;
-        this.end = end;
+    Point p1;
+    Point p2;
+
+    Line(Point p1, Point p2) {
+        this.p1 = p1;
+        this.p2 = p2;
     }
 
-    public double length() {
-        double dx = end.getX() - start.getX();
-        double dy = end.getY() - start.getY();
-        return Math.sqrt(dx * dx + dy * dy);
+    double getLength() {
+        return Math.sqrt(
+                Math.pow(p2.x - p1.x, 2) +
+                        Math.pow(p2.y - p1.y, 2)
+        );
     }
 
     @Override
-    public String toString() {
-        return "Line[" + start + " to " + end + "] Length=" + length();
+    public boolean equals(Object obj) {
+
+        if (this == obj)
+            return true;
+
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+
+        Line other = (Line) obj;
+
+        return Double.compare(this.getLength(), other.getLength()) == 0;
     }
 }
-
 
 public class LineComparison {
+
     public static void main(String[] args) {
-        Point p1 = new Point(1, 2);
-        Point p2 = new Point(4, 6);
-        Line line = new Line(p1, p2);
-        System.out.println(line);
+
+        Line line1 = new Line(
+                new Point(1, 2),
+                new Point(4, 6)
+        );
+
+        Line line2 = new Line(
+                new Point(2, 3),
+                new Point(5, 7)
+        );
+
+        if (line1.equals(line2)) {
+            System.out.println("Both lines are equal");
+        } else {
+            System.out.println("Both lines are not equal");
+        }
     }
 }
+
 
