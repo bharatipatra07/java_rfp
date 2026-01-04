@@ -15,7 +15,8 @@ class Company {
     final int partTimeHour;
     final int maxDays;
     final int maxHours;
-    int totalWage;
+    private int totalWage;
+    private final ArrayList<Integer> dailyWages;
 
     public Company(String name, int wagePerHour, int fullDayHour,
                    int partTimeHour, int maxDays, int maxHours) {
@@ -26,6 +27,20 @@ class Company {
         this.maxDays = maxDays;
         this.maxHours = maxHours;
         this.totalWage = 0;
+        this.dailyWages = new ArrayList<>();
+    }
+
+    public void addDailyWage(int wage) {
+        dailyWages.add(wage);
+        totalWage += wage;
+    }
+
+    public int getTotalWage() {
+        return totalWage;
+    }
+
+    public ArrayList<Integer> getDailyWages() {
+        return dailyWages;
     }
 }
 
@@ -47,28 +62,31 @@ class CompanyWageManager implements WageBuilder {
     @Override
     public void computeWages() {
         for (Company c : companies) {
-            int days = 0, hours = 0, wage = 0;
+            int totalHours = 0;
+            int day = 0;
 
-            while (days < c.maxDays && hours < c.maxHours) {
-                days++;
-                int att = random.nextInt(3); // 0=Absent, 1=Full, 2=Part
-                int worked = switch (att) {
+            while (day < c.maxDays && totalHours < c.maxHours) {
+                day++;
+                int attendance = random.nextInt(3); // 0=Absent, 1=Full, 2=Part
+                int hoursWorked = switch (attendance) {
                     case 1 -> c.fullDayHour;
                     case 2 -> c.partTimeHour;
                     default -> 0;
                 };
-                hours += worked;
-                wage += worked * c.wagePerHour;
+                totalHours += hoursWorked;
+                int dailyWage = hoursWorked * c.wagePerHour;
+                c.addDailyWage(dailyWage);
             }
-
-            c.totalWage = wage;
         }
     }
 
     @Override
     public void printReports() {
         for (Company c : companies) {
-            System.out.println("Company: " + c.name + " | Total Wage: " + c.totalWage);
+            System.out.println("Company: " + c.name);
+            System.out.println("Daily Wages: " + c.getDailyWages());
+            System.out.println("Total Wage: " + c.getTotalWage());
+            System.out.println("---------------------------");
         }
     }
 }
@@ -79,7 +97,6 @@ public class EmployeeWage {
 
         manager.addCompany("TechSoft", 25, 8, 4, 20, 100);
         manager.addCompany("MegaCorp", 30, 9, 5, 22, 120);
-        manager.addCompany("AlphaInc", 28, 8, 5, 25, 110); // added dynamically
 
         manager.computeWages();
         manager.printReports();
