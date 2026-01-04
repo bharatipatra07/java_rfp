@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 interface WageBuilder {
     void addCompany(String name, int wagePerHour, int fullDayHour,
                     int partTimeHour, int maxDays, int maxHours);
     void computeWages();
     void printReports();
+    int getTotalWageByCompany(String companyName); // new method
 }
 
 class Company {
@@ -86,8 +88,18 @@ class CompanyWageManager implements WageBuilder {
             System.out.println("Company: " + c.name);
             System.out.println("Daily Wages: " + c.getDailyWages());
             System.out.println("Total Wage: " + c.getTotalWage());
-            System.out.println("---------------------------");
         }
+    }
+
+    @Override
+    public int getTotalWageByCompany(String companyName) {
+        for (Company c : companies) {
+            if (c.name.equalsIgnoreCase(companyName)) {
+                return c.getTotalWage();
+            }
+        }
+        System.out.println("Company not found: " + companyName);
+        return -1; // indicates company not found
     }
 }
 
@@ -100,5 +112,10 @@ public class EmployeeWage {
 
         manager.computeWages();
         manager.printReports();
+        System.out.println("Enter the Company");
+        Scanner sc=new Scanner(System.in);
+        String queryCompany = sc.next();
+        int total = manager.getTotalWageByCompany(queryCompany);
+        System.out.println("Total wage for " + queryCompany + " is: " + total);
     }
 }
