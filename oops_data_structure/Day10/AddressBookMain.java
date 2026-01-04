@@ -1,7 +1,6 @@
-import java.util.ArrayList;
 import java.util.Scanner;
-
-class ContactPerson {
+import java.util.ArrayList;
+public class ContactPerson {
 
     private String firstName;
     private String lastName;
@@ -15,7 +14,6 @@ class ContactPerson {
     public ContactPerson(String firstName, String lastName, String address,
                          String city, String state, String zip,
                          String phone, String email) {
-
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -30,44 +28,15 @@ class ContactPerson {
         return firstName;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void display() {
-        System.out.println(
-                firstName + " " + lastName + ", " +
-                        address + ", " +
-                        city + ", " +
-                        state + " - " + zip +
-                        ", Phone: " + phone +
-                        ", Email: " + email
-        );
+        System.out.println(firstName + " " + lastName + ", " + address + ", "
+                + city + ", " + state + " - " + zip
+                + ", Phone: " + phone
+                + ", Email: " + email);
     }
 }
 
-
-class AddressBook {
+public class AddressBook {
 
     private ArrayList<ContactPerson> contacts = new ArrayList<>();
 
@@ -84,65 +53,51 @@ class AddressBook {
         return null;
     }
 
-    public void displayContacts() {
-        if (contacts.isEmpty()) {
-            System.out.println("No contacts available.");
-            return;
-        }
+    public boolean deleteContact(ContactPerson person) {
+        return contacts.remove(person);
+    }
 
+    public void displayContacts() {
         for (ContactPerson person : contacts) {
             person.display();
         }
     }
 }
 
+
+
+
 public class AddressBookMain {
 
     public static void main(String[] args) {
-
-        System.out.println("Welcome to Address Book Program");
 
         Scanner scanner = new Scanner(System.in);
         AddressBook addressBook = new AddressBook();
 
         addressBook.addContact(new ContactPerson(
-                "Bharati", "Patra", "Old Street",
-                "Bangalore", "Karnataka", "110001",
-                "9999999999", "bha@mail.com"
+                "Bharati", "Patra", "MG Road",
+                "Bangalore", "Karnataka", "560001",
+                "9876543210", "bha@mail.com"
+        ));
+        addressBook.addContact(new ContactPerson(
+                "Kishor", "Kumar", "MG Road",
+                "Bangalore", "Karnataka", "560001",
+                "9876543290", "kk@mail.com"
         ));
 
-        System.out.println("\nEnter First Name to Edit:");
+        System.out.println("Enter First Name to Delete:");
         String name = scanner.nextLine();
 
         ContactPerson person = addressBook.getContactByName(name);
 
         if (person != null) {
-
-            System.out.println("Enter New Address:");
-            person.setAddress(scanner.nextLine());
-
-            System.out.println("Enter New City:");
-            person.setCity(scanner.nextLine());
-
-            System.out.println("Enter New State:");
-            person.setState(scanner.nextLine());
-
-            System.out.println("Enter New Zip:");
-            person.setZip(scanner.nextLine());
-
-            System.out.println("Enter New Phone:");
-            person.setPhone(scanner.nextLine());
-
-            System.out.println("Enter New Email:");
-            person.setEmail(scanner.nextLine());
-
-            System.out.println("\nContact updated successfully.");
-
+            addressBook.deleteContact(person);
+            System.out.println("Contact deleted successfully.");
         } else {
-            System.out.println("\nContact not found.");
+            System.out.println("Contact not found.");
         }
 
-        System.out.println("\nUpdated Address Book:");
+        System.out.println("Remaining Contacts:");
         addressBook.displayContacts();
 
         scanner.close();
