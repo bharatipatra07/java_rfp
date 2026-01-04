@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 interface WageBuilder {
@@ -30,28 +31,22 @@ class Company {
 
 class CompanyWageManager implements WageBuilder {
 
-    private final Company[] companies;
-    private int count = 0;
-    private static final int MAX = 10;
+    private final ArrayList<Company> companies;
     private static final Random random = new Random();
 
     public CompanyWageManager() {
-        companies = new Company[MAX];
+        companies = new ArrayList<>();
     }
 
     @Override
     public void addCompany(String name, int wagePerHour, int fullDayHour,
                            int partTimeHour, int maxDays, int maxHours) {
-        if (count < MAX) {
-            companies[count++] = new Company(name, wagePerHour, fullDayHour,
-                    partTimeHour, maxDays, maxHours);
-        }
+        companies.add(new Company(name, wagePerHour, fullDayHour, partTimeHour, maxDays, maxHours));
     }
 
     @Override
     public void computeWages() {
-        for (int i = 0; i < count; i++) {
-            Company c = companies[i];
+        for (Company c : companies) {
             int days = 0, hours = 0, wage = 0;
 
             while (days < c.maxDays && hours < c.maxHours) {
@@ -72,8 +67,7 @@ class CompanyWageManager implements WageBuilder {
 
     @Override
     public void printReports() {
-        for (int i = 0; i < count; i++) {
-            Company c = companies[i];
+        for (Company c : companies) {
             System.out.println("Company: " + c.name + " | Total Wage: " + c.totalWage);
         }
     }
@@ -85,6 +79,7 @@ public class EmployeeWage {
 
         manager.addCompany("TechSoft", 25, 8, 4, 20, 100);
         manager.addCompany("MegaCorp", 30, 9, 5, 22, 120);
+        manager.addCompany("AlphaInc", 28, 8, 5, 25, 110); // added dynamically
 
         manager.computeWages();
         manager.printReports();
