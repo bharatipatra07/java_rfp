@@ -1,6 +1,7 @@
 import java.util.Scanner;
-
+import java.util.ArrayList;
 class ContactPerson {
+
     private String firstName;
     private String lastName;
     private String address;
@@ -22,7 +23,44 @@ class ContactPerson {
         this.phone = phone;
         this.email = email;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void display() {
+        System.out.println(firstName + " " + lastName + ", " + address + ", "
+                + city + ", " + state + " - " + zip
+                + ", Phone: " + phone
+                + ", Email: " + email);
+    }
 }
+
+
 class Address {
 
     private ArrayList<ContactPerson> contacts = new ArrayList<>();
@@ -30,47 +68,74 @@ class Address {
     public void addContact(ContactPerson person) {
         contacts.add(person);
     }
+
+    public ContactPerson getContactByName(String firstName) {
+        for (ContactPerson person : contacts) {
+            if (person.getFirstName().equalsIgnoreCase(firstName)) {
+                return person;
+            }
+        }
+        return null;
+    }
+
+    public void displayContacts() {
+        for (ContactPerson person : contacts) {
+            person.display();
+        }
+    }
 }
 
-public class AddressBook {
+
+public class Main {
 
     public static void main(String[] args) {
 
         System.out.println("Welcome to Address Book Program");
 
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter First Name:");
-        String firstName = scanner.nextLine();
-
-        System.out.println("Enter Last Name:");
-        String lastName = scanner.nextLine();
-
-        System.out.println("Enter Address:");
-        String address = scanner.nextLine();
-
-        System.out.println("Enter City:");
-        String city = scanner.nextLine();
-
-        System.out.println("Enter State:");
-        String state = scanner.nextLine();
-
-        System.out.println("Enter Zip:");
-        String zip = scanner.nextLine();
-
-        System.out.println("Enter Phone:");
-        String phone = scanner.nextLine();
-
-        System.out.println("Enter Email:");
-        String email = scanner.nextLine();
-
-        ContactPerson person = new ContactPerson(
-                firstName, lastName, address, city, state, zip, phone, email
-        );
-
         Address addressBook = new Address();
-        addressBook.addContact(person);
+
+        addressBook.addContact(new ContactPerson(
+                "Bharati", "Patra", "Old Street",
+                "Banglore", "Karnataka", "110001",
+                "9999999999", "bha@mail.com"
+        ));
+
+        System.out.println("Enter First Name to Edit:");
+        String name = scanner.nextLine();
+
+        ContactPerson person = addressBook.getContactByName(name);
+
+        if (person != null) {
+
+            System.out.println("Enter New Address:");
+            person.setAddress(scanner.nextLine());
+
+            System.out.println("Enter New City:");
+            person.setCity(scanner.nextLine());
+
+            System.out.println("Enter New State:");
+            person.setState(scanner.nextLine());
+
+            System.out.println("Enter New Zip:");
+            person.setZip(scanner.nextLine());
+
+            System.out.println("Enter New Phone:");
+            person.setPhone(scanner.nextLine());
+
+            System.out.println("Enter New Email:");
+            person.setEmail(scanner.nextLine());
+
+            System.out.println("Contact updated successfully.");
+
+        } else {
+            System.out.println("Contact not found.");
+        }
+
+        System.out.println("Updated Address Book:");
+        addressBook.displayContacts();
 
         scanner.close();
     }
 }
+
