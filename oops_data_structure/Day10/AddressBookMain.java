@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-public class ContactPerson {
+ class ContactPerson {
 
     private String firstName;
     private String lastName;
@@ -36,28 +36,21 @@ public class ContactPerson {
     }
 }
 
-public class AddressBook {
+class AddressBook {
 
     private ArrayList<ContactPerson> contacts = new ArrayList<>();
 
     public void addContact(ContactPerson person) {
         contacts.add(person);
-    }
-
-    public ContactPerson getContactByName(String firstName) {
-        for (ContactPerson person : contacts) {
-            if (person.getFirstName().equalsIgnoreCase(firstName)) {
-                return person;
-            }
-        }
-        return null;
-    }
-
-    public boolean deleteContact(ContactPerson person) {
-        return contacts.remove(person);
+        System.out.println("Contact added successfully.\n");
     }
 
     public void displayContacts() {
+        if (contacts.isEmpty()) {
+            System.out.println("No contacts available.");
+            return;
+        }
+
         for (ContactPerson person : contacts) {
             person.display();
         }
@@ -65,41 +58,63 @@ public class AddressBook {
 }
 
 
+ public class AddressBookMain {
 
+     public static void main(String[] args) {
 
-public class AddressBookMain {
+         Scanner scanner = new Scanner(System.in);
+         AddressBook addressBook = new AddressBook();
 
-    public static void main(String[] args) {
+         System.out.println("Welcome to Address Book Program");
 
-        Scanner scanner = new Scanner(System.in);
-        AddressBook addressBook = new AddressBook();
+         boolean addMore = true;
 
-        addressBook.addContact(new ContactPerson(
-                "Bharati", "Patra", "MG Road",
-                "Bangalore", "Karnataka", "560001",
-                "9876543210", "bha@mail.com"
-        ));
-        addressBook.addContact(new ContactPerson(
-                "Kishor", "Kumar", "MG Road",
-                "Bangalore", "Karnataka", "560001",
-                "9876543290", "kk@mail.com"
-        ));
+         while (addMore) {
 
-        System.out.println("Enter First Name to Delete:");
-        String name = scanner.nextLine();
+             System.out.println("\nEnter Contact Details");
 
-        ContactPerson person = addressBook.getContactByName(name);
+             System.out.print("First Name: ");
+             String firstName = scanner.nextLine();
 
-        if (person != null) {
-            addressBook.deleteContact(person);
-            System.out.println("Contact deleted successfully.");
-        } else {
-            System.out.println("Contact not found.");
-        }
+             System.out.print("Last Name: ");
+             String lastName = scanner.nextLine();
 
-        System.out.println("Remaining Contacts:");
-        addressBook.displayContacts();
+             System.out.print("Address: ");
+             String address = scanner.nextLine();
 
-        scanner.close();
-    }
-}
+             System.out.print("City: ");
+             String city = scanner.nextLine();
+
+             System.out.print("State: ");
+             String state = scanner.nextLine();
+
+             System.out.print("ZIP: ");
+             String zip = scanner.nextLine();
+
+             System.out.print("Phone: ");
+             String phone = scanner.nextLine();
+
+             System.out.print("Email: ");
+             String email = scanner.nextLine();
+
+             ContactPerson person = new ContactPerson(
+                     firstName, lastName, address,
+                     city, state, zip, phone, email
+             );
+
+             addressBook.addContact(person);
+
+             System.out.print("Add another contact? (yes/no): ");
+             String choice = scanner.nextLine();
+
+             if (!choice.equalsIgnoreCase("yes")) {
+                 addMore = false;
+             }
+         }
+
+         System.out.println("\nAddress Book Contacts:");
+         addressBook.displayContacts();
+
+         scanner.close();
+     }
+ }
