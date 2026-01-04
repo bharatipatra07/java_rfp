@@ -1,80 +1,92 @@
 import java.util.Random;
 
-class CompanyEmpWage {
+interface WageBuilder {
+    void addCompany(String name, int wagePerHour, int fullDayHour,
+                    int partTimeHour, int maxDays, int maxHours);
+    void computeWages();
+    void printReports();
+}
+
+class Company {
     final String name;
     final int wagePerHour;
     final int fullDayHour;
     final int partTimeHour;
-    final int maxWorkingDays;
-    final int maxWorkingHours;
-
+    final int maxDays;
+    final int maxHours;
     int totalWage;
 
-    public CompanyEmpWage(String name, int wagePerHour, int fullDayHour,
-                          int partTimeHour, int maxWorkingDays, int maxWorkingHours) {
+    public Company(String name, int wagePerHour, int fullDayHour,
+                   int partTimeHour, int maxDays, int maxHours) {
         this.name = name;
         this.wagePerHour = wagePerHour;
         this.fullDayHour = fullDayHour;
         this.partTimeHour = partTimeHour;
-        this.maxWorkingDays = maxWorkingDays;
-        this.maxWorkingHours = maxWorkingHours;
+        this.maxDays = maxDays;
+        this.maxHours = maxHours;
         this.totalWage = 0;
     }
 }
 
-class EmpWageBuilder {
+class CompanyWageManager implements WageBuilder {
 
-    private final CompanyEmpWage[] companies;
+    private final Company[] companies;
+    private int count = 0;
+    private static final int MAX = 10;
     private static final Random random = new Random();
 
-    public EmpWageBuilder(CompanyEmpWage[] companies) {
-        this.companies = companies;
+    public CompanyWageManager() {
+        companies = new Company[MAX];
     }
 
-    public void computeEmployeeWages() {
-        for (CompanyEmpWage company : companies) {
-            int totalDays = 0;
-            int totalHours = 0;
-            int totalWage = 0;
-
-            while (totalDays < company.maxWorkingDays &&
-                    totalHours < company.maxWorkingHours) {
-                totalDays++;
-                int attendance = random.nextInt(3); // 0=Absent, 1=Full, 2=Part
-                int hoursWorked = switch (attendance) {
-                    case 1 -> company.fullDayHour;
-                    case 2 -> company.partTimeHour;
-                    default -> 0;
-                };
-
-                totalHours += hoursWorked;
-                totalWage += hoursWorked * company.wagePerHour;
-            }
-
-            company.totalWage = totalWage;
-            printReport(company, totalDays, totalHours);
+    @Override
+    public void addCompany(String name, int wagePerHour, int fullDayHour,
+                           int partTimeHour, int maxDays, int maxHours) {
+        if (count < MAX) {
+            companies[count++] = new Company(name, wagePerHour, fullDayHour,
+                    partTimeHour, maxDays, maxHours);
         }
     }
 
-    private void printReport(CompanyEmpWage company, int totalDays, int totalHours) {
-        System.out.println(
-                "Company: " + company.name +
-                        " | Days: " + totalDays +
-                        " | Hours: " + totalHours +
-                        " | Total Wage: " + company.totalWage
-        );
+    @Override
+    public void computeWages() {
+        for (int i = 0; i < count; i++) {
+            Company c = companies[i];
+            int days = 0, hours = 0, wage = 0;
+
+            while (days < c.maxDays && hours < c.maxHours) {
+                days++;
+                int att = random.nextInt(3); // 0=Absent, 1=Full, 2=Part
+                int worked = switch (att) {
+                    case 1 -> c.fullDayHour;
+                    case 2 -> c.partTimeHour;
+                    default -> 0;
+                };
+                hours += worked;
+                wage += worked * c.wagePerHour;
+            }
+
+            c.totalWage = wage;
+        }
+    }
+
+    @Override
+    public void printReports() {
+        for (int i = 0; i < count; i++) {
+            Company c = companies[i];
+            System.out.println("Company: " + c.name + " | Total Wage: " + c.totalWage);
+        }
     }
 }
 
 public class EmployeeWage {
     public static void main(String[] args) {
+        WageBuilder manager = new CompanyWageManager();
 
-        CompanyEmpWage techSoft = new CompanyEmpWage("TechSoft", 25, 8, 4, 20, 100);
-        CompanyEmpWage megaCorp = new CompanyEmpWage("MegaCorp", 30, 9, 5, 22, 120);
+        manager.addCompany("TechSoft", 25, 8, 4, 20, 100);
+        manager.addCompany("MegaCorp", 30, 9, 5, 22, 120);
 
-        CompanyEmpWage[] companies = {techSoft, megaCorp};
-
-        EmpWageBuilder wageBuilder = new EmpWageBuilder(companies);
-        wageBuilder.computeEmployeeWages();
+        manager.computeWages();
+        manager.printReports();
     }
 }
