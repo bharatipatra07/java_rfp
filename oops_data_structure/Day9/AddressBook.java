@@ -1,41 +1,45 @@
-class ContactPerson {
+import java.util.Scanner;
 
+class ContactPerson {
     private String firstName;
     private String lastName;
     private String address;
     private String city;
     private String state;
     private String zip;
-    private String phoneNumber;
+    private String phone;
     private String email;
 
     public ContactPerson(String firstName, String lastName, String address,
                          String city, String state, String zip,
-                         String phoneNumber, String email) {
+                         String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.email = email;
     }
+}
+class Address {
 
-    public void displayContact() {
-        System.out.println(firstName + " " + lastName + ", " + address + ", "
-                + city + ", " + state + " - " + zip
-                + ", Phone: " + phoneNumber
-                + ", Email: " + email);
+    private ArrayList<ContactPerson> contacts = new ArrayList<>();
+
+    public void addContact(ContactPerson person) {
+        contacts.add(person);
     }
 }
-public class AddressBook {
-    public static void main(String args[])
 
-    {
+public class AddressBook {
+
+    public static void main(String[] args) {
+
         System.out.println("Welcome to Address Book Program");
 
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("Enter First Name:");
         String firstName = scanner.nextLine();
 
@@ -54,7 +58,7 @@ public class AddressBook {
         System.out.println("Enter Zip:");
         String zip = scanner.nextLine();
 
-        System.out.println("Enter Phone Number:");
+        System.out.println("Enter Phone:");
         String phone = scanner.nextLine();
 
         System.out.println("Enter Email:");
@@ -63,6 +67,10 @@ public class AddressBook {
         ContactPerson person = new ContactPerson(
                 firstName, lastName, address, city, state, zip, phone, email
         );
-        person.displayContact();
+
+        Address addressBook = new Address();
+        addressBook.addContact(person);
+
+        scanner.close();
     }
 }
