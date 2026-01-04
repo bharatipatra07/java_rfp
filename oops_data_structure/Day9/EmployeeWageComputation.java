@@ -1,62 +1,89 @@
 import java.util.Random;
 
-class EmployeeWage {
+class Company {
+    String name;
+    int wagePerHour;
+    int fullDayHour;
+    int partTimeHour;
+    int workingDays;
+    int maxHours;
 
-    private static final int WAGE_PER_HOUR = 20;
-    private static final int FULL_DAY_HOUR = 8;
-    private static final int PART_TIME_HOUR = 4;
-    private static final int WORKING_DAYS_PER_MONTH = 20;
-    private static final int MAX_WORKING_HOURS = 100;
+    public Company(String name, int wagePerHour, int fullDayHour, int partTimeHour, int workingDays, int maxHours) {
+        this.name = name;
+        this.wagePerHour = wagePerHour;
+        this.fullDayHour = fullDayHour;
+        this.partTimeHour = partTimeHour;
+        this.workingDays = workingDays;
+        this.maxHours = maxHours;
+    }
+}
 
+class EmployeeWageCalculator {
     private static Random random = new Random();
 
-    public static int computeDailyWage() {
-        int attendance = random.nextInt(3);
-        int hoursWorked = switch (attendance) {
-            case 1 -> FULL_DAY_HOUR;
-            case 2 -> PART_TIME_HOUR;
-            default -> 0;
-        };
-        String status = (attendance == 0) ? "Absent" : (attendance == 1) ? "Full Time" : "Part Time";
-        System.out.println("Employee is " + status + ", Hours Worked: " + hoursWorked);
-        return hoursWorked * WAGE_PER_HOUR;
+    public static int computeDailyWage(int hoursWorked, int wagePerHour) {
+        return hoursWorked * wagePerHour;
     }
 
-    public static int computeMonthlyWage() {
+    public static int computeMonthlyWage(Company company) {
         int totalWage = 0;
-        for (int day = 1; day <= WORKING_DAYS_PER_MONTH; day++) {
-            totalWage += computeDailyWage();
+        System.out.println("\nCompany: " + company.name);
+        for (int day = 1; day <= company.workingDays; day++) {
+            int attendance = random.nextInt(3); // 0=Absent, 1=Full Time, 2=Part Time
+            int hoursWorked = switch (attendance) {
+                case 1 -> company.fullDayHour;
+                case 2 -> company.partTimeHour;
+                default -> 0;
+            };
+            int dailyWage = computeDailyWage(hoursWorked, company.wagePerHour);
+            totalWage += dailyWage;
+
+            String status = (attendance == 0) ? "Absent" : (attendance == 1) ? "Full Time" : "Part Time";
+            System.out.println("Day " + day + ": " + status + ", Hours: " + hoursWorked + ", Daily Wage: " + dailyWage);
         }
+        System.out.println("Total Monthly Wage for " + company.name + ": " + totalWage);
         return totalWage;
     }
 
-    public static int computeWageTillCondition() {
+    public static int computeWageTillCondition(Company company) {
         int totalWage = 0;
         int totalHours = 0;
         int totalDays = 0;
 
-        while (totalHours < MAX_WORKING_HOURS && totalDays < WORKING_DAYS_PER_MONTH) {
+        System.out.println("\nCompany: " + company.name);
+
+        while (totalDays < company.workingDays && totalHours < company.maxHours) {
             totalDays++;
-            int dailyWage = computeDailyWage();
-            totalHours += dailyWage / WAGE_PER_HOUR;
+            int attendance = random.nextInt(3);
+            int hoursWorked = switch (attendance) {
+                case 1 -> company.fullDayHour;
+                case 2 -> company.partTimeHour;
+                default -> 0;
+            };
+            totalHours += hoursWorked;
+            int dailyWage = computeDailyWage(hoursWorked, company.wagePerHour);
             totalWage += dailyWage;
+
+            String status = (attendance == 0) ? "Absent" : (attendance == 1) ? "Full Time" : "Part Time";
+            System.out.println("Day " + totalDays + ": " + status + ", Hours: " + hoursWorked + ", Daily Wage: " + dailyWage);
         }
 
         System.out.println("Total Days Worked: " + totalDays);
         System.out.println("Total Hours Worked: " + totalHours);
+        System.out.println("Total Wage till Condition for " + company.name + ": " + totalWage);
         return totalWage;
     }
 }
 
 public class EmployeeWageComputation {
     public static void main(String[] args) {
-        System.out.println("----- Daily Wage -----");
-        System.out.println("Daily Wage: " + EmployeeWage.computeDailyWage());
+        Company techSoft = new Company("TechSoft", 25, 8, 4, 22, 100);
+        Company megaCorp = new Company("MegaCorp", 30, 9, 5, 20, 120);
 
-        System.out.println("----- Monthly Wage -----");
-        System.out.println("Monthly Wage: " + EmployeeWage.computeMonthlyWage());
+        EmployeeWageCalculator.computeMonthlyWage(techSoft);
+        EmployeeWageCalculator.computeMonthlyWage(megaCorp);
 
-        System.out.println("----- Wage till Condition -----");
-        System.out.println("Total Wage till Condition: " + EmployeeWage.computeWageTillCondition());
+        EmployeeWageCalculator.computeWageTillCondition(techSoft);
+        EmployeeWageCalculator.computeWageTillCondition(megaCorp);
     }
 }
