@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-class ContactPerson {
+public class ContactPerson {
 
     private String firstName;
     private String lastName;
@@ -28,30 +28,6 @@ class ContactPerson {
         return firstName;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void display() {
         System.out.println(firstName + " " + lastName + ", " + address + ", "
                 + city + ", " + state + " - " + zip
@@ -60,8 +36,7 @@ class ContactPerson {
     }
 }
 
-
-class Address {
+public class Address {
 
     private ArrayList<ContactPerson> contacts = new ArrayList<>();
 
@@ -78,6 +53,10 @@ class Address {
         return null;
     }
 
+    public boolean deleteContact(ContactPerson person) {
+        return contacts.remove(person);
+    }
+
     public void displayContacts() {
         for (ContactPerson person : contacts) {
             person.display();
@@ -86,56 +65,41 @@ class Address {
 }
 
 
+
+
 public class Main {
 
     public static void main(String[] args) {
-
-        System.out.println("Welcome to Address Book Program");
 
         Scanner scanner = new Scanner(System.in);
         Address addressBook = new Address();
 
         addressBook.addContact(new ContactPerson(
-                "Bharati", "Patra", "Old Street",
-                "Banglore", "Karnataka", "110001",
-                "9999999999", "bha@mail.com"
+                "Bharati", "Patra", "MG Road",
+                "Bangalore", "Karnataka", "560001",
+                "9876543210", "bha@mail.com"
+        ));
+        addressBook.addContact(new ContactPerson(
+                "Kishor", "Kumar", "MG Road",
+                "Bangalore", "Karnataka", "560001",
+                "9876543290", "kk@mail.com"
         ));
 
-        System.out.println("Enter First Name to Edit:");
+        System.out.println("Enter First Name to Delete:");
         String name = scanner.nextLine();
 
         ContactPerson person = addressBook.getContactByName(name);
 
         if (person != null) {
-
-            System.out.println("Enter New Address:");
-            person.setAddress(scanner.nextLine());
-
-            System.out.println("Enter New City:");
-            person.setCity(scanner.nextLine());
-
-            System.out.println("Enter New State:");
-            person.setState(scanner.nextLine());
-
-            System.out.println("Enter New Zip:");
-            person.setZip(scanner.nextLine());
-
-            System.out.println("Enter New Phone:");
-            person.setPhone(scanner.nextLine());
-
-            System.out.println("Enter New Email:");
-            person.setEmail(scanner.nextLine());
-
-            System.out.println("Contact updated successfully.");
-
+            addressBook.deleteContact(person);
+            System.out.println("Contact deleted successfully.");
         } else {
             System.out.println("Contact not found.");
         }
 
-        System.out.println("Updated Address Book:");
+        System.out.println("Remaining Contacts:");
         addressBook.displayContacts();
 
         scanner.close();
     }
 }
-
