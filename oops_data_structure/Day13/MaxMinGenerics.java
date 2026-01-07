@@ -12,6 +12,7 @@ public class MaxMinGenerics{
     }
 
     public static void main(String[] args) {
-
+        // TC 1.1 – Max at 1st position
+        System.out.println(testMaximum(30, 20, 10));
     }
 }
