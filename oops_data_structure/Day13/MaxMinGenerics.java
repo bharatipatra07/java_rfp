@@ -1,6 +1,7 @@
-public class MaxMinGenerics{
-    public static Integer testMaximum(Integer a, Integer b, Integer c) {
-        Integer max = a;
+public class MaxMinGenerics {
+
+    public static Float testMaximum(Float a, Float b, Float c) {
+        Float max = a;
 
         if (b.compareTo(max) > 0) {
             max = b;
@@ -12,7 +13,9 @@ public class MaxMinGenerics{
     }
 
     public static void main(String[] args) {
-        // TC 1.3 – Max at 3rd position
-        System.out.println(testMaximum(10, 20, 30));
+
+        System.out.println(testMaximum(3.5f, 2.5f, 1.5f));
+        System.out.println(testMaximum(1.5f, 3.5f, 2.5f));
+        System.out.println(testMaximum(1.5f, 2.5f, 3.5f));
     }
 }
