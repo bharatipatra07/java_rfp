@@ -23,28 +23,14 @@ public class LinkedList<T> {
         temp.next = new Node<>(data);
     }
 
-    public void popLast() {
-        if (head == null || head.next == null) {
-            head = null;
-            return;
-        }
-
-        Node<T> temp = head;
-        while (temp.next.next != null)
-            temp = temp.next;
-
-        temp.next = null;
-    }
-
-    public void print() {
+    public Node<T> search(T key) {
         Node<T> temp = head;
         while (temp != null) {
-            System.out.print(temp.data);
-            if(temp.next!=null) {
-                System.out.print(" -> ");
-            }
+            if (temp.data.equals(key))
+                return temp;
             temp = temp.next;
         }
+        return null;
     }
 
     public static void main(String[] args) {
@@ -52,9 +38,7 @@ public class LinkedList<T> {
         list.append(56);
         list.append(30);
         list.append(70);
-        list.print();
-        list.popLast();
-        System.out.println();
-        list.print();
+
+        System.out.println(list.search(30) != null);
     }
 }
