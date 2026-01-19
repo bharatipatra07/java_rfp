@@ -26,6 +26,19 @@ class LinkedList<T> {
         temp.next = node;
     }
 
+    public T pop() {
+        if (head == null)
+            return null;
+
+        T data = head.data;
+        head = head.next;
+        return data;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
     public void display() {
         Node<T> temp = head;
         while (temp != null) {
@@ -43,6 +56,13 @@ class Queue<T> {
     public void enqueue(T data) {
         list.append(data);
     }
+    public T dequeue() {
+        return list.pop();
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
 
     public void display() {
         list.display();
@@ -57,8 +77,10 @@ public class StackQueue {
         queue.enqueue(56);
         queue.enqueue(30);
         queue.enqueue(70);
-
-        // Expected: 56 -> 30 -> 70
         queue.display();
+        System.out.println();
+        while (!queue.isEmpty()) {
+            System.out.println("Dequeue: " + queue.dequeue());
+        }
     }
 }
