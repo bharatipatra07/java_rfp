@@ -23,14 +23,27 @@ public class LinkedList<T> {
         temp.next = new Node<>(data);
     }
 
-    public Node<T> search(T key) {
+    public void insertAfter(T key, T data) {
+        Node<T> temp = head;
+        while (temp != null && !temp.data.equals(key))
+            temp = temp.next;
+
+        if (temp != null) {
+            Node<T> node = new Node<>(data);
+            node.next = temp.next;
+            temp.next = node;
+        }
+    }
+
+    public void print() {
         Node<T> temp = head;
         while (temp != null) {
-            if (temp.data.equals(key))
-                return temp;
+            System.out.print(temp.data);
+            if(temp.next!=null){
+                System.out.print( " -> ");
+            }
             temp = temp.next;
         }
-        return null;
     }
 
     public static void main(String[] args) {
@@ -39,6 +52,7 @@ public class LinkedList<T> {
         list.append(30);
         list.append(70);
 
-        System.out.println(list.search(30) != null);
+        list.insertAfter(30, 40);
+        list.print();
     }
 }
