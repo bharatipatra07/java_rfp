@@ -10,12 +10,16 @@ class Node<T> {
 }
 public class LinkedList<T> {
 
-    Node<T> head;
+    Node<T> head, tail;
 
-    public void add(T data) {
-        Node<T> newNode = new Node<>(data);
-        newNode.next = head;
-        head = newNode;
+    public void append(T data) {
+        Node<T> node = new Node<>(data);
+        if (head == null) {
+            head = tail = node;
+            return;
+        }
+        tail.next = node;
+        tail = node;
     }
 
     public void print() {
@@ -31,10 +35,10 @@ public class LinkedList<T> {
 
     public static void main(String[] args) {
         LinkedList<Integer> list = new LinkedList<>();
-        list.add(70);
-        list.add(30);
-        list.add(56);
+        list.append(56);
+        list.append(30);
+        list.append(70);
 
-        list.print(); // 56 -> 30 -> 70
+        list.print();
     }
 }
