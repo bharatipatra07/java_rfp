@@ -11,12 +11,26 @@ class LinkedList<T> {
     }
 
     private Node<T> head;
-
-    // Add at beginning (Stack push)
     public void add(T data) {
         Node<T> node = new Node<>(data);
         node.next = head;
         head = node;
+    }
+    public T pop() {
+        if (head == null)
+            return null;
+
+        T data = head.data;
+        head = head.next;
+        return data;
+    }
+
+    public T peek() {
+        return head == null ? null : head.data;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
     }
     public void display() {
         Node<T> temp = head;
@@ -37,7 +51,18 @@ class Stack<T> {
         list.add(data);
     }
 
-    public void display() {
+    public T pop() {
+        return list.pop();
+    }
+
+    public T peek() {
+        return list.peek();
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+    public void display(){
         list.display();
     }
 }
@@ -50,8 +75,11 @@ public class StackQueue {
         stack.push(70);
         stack.push(30);
         stack.push(56);
-
-        // Expected: 56 -> 30 -> 70
         stack.display();
+        System.out.println();
+        while (!stack.isEmpty()) {
+            System.out.println("Peek: " + stack.peek());
+            System.out.println("Pop: " + stack.pop());
+        }
     }
 }
