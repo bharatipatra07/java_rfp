@@ -8,43 +8,25 @@ class Node<T> {
         this.next = null;
     }
 }
-public class LinkedList<T> {
+public class LinkedList<T extends Comparable<T>> {
 
     Node<T> head;
 
-    public void append(T data) {
-        if (head == null) {
-            head = new Node<>(data);
-            return;
-        }
-        Node<T> temp = head;
-        while (temp.next != null)
-            temp = temp.next;
-        temp.next = new Node<>(data);
-    }
+    public void add(T data) {
+        Node<T> node = new Node<>(data);
 
-    public void delete(T key) {
-        if (head.data.equals(key)) {
-            head = head.next;
+        if (head == null || data.compareTo(head.data) < 0) {
+            node.next = head;
+            head = node;
             return;
         }
 
         Node<T> temp = head;
-        while (temp.next != null && !temp.next.data.equals(key))
+        while (temp.next != null && data.compareTo(temp.next.data) > 0)
             temp = temp.next;
 
-        if (temp.next != null)
-            temp.next = temp.next.next;
-    }
-
-    public int size() {
-        int count = 0;
-        Node<T> temp = head;
-        while (temp != null) {
-            count++;
-            temp = temp.next;
-        }
-        return count;
+        node.next = temp.next;
+        temp.next = node;
     }
 
     public void print() {
@@ -52,7 +34,7 @@ public class LinkedList<T> {
         while (temp != null) {
             System.out.print(temp.data);
             if(temp.next!=null){
-                System.out.print(" -> ");
+                System.out.print( " -> ");
             }
             temp = temp.next;
         }
@@ -60,13 +42,12 @@ public class LinkedList<T> {
 
     public static void main(String[] args) {
         LinkedList<Integer> list = new LinkedList<>();
-        list.append(56);
-        list.append(30);
-        list.append(40);
-        list.append(70);
-        list.delete(40);
+        list.add(56);
+        list.add(30);
+        list.add(40);
+        list.add(70);
+
         list.print();
-        System.out.println();
-        System.out.println("Size = " + list.size());
     }
 }
+
