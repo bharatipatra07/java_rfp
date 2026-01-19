@@ -11,27 +11,21 @@ class LinkedList<T> {
     }
 
     private Node<T> head;
-    public void add(T data) {
+    public void append(T data) {
         Node<T> node = new Node<>(data);
-        node.next = head;
-        head = node;
-    }
-    public T pop() {
-        if (head == null)
-            return null;
 
-        T data = head.data;
-        head = head.next;
-        return data;
-    }
+        if (head == null) {
+            head = node;
+            return;
+        }
 
-    public T peek() {
-        return head == null ? null : head.data;
+        Node<T> temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = node;
     }
 
-    public boolean isEmpty() {
-        return head == null;
-    }
     public void display() {
         Node<T> temp = head;
         while (temp != null) {
@@ -43,26 +37,14 @@ class LinkedList<T> {
         }
     }
 }
-//uc1
-class Stack<T> {
+class Queue<T> {
     private LinkedList<T> list = new LinkedList<>();
 
-    public void push(T data) {
-        list.add(data);
+    public void enqueue(T data) {
+        list.append(data);
     }
 
-    public T pop() {
-        return list.pop();
-    }
-
-    public T peek() {
-        return list.peek();
-    }
-
-    public boolean isEmpty() {
-        return list.isEmpty();
-    }
-    public void display(){
+    public void display() {
         list.display();
     }
 }
@@ -70,16 +52,13 @@ class Stack<T> {
 public class StackQueue {
     public static void main(String[] args) {
 
-        Stack<Integer> stack = new Stack<>();
+        Queue<Integer> queue = new Queue<>();
 
-        stack.push(70);
-        stack.push(30);
-        stack.push(56);
-        stack.display();
-        System.out.println();
-        while (!stack.isEmpty()) {
-            System.out.println("Peek: " + stack.peek());
-            System.out.println("Pop: " + stack.pop());
-        }
+        queue.enqueue(56);
+        queue.enqueue(30);
+        queue.enqueue(70);
+
+        // Expected: 56 -> 30 -> 70
+        queue.display();
     }
 }
