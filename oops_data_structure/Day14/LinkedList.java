@@ -23,23 +23,16 @@ public class LinkedList<T> {
         temp.next = new Node<>(data);
     }
 
-    public void insertAfter(T key, T data) {
-        Node<T> temp = head;
-        while (temp != null && !temp.data.equals(key))
-            temp = temp.next;
-
-        if (temp != null) {
-            Node<T> node = new Node<>(data);
-            node.next = temp.next;
-            temp.next = node;
-        }
+    public void pop() {
+        if (head != null)
+            head = head.next;
     }
 
     public void print() {
         Node<T> temp = head;
         while (temp != null) {
-            System.out.print(temp.data );
-            if(temp.next != null){
+            System.out.print(temp.data);
+            if(temp.next!=null) {
                 System.out.print(" -> ");
             }
             temp = temp.next;
@@ -49,8 +42,11 @@ public class LinkedList<T> {
     public static void main(String[] args) {
         LinkedList<Integer> list = new LinkedList<>();
         list.append(56);
+        list.append(30);
         list.append(70);
-        list.insertAfter(56, 30);
+        list.print();
+        list.pop();
+        System.out.println();
         list.print();
     }
 }
