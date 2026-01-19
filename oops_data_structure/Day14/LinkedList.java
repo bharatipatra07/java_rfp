@@ -23,16 +23,28 @@ public class LinkedList<T> {
         temp.next = new Node<>(data);
     }
 
-    public void insertAfter(T key, T data) {
+    public void delete(T key) {
+        if (head.data.equals(key)) {
+            head = head.next;
+            return;
+        }
+
         Node<T> temp = head;
-        while (temp != null && !temp.data.equals(key))
+        while (temp.next != null && !temp.next.data.equals(key))
             temp = temp.next;
 
-        if (temp != null) {
-            Node<T> node = new Node<>(data);
-            node.next = temp.next;
-            temp.next = node;
+        if (temp.next != null)
+            temp.next = temp.next.next;
+    }
+
+    public int size() {
+        int count = 0;
+        Node<T> temp = head;
+        while (temp != null) {
+            count++;
+            temp = temp.next;
         }
+        return count;
     }
 
     public void print() {
@@ -40,7 +52,7 @@ public class LinkedList<T> {
         while (temp != null) {
             System.out.print(temp.data);
             if(temp.next!=null){
-                System.out.print( " -> ");
+                System.out.print(" -> ");
             }
             temp = temp.next;
         }
@@ -50,9 +62,11 @@ public class LinkedList<T> {
         LinkedList<Integer> list = new LinkedList<>();
         list.append(56);
         list.append(30);
+        list.append(40);
         list.append(70);
-
-        list.insertAfter(30, 40);
+        list.delete(40);
         list.print();
+        System.out.println();
+        System.out.println("Size = " + list.size());
     }
 }
