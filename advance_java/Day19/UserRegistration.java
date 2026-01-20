@@ -6,12 +6,13 @@ public class UserRegistration {
 
         System.out.print("Enter Password: ");
         String password = sc.nextLine();
-        String regex = "^(?=.*[A-Z])(?=.*[0-9]).{8,}$";
+        String regex =
+                "^(?=.*[A-Z])(?=.*[0-9])(?=(?:[^!@#$%^&*]*[!@#$%^&*][^!@#$%^&*]*$)).{8,}$";
 
         if (password.matches(regex)) {
-            System.out.println("Password is valid (Rules 1, 2, 3 passed)");
+            System.out.println("Password is VALID (All rules passed)");
         } else {
-            System.out.println("Password is invalid");
+            System.out.println("Password is INVALID");
         }
     }
 }
