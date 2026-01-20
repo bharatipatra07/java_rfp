@@ -9,11 +9,12 @@ class MyMapNode<K, V> {
         this.next = null;
     }
 }
-class MyHashTable<K, V> {
+public class MyHashTable<K, V> {
 
     private final int SIZE = 10;
     private MyMapNode<K, V>[] buckets;
 
+    @SuppressWarnings("unchecked")
     public MyHashTable() {
         buckets = new MyMapNode[SIZE];
     }
@@ -52,6 +53,25 @@ class MyHashTable<K, V> {
         return null;
     }
 
+    public void remove(K key) {
+        int index = getIndex(key);
+        MyMapNode<K, V> head = buckets[index];
+        MyMapNode<K, V> prev = null;
+
+        while (head != null) {
+            if (head.key.equals(key)) {
+                if (prev == null) {
+                    buckets[index] = head.next;
+                } else {
+                    prev.next = head.next;
+                }
+                return;
+            }
+            prev = head;
+            head = head.next;
+        }
+    }
+
     public void display() {
         for (int i = 0; i < SIZE; i++) {
             MyMapNode<K, V> head = buckets[i];
@@ -62,6 +82,7 @@ class MyHashTable<K, V> {
         }
     }
 }
+
 
 
 
@@ -82,6 +103,12 @@ public class HashTableBST {
             hashTable.put(word, count == null ? 1 : count + 1);
         }
 
+        System.out.println("Before removing 'avoidable':");
+        hashTable.display();
+
+        hashTable.remove("avoidable");
+
+        System.out.println("\nAfter removing 'avoidable':");
         hashTable.display();
     }
 }
