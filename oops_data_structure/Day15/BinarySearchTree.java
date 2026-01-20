@@ -5,80 +5,91 @@
     void setLeft(INode<K> left);
     void setRight(INode<K> right);
 }
- class MyBinaryNode<K extends Comparable<K>> implements INode<K> {
+class MyBinaryNode<K extends Comparable<K>> implements INode<K> {
 
-    private K key;
-    private INode<K> left;
-    private INode<K> right;
+     private K key;
+     private INode<K> left;
+     private INode<K> right;
 
-    public MyBinaryNode(K key) {
-        this.key = key;
-    }
+     public MyBinaryNode(K key) {
+         this.key = key;
+     }
 
-    @Override
-    public K getKey() {
-        return key;
-    }
+     @Override
+     public K getKey() {
+         return key;
+     }
 
-    @Override
-    public INode<K> getLeft() {
-        return left;
-    }
+     @Override
+     public INode<K> getLeft() {
+         return left;
+     }
 
-    @Override
-    public INode<K> getRight() {
-        return right;
-    }
+     @Override
+     public INode<K> getRight() {
+         return right;
+     }
 
-    @Override
-    public void setLeft(INode<K> left) {
-        this.left = left;
-    }
+     @Override
+     public void setLeft(INode<K> left) {
+         this.left = left;
+     }
 
-    @Override
-    public void setRight(INode<K> right) {
-        this.right = right;
-    }
-}
+     @Override
+     public void setRight(INode<K> right) {
+         this.right = right;
+     }
+ }
  class MyBinarySearchTree<K extends Comparable<K>> {
 
-    private INode<K> root;
+     private INode<K> root;
+     private int size = 0;
 
-    public void add(K key) {
-        root = addRecursively(root, key);
-    }
+     public void add(K key) {
+         root = addRecursively(root, key);
+     }
 
-    private INode<K> addRecursively(INode<K> current, K key) {
+     private INode<K> addRecursively(INode<K> current, K key) {
 
-        if (current == null) {
-            return new MyBinaryNode<>(key);
-        }
+         if (current == null) {
+             size++;
+             return new MyBinaryNode<>(key);
+         }
 
-        if (key.compareTo(current.getKey()) < 0) {
-            current.setLeft(addRecursively(current.getLeft(), key));
-        } else {
-            current.setRight(addRecursively(current.getRight(), key));
-        }
+         if (key.compareTo(current.getKey()) < 0) {
+             current.setLeft(addRecursively(current.getLeft(), key));
+         } else {
+             current.setRight(addRecursively(current.getRight(), key));
+         }
 
-        return current;
-    }
+         return current;
+     }
 
-    public INode<K> getRoot() {
-        return root;
-    }
-}
-public class BinarySearchTree {
+     public int size() {
+         return size;
+     }
 
-    public static void main(String[] args) {
+     public INode<K> getRoot() {
+         return root;
+     }
+ }
+ public class BSTFullTreeMain {
 
-        MyBinarySearchTree<Integer> bst = new MyBinarySearchTree<>();
+     public static void main(String[] args) {
 
-        bst.add(56);  // root
-        bst.add(30);  // left child
-        bst.add(70);  // right child
+         MyBinarySearchTree<Integer> bst = new MyBinarySearchTree<>();
 
-        System.out.println("Root: " + bst.getRoot().getKey());
-        System.out.println("Left Child: " + bst.getRoot().getLeft().getKey());
-        System.out.println("Right Child: " + bst.getRoot().getRight().getKey());
-    }
-}
+         int[] values = {
+                 56, 30, 70, 22, 40, 60, 95,
+                 11, 16, 65, 63, 67, 3
+         };
+
+         for (int value : values) {
+             bst.add(value);
+         }
+
+         System.out.println("Total nodes added: " + bst.size());
+     }
+ }
+
+
