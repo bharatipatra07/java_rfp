@@ -4,15 +4,15 @@ public class UserRegistration {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter Last Name: ");
-        String lastName = sc.nextLine();
+        System.out.print("Enter Email: ");
+        String email = sc.nextLine();
 
-        String regex = "^[A-Z][a-z]{2,}$";
+        String regex = "^[a-z]+(\\.[a-z]+)?@[a-z]+\\.[a-z]{2,}(\\.[a-z]{2,})?$";
 
-        if (lastName.matches(regex)) {
-            System.out.println("Valid Last Name");
+        if (email.matches(regex)) {
+            System.out.println("Valid Email");
         } else {
-            System.out.println("Invalid Last Name");
+            System.out.println("Invalid Email");
         }
     }
 }
