@@ -9,19 +9,11 @@ class MyMapNode<K, V> {
         this.next = null;
     }
 }
-interface MapADT<K, V> {
-    void put(K key, V value);
-    V get(K key);
-    void remove(K key);
-}
-
-
-class MyHashTable<K, V> implements MapADT<K, V> {
+class MyHashTable<K, V> {
 
     private final int SIZE = 10;
     private MyMapNode<K, V>[] buckets;
 
-    @SuppressWarnings("unchecked")
     public MyHashTable() {
         buckets = new MyMapNode[SIZE];
     }
@@ -30,7 +22,6 @@ class MyHashTable<K, V> implements MapADT<K, V> {
         return Math.abs(key.hashCode()) % SIZE;
     }
 
-    @Override
     public void put(K key, V value) {
         int index = getIndex(key);
         MyMapNode<K, V> head = buckets[index];
@@ -48,7 +39,6 @@ class MyHashTable<K, V> implements MapADT<K, V> {
         buckets[index] = newNode;
     }
 
-    @Override
     public V get(K key) {
         int index = getIndex(key);
         MyMapNode<K, V> head = buckets[index];
@@ -62,23 +52,13 @@ class MyHashTable<K, V> implements MapADT<K, V> {
         return null;
     }
 
-    @Override
-    public void remove(K key) {
-        int index = getIndex(key);
-        MyMapNode<K, V> head = buckets[index];
-        MyMapNode<K, V> prev = null;
-
-        while (head != null) {
-            if (head.key.equals(key)) {
-                if (prev == null) {
-                    buckets[index] = head.next;
-                } else {
-                    prev.next = head.next;
-                }
-                return;
+    public void display() {
+        for (int i = 0; i < SIZE; i++) {
+            MyMapNode<K, V> head = buckets[i];
+            while (head != null) {
+                System.out.println(head.key + " = " + head.value);
+                head = head.next;
             }
-            prev = head;
-            head = head.next;
         }
     }
 }
@@ -88,15 +68,21 @@ class MyHashTable<K, V> implements MapADT<K, V> {
 public class HashTableBST {
 
     public static void main(String[] args) {
-        String sentence = "To be or not to be";
-        MyHashTable<String, Integer> map = new MyHashTable<>();
+        String paragraph =
+                "Paranoids are not paranoid because they are paranoid but " +
+                        "because they keep putting themselves deliberately into " +
+                        "paranoid avoidable situations";
 
-        for (String word : sentence.toLowerCase().split(" ")) {
-            Integer count = map.get(word);
-            map.put(word, count == null ? 1 : count + 1);
+        MyHashTable<String, Integer> hashTable = new MyHashTable<>();
+
+        String[] words = paragraph.toLowerCase().split(" ");
+
+        for (String word : words) {
+            Integer count = hashTable.get(word);
+            hashTable.put(word, count == null ? 1 : count + 1);
         }
 
-        System.out.println("Frequency of 'be' = " + map.get("be"));
+        hashTable.display();
     }
 }
 
