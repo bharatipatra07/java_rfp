@@ -50,7 +50,6 @@ class MyBinaryNode<K extends Comparable<K>> implements INode<K> {
      }
 
      private INode<K> addRecursively(INode<K> current, K key) {
-
          if (current == null) {
              size++;
              return new MyBinaryNode<>(key);
@@ -61,19 +60,34 @@ class MyBinaryNode<K extends Comparable<K>> implements INode<K> {
          } else {
              current.setRight(addRecursively(current.getRight(), key));
          }
-
          return current;
+     }
+     public boolean search(K key) {
+         return searchRecursively(root, key);
+     }
+
+     private boolean searchRecursively(INode<K> current, K key) {
+
+         if (current == null) {
+             return false;
+         }
+
+         if (key.equals(current.getKey())) {
+             return true;
+         }
+
+         if (key.compareTo(current.getKey()) < 0) {
+             return searchRecursively(current.getLeft(), key);
+         } else {
+             return searchRecursively(current.getRight(), key);
+         }
      }
 
      public int size() {
          return size;
      }
-
-     public INode<K> getRoot() {
-         return root;
-     }
  }
- public class BSTFullTreeMain {
+ public class BinarySearchTree {
 
      public static void main(String[] args) {
 
@@ -87,9 +101,10 @@ class MyBinaryNode<K extends Comparable<K>> implements INode<K> {
          for (int value : values) {
              bst.add(value);
          }
-
-         System.out.println("Total nodes added: " + bst.size());
+         int key=4;
+         System.out.println("Is "+key+" present: " + bst.search(key));
      }
  }
+
 
 
