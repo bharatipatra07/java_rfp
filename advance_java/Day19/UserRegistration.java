@@ -4,15 +4,14 @@ public class UserRegistration {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter Mobile Number: ");
-        String mobile = sc.nextLine();
+        System.out.print("Enter Pasword: ");
+        String password = sc.nextLine();
+        String regex = "^.{8,}$";
 
-        String regex = "^91 [0-9]{10}$";
-
-        if (mobile.matches(regex)) {
-            System.out.println("Valid Mobile Number");
+        if (password.matches(regex)) {
+            System.out.println("Password valid as per Rule 1");
         } else {
-            System.out.println("Invalid Mobile Number");
+            System.out.println("Password invalid as per Rule 1");
         }
     }
 }
