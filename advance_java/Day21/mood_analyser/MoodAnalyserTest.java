@@ -3,6 +3,10 @@ import org.junit.jupiter.api.Test;
 
 public class MoodAnalyserTest {
 
-    MoodAnalyser analyser = new MoodAnalyser("I am in Sad Mood");
+    @Test
+    void givenSadMoodInConstructor_ShouldReturnSAD() {
+        MoodAnalyser analyser = new MoodAnalyser("I am in Sad Mood");
+        Assertions.assertEquals("SAD", analyser.analyseMood());
+    }
 
 }
