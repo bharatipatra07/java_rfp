@@ -6,15 +6,18 @@ interface UserInputValidator {
 public class UserRegistration {
 
     public static void main(String[] args) {
-
-        UserInputValidator lastNameValidator =
-                lastName -> lastName.matches("[A-Z][a-zA-Z]{2,}");
+        UserInputValidator emailValidator =
+                email -> email.matches(
+                        "^[a-z]{3}(\\.[a-z]{3})?@[a-z]{2}\\.[a-z]{2}(\\.[a-z]{2})?$"
+                );
 
         // Test cases
-        System.out.println(lastNameValidator.validate("Patra"));   // true
-        System.out.println(lastNameValidator.validate("pa"));      // false
-        System.out.println(lastNameValidator.validate("Pa"));      // false
-        System.out.println(lastNameValidator.validate("patra"));   // false
+        System.out.println(emailValidator.validate("abc@bl.co"));           // true
+        System.out.println(emailValidator.validate("abc.xyz@bl.co.in"));    // true
+        System.out.println(emailValidator.validate("abc@bl.co.in"));        // true
+        System.out.println(emailValidator.validate("abc@bl"));              // false
+        System.out.println(emailValidator.validate("abc.xyz@bl.co.ind"));   // false
+        System.out.println(emailValidator.validate("ab@bl.co"));            // false
     }
 }
 
