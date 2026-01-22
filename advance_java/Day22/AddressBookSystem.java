@@ -24,6 +24,21 @@ class Contact {
         this.email = email;
     }
 
+    // Overriding equals to check duplicate based on firstName + lastName
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Contact)) return false;
+        Contact other = (Contact) obj;
+        return Objects.equals(this.firstName.toLowerCase(), other.firstName.toLowerCase()) &&
+                Objects.equals(this.lastName.toLowerCase(), other.lastName.toLowerCase());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
+    }
+
     @Override
     public String toString() {
         return "Name: " + firstName + " " + lastName +
@@ -41,25 +56,31 @@ class AddressBook {
     private List<Contact> contacts = new ArrayList<>();
 
     public void addContact(Contact contact) {
-        contacts.add(contact);
-        System.out.println("Contact added successfully.");
+        boolean duplicate = contacts.stream()
+                .anyMatch(c -> c.equals(contact));
+        if (duplicate) {
+            System.out.println("Duplicate entry! Contact already exists.");
+        } else {
+            contacts.add(contact);
+            System.out.println("Contact added successfully.");
+        }
     }
-
+    // New method to check duplicate
+    public boolean isDuplicate(Contact contact) {
+        return contacts.stream().anyMatch(c -> c.equals(contact));
+    }
     public void showContacts() {
         if (contacts.isEmpty()) {
             System.out.println("Address Book is empty.");
             return;
         }
-        for (Contact c : contacts) {
-            System.out.println(c);
-        }
+        contacts.forEach(System.out::println);
     }
 }
 
 public class AddressBookSystem {
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         Map<String, AddressBook> addressBooks = new HashMap<>();
         boolean systemRunning = true;
@@ -99,8 +120,17 @@ public class AddressBookSystem {
 
                     System.out.print("Enter First Name: ");
                     String firstName = scanner.nextLine();
-                    System.out.print("Enter Last Name: ");
+                    System.out.print("Enter Lat Name: ");
                     String lastName = scanner.nextLine();
+
+                    // Create a temporary contact with only firstName & lastName to check for duplicates
+                    Contact tempContact = new Contact(firstName,lastName , "", "", "", "", "", "");
+                    if (addBook.isDuplicate(tempContact)) {
+                        System.out.println("Duplicate entry! Contact already exists.");
+                        break; // Skip asking for other details
+                    }
+
+                    // Only ask for other details if contact is not duplicate
                     System.out.print("Enter Address: ");
                     String address = scanner.nextLine();
                     System.out.print("Enter City: ");
@@ -135,9 +165,7 @@ public class AddressBookSystem {
                         System.out.println("No Address Books available.");
                     } else {
                         System.out.println("Available Address Books:");
-                        for (String name : addressBooks.keySet()) {
-                            System.out.println("- " + name);
-                        }
+                        addressBooks.keySet().forEach(name -> System.out.println("- " + name));
                     }
                     break;
 
@@ -154,3 +182,4 @@ public class AddressBookSystem {
         scanner.close();
     }
 }
+
