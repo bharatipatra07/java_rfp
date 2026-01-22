@@ -6,28 +6,51 @@ interface UserInputValidator {
 public class UserRegistration {
 
     public static void main(String[] args) {
-        UserInputValidator hasUpperCase =
-                password -> password.matches(".*[A-Z].*");
 
-        UserInputValidator hasNumber =
-                password -> password.matches(".*[0-9].*");
+        UserInputValidator emailValidator = email -> {
+            // Basic structure
+            String emailRegex = "^[a-zA-Z0-9]+([._+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}(\\.[a-zA-Z]{2})?$";
+            // Ensure no double dots
+            boolean noDoubleDots = !email.contains("..");
+            // Ensure exactly one @
+            boolean singleAt = email.chars().filter(ch -> ch == '@').count() == 1;
+            // Ensure last character is not dot
+            boolean lastCharNotDot = email.charAt(email.length() - 1) != '.';
+            // Ensure first character is not dot
+            boolean firstCharNotDot = email.charAt(0) != '.';
 
-        UserInputValidator hasExactlyOneSpecialChar =
-                password -> password.matches(".*[^a-zA-Z0-9].*")
-                        && password.replaceAll("[a-zA-Z0-9]", "").length() == 1;
+            return email.matches(emailRegex) && noDoubleDots && singleAt && lastCharNotDot && firstCharNotDot;
+        };
 
-        UserInputValidator passwordValidator =
-                password -> password.length() >= 8
-                        && hasUpperCase.validate(password)
-                        && hasNumber.validate(password)
-                        && hasExactlyOneSpecialChar.validate(password);
+        // Valid emails
+        String[] validEmails = {
+                "abc@yahoo.com",
+                "abc-100@yahoo.com",
+                "abc.100@yahoo.com",
+                "abc111@abc.com",
+                "abc-100@abc.net",
+                "abc.100@abc.com.au",
+                "abc@1.com",
+                "abc@abc.com",
+                "abc+100@gmail.com"
+        };
 
-        // Test cases
-        System.out.println(passwordValidator.validate("Pass@123"));   // true
-        System.out.println(passwordValidator.validate("Pass@@123"));  // false
-        System.out.println(passwordValidator.validate("Pass1234"));   // false
-        System.out.println(passwordValidator.validate("pass@123"));   // false
-        System.out.println(passwordValidator.validate("12@Bha48"));   //true
+        // Invalid emails
+        String[] invalidEmails = {
+                "abc", "abc@.com.my", "abc123@gmail.a", "abc123@.com", "abc123@.com.com",
+                ".abc@abc.com", "abc()*@gmail.com", "abc@%*.com", "abc..2002@gmail.com",
+                "abc.@gmail.com", "abc@abc@gmail.com", "abc@gmail.com.1a", "abc@gmail.com.aa.au"
+        };
+
+        System.out.println("Valid Emails:");
+        for (String email : validEmails) {
+            System.out.println(email + " -> " + emailValidator.validate(email));
+        }
+
+        System.out.println("\nInvalid Emails:");
+        for (String email : invalidEmails) {
+            System.out.println(email + " -> " + emailValidator.validate(email));
+        }
     }
 }
 
