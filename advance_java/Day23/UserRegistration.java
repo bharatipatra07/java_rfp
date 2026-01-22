@@ -6,18 +6,15 @@ interface UserInputValidator {
 public class UserRegistration {
 
     public static void main(String[] args) {
-        UserInputValidator emailValidator =
-                email -> email.matches(
-                        "^[a-z]{3}(\\.[a-z]{3})?@[a-z]{2}\\.[a-z]{2}(\\.[a-z]{2})?$"
-                );
+        UserInputValidator mobileValidator =
+                mobile -> mobile.matches("^[0-9]{2} [0-9]{10}$");
 
         // Test cases
-        System.out.println(emailValidator.validate("abc@bl.co"));           // true
-        System.out.println(emailValidator.validate("abc.xyz@bl.co.in"));    // true
-        System.out.println(emailValidator.validate("abc@bl.co.in"));        // true
-        System.out.println(emailValidator.validate("abc@bl"));              // false
-        System.out.println(emailValidator.validate("abc.xyz@bl.co.ind"));   // false
-        System.out.println(emailValidator.validate("ab@bl.co"));            // false
+        System.out.println(mobileValidator.validate("91 9919819801")); // true
+        System.out.println(mobileValidator.validate("91 991981980"));  // false
+        System.out.println(mobileValidator.validate("919919819801"));  // false
+        System.out.println(mobileValidator.validate("91-9919819801")); // false
+        System.out.println(mobileValidator.validate("1 9919819801"));  // false
     }
 }
 
