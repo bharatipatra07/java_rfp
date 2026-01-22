@@ -6,15 +6,15 @@ interface UserInputValidator {
 public class UserRegistration {
 
     public static void main(String[] args) {
-        UserInputValidator mobileValidator =
-                mobile -> mobile.matches("^[0-9]{2} [0-9]{10}$");
+        UserInputValidator passwordValidator =
+                password -> password.length() >= 8;
 
         // Test cases
-        System.out.println(mobileValidator.validate("91 9919819801")); // true
-        System.out.println(mobileValidator.validate("91 991981980"));  // false
-        System.out.println(mobileValidator.validate("919919819801"));  // false
-        System.out.println(mobileValidator.validate("91-9919819801")); // false
-        System.out.println(mobileValidator.validate("1 9919819801"));  // false
+        System.out.println(passwordValidator.validate("Pass@123")); // true
+        System.out.println(passwordValidator.validate("Pass12"));   // false
+        System.out.println(passwordValidator.validate("12345678")); // true
+        System.out.println(passwordValidator.validate("abc"));      // false
+
     }
 }
 
