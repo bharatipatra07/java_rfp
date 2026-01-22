@@ -7,14 +7,14 @@ public class UserRegistration {
 
     public static void main(String[] args) {
 
-        UserInputValidator firstNameValidator =
-                name -> name.matches("[A-Z][a-zA-Z]{2,}");
+        UserInputValidator lastNameValidator =
+                lastName -> lastName.matches("[A-Z][a-zA-Z]{2,}");
 
         // Test cases
-        System.out.println(firstNameValidator.validate("Kishor")); // true
-        System.out.println(firstNameValidator.validate("ki"));     // false
-        System.out.println(firstNameValidator.validate("Ki"));     // false
-        System.out.println(firstNameValidator.validate("kishor")); // false
+        System.out.println(lastNameValidator.validate("Patra"));   // true
+        System.out.println(lastNameValidator.validate("pa"));      // false
+        System.out.println(lastNameValidator.validate("Pa"));      // false
+        System.out.println(lastNameValidator.validate("patra"));   // false
     }
 }
 
