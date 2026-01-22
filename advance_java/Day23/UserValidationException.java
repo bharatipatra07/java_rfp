@@ -1,3 +1,4 @@
+package Day23;
 public class UserValidationException extends Exception {
 
     public enum ExceptionType {
