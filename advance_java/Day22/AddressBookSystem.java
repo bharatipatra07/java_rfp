@@ -1,7 +1,7 @@
-import java.util.Iterator;
-import java.util.Scanner;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 class Contact {
 
     private String firstName;
@@ -27,19 +27,6 @@ class Contact {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void update(Contact updated) {
-        this.address = updated.address;
-        this.city = updated.city;
-        this.state = updated.state;
-        this.zip = updated.zip;
-        this.phoneNumber = updated.phoneNumber;
-        this.email = updated.email;
-    }
-
     @Override
     public String toString() {
         return "Name: " + firstName + " " + lastName +
@@ -58,46 +45,14 @@ class AddressBook {
 
     public void addContact(Contact contact) {
         contacts.add(contact);
-    }
-
-    // ✔ validation FIRST
-    public boolean isFirstNamePresent(String firstName) {
-        for (Contact c : contacts) {
-            if (c.getFirstName().equalsIgnoreCase(firstName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void updateContact(String firstName, Contact updatedData) {
-        for (Contact contact : contacts) {
-            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
-                contact.update(updatedData);
-                System.out.println("Contact updated successfully.");
-                return;
-            }
-        }
-    }
-    // DELETE BY NAME
-    public boolean deleteContact(String firstName) {
-
-        Iterator<Contact> iterator = contacts.iterator();
-
-        while (iterator.hasNext()) {
-            Contact contact = iterator.next();
-            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
-                iterator.remove();
-                System.out.println("Contact deleted successfully.");
-                return true;
-            }
-        }
-
-        System.out.println("Invalid first name");
-        return false;
+        System.out.println("Contact added successfully.\n");
     }
 
     public void showContacts() {
+        if (contacts.isEmpty()) {
+            System.out.println("Address Book is empty.");
+            return;
+        }
         for (Contact c : contacts) {
             System.out.println(c);
         }
@@ -111,53 +66,53 @@ public class AddressBookSystem {
         Scanner scanner = new Scanner(System.in);
         AddressBook addressBook = new AddressBook();
 
-        // ---- Add Contact ----
-        System.out.println("Enter First Name:");
-        String firstName = scanner.nextLine();
+        boolean addMore = true;
 
-        System.out.println("Enter Last Name:");
-        String lastName = scanner.nextLine();
+        while (addMore) {
 
-        System.out.println("Enter Address:");
-        String address = scanner.nextLine();
+            System.out.println("Enter First Name:");
+            String firstName = scanner.nextLine();
 
-        System.out.println("Enter City:");
-        String city = scanner.nextLine();
+            System.out.println("Enter Last Name:");
+            String lastName = scanner.nextLine();
 
-        System.out.println("Enter State:");
-        String state = scanner.nextLine();
+            System.out.println("Enter Address:");
+            String address = scanner.nextLine();
 
-        System.out.println("Enter Zip:");
-        String zip = scanner.nextLine();
+            System.out.println("Enter City:");
+            String city = scanner.nextLine();
 
-        System.out.println("Enter Phone:");
-        String phone = scanner.nextLine();
+            System.out.println("Enter State:");
+            String state = scanner.nextLine();
 
-        System.out.println("Enter Email:");
-        String email = scanner.nextLine();
+            System.out.println("Enter Zip:");
+            String zip = scanner.nextLine();
 
-        addressBook.addContact(new Contact(
-                firstName, lastName, address,
-                city, state, zip, phone, email
-        ));
+            System.out.println("Enter Phone:");
+            String phone = scanner.nextLine();
 
-        System.out.println("Contact Added");
-        addressBook.showContacts();
+            System.out.println("Enter Email:");
+            String email = scanner.nextLine();
 
-        // ---- DELETE CONTACT ----
-        System.out.println("Enter First Name to Delete:");
-        String nameToDelete = scanner.nextLine();
+            Contact contact = new Contact(
+                    firstName, lastName, address,
+                    city, state, zip, phone, email
+            );
 
-        boolean deleted=addressBook.deleteContact(nameToDelete);
+            addressBook.addContact(contact);
 
-        // ---- Display ----
-        if(deleted) {
-            System.out.println("Address Book Cleared");
-            addressBook.showContacts();
+            System.out.println("Do you want to add another person? (yes/no)");
+            String choice = scanner.nextLine();
+
+            if (!choice.equalsIgnoreCase("yes")) {
+                addMore = false;
+            }
         }
 
+        // ---- Display All Contacts ----
+        System.out.println("All Contacts in Address Book:");
+        addressBook.showContacts();
 
         scanner.close();
     }
 }
-
