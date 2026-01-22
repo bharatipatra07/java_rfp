@@ -27,6 +27,7 @@ public class UserRegistration {
         System.out.println(passwordValidator.validate("Pass@@123"));  // false
         System.out.println(passwordValidator.validate("Pass1234"));   // false
         System.out.println(passwordValidator.validate("pass@123"));   // false
+        System.out.println(passwordValidator.validate("12@Bha48"));   //true
     }
 }
 
