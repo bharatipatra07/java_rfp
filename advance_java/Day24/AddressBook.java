@@ -1,5 +1,6 @@
 package Day24;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 class AddressBook {
@@ -10,30 +11,30 @@ class AddressBook {
         contacts.add(contact);
     }
 
-    public boolean isFirstNamePresent(String firstName) {
-        for (Contact c : contacts) {
-            if (c.getFirstName().equalsIgnoreCase(firstName)) {
+    // DELETE BY NAME
+    public boolean deleteContact(String firstName) {
+
+        Iterator<Contact> iterator = contacts.iterator();
+
+        while (iterator.hasNext()) {
+            Contact contact = iterator.next();
+            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
+                iterator.remove();
+                System.out.println("Contact deleted successfully.");
                 return true;
             }
         }
+
+        System.out.println("Invalid first name");
         return false;
     }
 
-    public void updateContact(String firstName, Contact updatedData) {
-
-        for (Contact contact : contacts) {
-            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
-                contact.update(updatedData);
-                System.out.println("Contact updated successfully.");
-                return;
-            }
-        }
-
-        // if name not found
-        System.out.println("Enter valid first name");
-    }
 
     public void showContacts() {
+        if (contacts.isEmpty()) {
+            System.out.println("Address Book is empty.");
+            return;
+        }
         for (Contact c : contacts) {
             System.out.println(c);
         }

@@ -29,15 +29,6 @@ class Contact {
         return firstName;
     }
 
-    public void update(Contact newData) {
-        this.address = newData.address;
-        this.city = newData.city;
-        this.state = newData.state;
-        this.zip = newData.zip;
-        this.phone = newData.phone;
-        this.email = newData.email;
-    }
-
     @Override
     public String toString() {
         return firstName + " " + lastName +
