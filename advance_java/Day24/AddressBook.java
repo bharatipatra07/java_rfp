@@ -23,13 +23,5 @@ class AddressBook {
     public List<Contact> getContacts() {
         return contacts;
     }
-    public void showContacts() {
-        if (contacts.isEmpty()) {
-            System.out.println("Address Book is empty.");
-            return;
-        }
-        for (Contact c : contacts) {
-            System.out.println(c);
-        }
-    }
+
 }
