@@ -11,15 +11,14 @@ public class AddressBookSystem {
         boolean systemRunning = true;
 
         while (systemRunning) {
-
-            System.out.println("--- Address Book System Menu ---");
-            System.out.println("1. Create New Address Book");
-            System.out.println("2. Add Contact to Address Book");
-            System.out.println("3. Show Contacts of Address Book");
-            System.out.println("4. Show All Address Books");
-            System.out.println("5. Exit");
-            System.out.print("Choose an option: ");
-
+            System.out.println("--- Address Book System ---");
+            System.out.println("1. Create Address Book");
+            System.out.println("2. Add Contact");
+            System.out.println("3. Show Contacts");
+            System.out.println("4. Search Person by City");
+            System.out.println("5. Search Person by State");
+            System.out.println("6. Exit");
+            System.out.print("Choose option: ");
             String option = scanner.nextLine();
 
             switch (option) {
@@ -87,18 +86,44 @@ public class AddressBookSystem {
                     }
                     break;
 
+                /* ================= UC-8 SEARCH BY CITY ================= */
                 case "4":
-                    if (addressBooks.isEmpty()) {
-                        System.out.println("No Address Books available.");
+                    System.out.print("Enter City: ");
+                    String searchCity = scanner.nextLine();
+
+                    List<Contact> cityResult = addressBooks.values().stream()
+                            .flatMap(b -> b.getContacts().stream())
+                            .filter(c -> c.getCity().equalsIgnoreCase(searchCity))
+                            .collect(Collectors.toList());
+
+                    if (cityResult.isEmpty()) {
+                        System.out.println("No contacts found in city: " + searchCity);
                     } else {
-                        System.out.println("Available Address Books:");
-                        addressBooks.keySet().forEach(name -> System.out.println("- " + name));
+                        cityResult.forEach(System.out::println);
                     }
                     break;
 
+
+                /* ================= UC-8 SEARCH BY STATE ================= */
                 case "5":
-                    systemRunning = false;
-                    System.out.println("Exiting Address Book System...");
+                    System.out.print("Enter State: ");
+                    String searchState = scanner.nextLine();
+
+                    List<Contact> stateResult = addressBooks.values().stream()
+                            .flatMap(b -> b.getContacts().stream())
+                            .filter(c -> c.getState().equalsIgnoreCase(searchState))
+                            .collect(Collectors.toList());
+
+                    if (stateResult.isEmpty()) {
+                        System.out.println("No contacts found in state: " + searchState);
+                    } else {
+                        stateResult.forEach(System.out::println);
+                    }
+                    break;
+
+                case "6":
+                    running = false;
+                    System.out.println("Exiting...");
                     break;
 
                 default:
