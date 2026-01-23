@@ -47,6 +47,16 @@ public class AddressBookSystem {
                     String firstName = scanner.nextLine();
                     System.out.print("Enter Last Name: ");
                     String lastName = scanner.nextLine();
+
+                    // Create a temporary contact with only firstName & lastName to check for duplicates
+                    Contact tempContact = new Contact(firstName, lastName, "", "", "", "", "", "");
+
+                    if (addBook.isDuplicate(tempContact)) {
+                        System.out.println("Duplicate entry! Contact already exists.");
+                        break; // Stop here, do not ask for other details
+                    }
+
+                    // Only ask for other details if contact is not duplicate
                     System.out.print("Enter Address: ");
                     String address = scanner.nextLine();
                     System.out.print("Enter City: ");
@@ -63,6 +73,7 @@ public class AddressBookSystem {
                     Contact contact = new Contact(firstName, lastName, address, city, state, zip, phone, email);
                     addBook.addContact(contact);
                     break;
+
 
                 case "3":
                     System.out.print("Enter the Address Book name to view contacts: ");
