@@ -23,9 +23,10 @@ class Contact {
         this.email = email;
     }
 
-    public String getCity() { return city; }
-    public String getState() { return state; }
+    public String getFirstName(){return firstName;}
+    public String getLastName(){return lastName;}
 
+    //DUPLICATE LOGIC
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

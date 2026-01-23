@@ -1,6 +1,8 @@
 package Day24;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class AddressBook {
 
@@ -23,5 +25,15 @@ class AddressBook {
     public List<Contact> getContacts() {
         return contacts;
     }
+    /* ========== UC11: SORT BY NAME USING STREAMS ========== */
+    public void sortContactsByName() {
+        List<Contact> sortedList = contacts.stream()
+                .sorted(Comparator
+                        .comparing(Contact::getFirstName, String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(Contact::getLastName, String.CASE_INSENSITIVE_ORDER))
+                .collect(Collectors.toList());
 
+        System.out.println("\nSorted Contacts:");
+        sortedList.forEach(System.out::println);
+    }
 }

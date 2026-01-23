@@ -1,52 +1,87 @@
 package Day24;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Scanner;
 
 public class AddressBookSystem {
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         Map<String, AddressBook> addressBooks = new HashMap<>();
+        boolean running = true;
+        while(running){
+            System.out.println("--- Address Book Menu ---");
+           System.out.println("1. Create Address Book");
+           System.out.println("2. Add Contact");
+           System.out.println("3. Sort Contacts Alphabetically by Name");
+           System.out.println("4. Exit");
+           System.out.print("Choose option: ");
 
-        // Sample Data
-        AddressBook book1 = new AddressBook();
-        book1.addContact(new Contact("Amit", "Shah", "Mumbai", "MH"));
-        book1.addContact(new Contact("Neha", "Verma", "Mumbai", "MH"));
+           String choice = scanner.nextLine();
 
-        AddressBook book2 = new AddressBook();
-        book2.addContact(new Contact("Ravi", "Kumar", "Delhi", "DL"));
-        book2.addContact(new Contact("Sita", "Rao", "Mumbai", "MH"));
+           switch (choice) {
 
-        addressBooks.put("Book1", book1);
-        addressBooks.put("Book2", book2);
+               case "1":
+                   System.out.print("Enter Address Book name: ");
+                   String name = scanner.nextLine();
+                   addressBooks.putIfAbsent(name, new AddressBook());
+                   System.out.println("Address Book created.");
+                   break;
 
-        /* ========== UC-10 COUNT BY CITY ========== */
-        Map<String, Long> countByCity =
-                addressBooks.values().stream()
-                        .flatMap(book -> book.getContacts().stream())
-                        .collect(Collectors.groupingBy(
-                                Contact::getCity,
-                                Collectors.counting()
-                        ));
+               case "2":
+                   System.out.print("Enter Address Book name: ");
+                   AddressBook book = addressBooks.get(scanner.nextLine());
+                   if (book == null) {
+                       System.out.println("Address Book not found.");
+                       break;
+                   }
 
-        System.out.println("Contact Count by City:");
-        countByCity.forEach((city, count) ->
-                System.out.println(city + " -> " + count)
-        );
+                   System.out.print("First Name: ");
+                   String fn = scanner.nextLine();
+                   System.out.print("Last Name: ");
+                   String ln = scanner.nextLine();
+                   System.out.print("City: ");
+                   String city = scanner.nextLine();
+                   System.out.print("State: ");
+                   String state = scanner.nextLine();
+                   System.out.print("Zip: ");
+                   String zip= scanner.nextLine();
+                   System.out.print("Phone: ");
+                   String phone = scanner.nextLine();
+                   System.out.print("Email: ");
+                   String email = scanner.nextLine();
 
-        /* ========== UC-10 COUNT BY STATE ========== */
-        Map<String, Long> countByState =
-                addressBooks.values().stream()
-                        .flatMap(book -> book.getContacts().stream())
-                        .collect(Collectors.groupingBy(
-                                Contact::getState,
-                                Collectors.counting()
-                        ));
+                   Contact c = new Contact(fn, ln, city, state,zip, phone, email);
 
-        System.out.println("Contact Count by State:");
-        countByState.forEach((state, count) ->
-                System.out.println(state + " -> " + count)
-        );
+                   if (book.isDuplicate(c)) {
+                       System.out.println("Duplicate contact!");
+                   } else {
+                       book.addContact(c);
+                       System.out.println("Contact added.");
+                   }
+                   break;
+
+               /* ========== SORT OPTION ========== */
+               case "3":
+                   System.out.print("Enter Address Book name: ");
+                   AddressBook sortBook = addressBooks.get(scanner.nextLine());
+                   if (sortBook == null) {
+                       System.out.println("Address Book not found.");
+                   } else {
+                       sortBook.sortContactsByName();
+                   }
+                   break;
+
+               case "4":
+                   running = false;
+                   System.out.println("Exiting...");
+                   break;
+
+               default:
+                   System.out.println("Invalid option.");
+           }
+       }
+        scanner.close();
+       }
     }
-}
+
