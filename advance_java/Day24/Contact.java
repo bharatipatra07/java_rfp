@@ -23,23 +23,9 @@ class Contact {
         this.email = email;
     }
 
-    public String getFirstName(){return firstName;}
-    public String getLastName(){return lastName;}
-
-    //DUPLICATE LOGIC
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Contact)) return false;
-        Contact other = (Contact) obj;
-        return firstName.equalsIgnoreCase(other.firstName)
-                && lastName.equalsIgnoreCase(other.lastName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
-    }
+    public String getCity() { return city; }
+    public String getState() { return state; }
+    public String getZip() { return zip; }
 
     @Override
     public String toString() {
