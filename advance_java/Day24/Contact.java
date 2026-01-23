@@ -1,6 +1,6 @@
 package Day24;
 
-public class Contact {
+class Contact {
 
     private String firstName;
     private String lastName;
@@ -8,12 +8,12 @@ public class Contact {
     private String city;
     private String state;
     private String zip;
-    private String phoneNumber;
+    private String phone;
     private String email;
 
     public Contact(String firstName, String lastName, String address,
                    String city, String state, String zip,
-                   String phoneNumber, String email) {
+                   String phone, String email) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,7 +21,7 @@ public class Contact {
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.email = email;
     }
 
@@ -29,8 +29,21 @@ public class Contact {
         return firstName;
     }
 
+    public void update(Contact newData) {
+        this.address = newData.address;
+        this.city = newData.city;
+        this.state = newData.state;
+        this.zip = newData.zip;
+        this.phone = newData.phone;
+        this.email = newData.email;
+    }
+
     @Override
     public String toString() {
-        return firstName + " " + lastName + ", " + city + ", " + state;
+        return firstName + " " + lastName +
+                ", " + city +
+                ", " + state +
+                ", " + phone +
+                ", " + email;
     }
 }
