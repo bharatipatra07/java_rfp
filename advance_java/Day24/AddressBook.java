@@ -20,7 +20,9 @@ class AddressBook {
     public boolean isDuplicate(Contact contact) {
         return contacts.stream().anyMatch(c -> c.equals(contact));
     }
-
+    public List<Contact> getContacts() {
+        return contacts;
+    }
     public void showContacts() {
         if (contacts.isEmpty()) {
             System.out.println("Address Book is empty.");
