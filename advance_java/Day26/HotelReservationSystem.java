@@ -11,7 +11,7 @@ public class HotelReservationSystem {
     private static final Pattern DATE_PATTERN =
             Pattern.compile("\\d{2}[A-Za-z]{3}\\d{4}");
 
-    private static final DateTimeFormatter FORMATTER =
+    private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("ddMMMyyyy");
 
     private final List<Hotel> hotels;
@@ -45,7 +45,7 @@ public class HotelReservationSystem {
 
     private int calculateTotalCost(
             Hotel hotel,
-            CustomerType type,
+            CustomerType customerType,
             List<LocalDate> dates) {
 
         return dates.stream()
@@ -53,7 +53,8 @@ public class HotelReservationSystem {
                     boolean isWeekend =
                             date.getDayOfWeek() == DayOfWeek.SATURDAY ||
                                     date.getDayOfWeek() == DayOfWeek.SUNDAY;
-                    return hotel.getRate(type, isWeekend);
+
+                    return hotel.getRate(customerType, isWeekend);
                 })
                 .sum();
     }
@@ -79,10 +80,11 @@ public class HotelReservationSystem {
                                 "Invalid date format: " + date);
                     }
                 })
-                .map(date -> LocalDate.parse(date, FORMATTER))
+                .map(date -> LocalDate.parse(date, DATE_FORMATTER))
                 .toList();
     }
 
+    // Helper class
     private static class HotelCost {
         private final Hotel hotel;
         private final int totalCost;

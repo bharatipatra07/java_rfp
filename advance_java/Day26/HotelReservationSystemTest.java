@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class HotelReservationSystemTest {
 
     @Test
-    void givenRewardCustomer_whenFindingCheapestBestRatedHotel_thenReturnRidgewood() {
+    void givenRegularCustomer_whenFindingCheapestBestRatedHotel_thenReturnBridgewood() {
 
         List<Hotel> hotels = List.of(
                 new Hotel("Lakewood", 3, 110, 90, 80, 80),
@@ -21,12 +21,12 @@ class HotelReservationSystemTest {
                 new HotelReservationSystem(hotels);
 
         String result = system.findCheapestBestRatedHotel(
-                "REWARD",
+                "REGULAR",
                 List.of("11Sep2020", "12Sep2020")
         );
 
         assertEquals(
-                "Ridgewood, Rating: 5 and Total Rates: $140",
+                "Bridgewood, Rating: 4 and Total Rates: $200",
                 result);
     }
 }
