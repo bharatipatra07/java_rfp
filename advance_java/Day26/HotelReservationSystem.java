@@ -11,5 +11,19 @@ public class HotelReservationSystem {
     public void addHotel(Hotel hotel) {
         hotels.add(hotel);
     }
+    // UC6: cheapest + best rated hotel
+    public String findCheapestBestRatedHotelOutput(List<LocalDate> dates) {
 
+        Hotel bestHotel = hotels.stream()
+                .min(Comparator
+                        .comparingInt((Hotel h) -> h.calculateTotalRate(dates))
+                        .thenComparing(Hotel::getRating, Comparator.reverseOrder()))
+                .orElseThrow(() -> new RuntimeException("No hotels available"));
+
+        int totalRate = bestHotel.calculateTotalRate(dates);
+
+        return bestHotel.getName()
+                + ", Rating: " + bestHotel.getRating()
+                + " and Total Rates: $" + totalRate;
+    }
 }
