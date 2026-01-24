@@ -21,15 +21,8 @@ public class Hotel {
         return name;
     }
 
-    public int calculateTotalRate(List<LocalDate> dates) {
-        return dates.stream()
-                .mapToInt(date -> {
-                    DayOfWeek day = date.getDayOfWeek();
-                    boolean isWeekend =
-                            day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY;
-                    return isWeekend ? weekendRate : weekdayRate;
-                })
-                .sum();
-    }
+   public int getRating(){
+        return rating;
+   }
 
 }
