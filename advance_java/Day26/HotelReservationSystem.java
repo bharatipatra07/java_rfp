@@ -12,12 +12,7 @@ public class HotelReservationSystem {
         hotels.add(hotel);
     }
 
-    // Find cheapest hotel
-    public Hotel findCheapestHotel(CustomerType customerType, List<LocalDate> dates) {
-        return hotels.stream()
-                .min(Comparator
-                        .comparingInt((Hotel h) -> h.calculateTotalCost(customerType, dates))
-                        .thenComparing(Hotel::getRating, Comparator.reverseOrder()))
-                .orElseThrow(() -> new RuntimeException("No hotels available"));
+    public List<Hotel> getHotels() {
+        return hotels;
     }
 }
