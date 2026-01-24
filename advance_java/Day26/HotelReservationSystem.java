@@ -1,29 +1,41 @@
 package Day26;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class HotelReservationSystem {
 
-    private final List<Hotel> hotels = new ArrayList<>();
+    private final List<Hotel> hotels;
 
-    public void addHotel(Hotel hotel) {
-        hotels.add(hotel);
+    public HotelReservationSystem(List<Hotel> hotels) {
+        this.hotels = hotels;
     }
-    // UC6: cheapest + best rated hotel
-    public String findCheapestBestRatedHotelOutput(List<LocalDate> dates) {
 
-        Hotel bestHotel = hotels.stream()
-                .min(Comparator
-                        .comparingInt((Hotel h) -> h.calculateTotalRate(dates))
-                        .thenComparing(Hotel::getRating, Comparator.reverseOrder()))
-                .orElseThrow(() -> new RuntimeException("No hotels available"));
+    // UC7: Best rated hotel + total cost
+    public String findBestRatedHotelWithTotalCost(List<LocalDate> dates) {
 
-        int totalRate = bestHotel.calculateTotalRate(dates);
+        Hotel bestRatedHotel = hotels.stream()
+                .max(Comparator.comparingInt(Hotel::getRating))
+                .orElseThrow();
 
-        return bestHotel.getName()
-                + ", Rating: " + bestHotel.getRating()
-                + " and Total Rates: $" + totalRate;
+        int totalCost = calculateTotalCost(bestRatedHotel, dates);
+
+        return bestRatedHotel.getName()
+                + " & Total Rates $" + totalCost;
+    }
+
+    private int calculateTotalCost(Hotel hotel, List<LocalDate> dates) {
+        int total = 0;
+
+        for (LocalDate date : dates) {
+            DayOfWeek day = date.getDayOfWeek();
+            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+                total += hotel.getWeekendRate();
+            } else {
+                total += hotel.getWeekdayRate();
+            }
+        }
+        return total;
     }
 }
