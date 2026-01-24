@@ -10,23 +10,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class HotelReservationSystemTest {
 
     @Test
-    void givenDateRange_whenFindingBestRatedHotel_thenReturnRidgewoodWithTotalRates() {
+    void givenRewardCustomer_whenCalculatingCost_thenApplyRewardRates() {
 
-        List<Hotel> hotels = List.of(
-                new Hotel("Lakewood", 3, 110, 90),
-                new Hotel("Bridgewood", 4, 150, 50),
-                new Hotel("Ridgewood", 5, 220, 150)
+        Hotel ridgewood = new Hotel(
+                "Ridgewood", 5,
+                220, 150,
+                100, 40
         );
 
-        HotelReservationSystem system = new HotelReservationSystem(hotels);
+        HotelReservationSystem system =
+                new HotelReservationSystem(List.of(ridgewood));
 
         List<LocalDate> dates = List.of(
-                LocalDate.of(2020, 9, 11),
-                LocalDate.of(2020, 9, 12)
+                LocalDate.of(2020, 9, 11), // Friday
+                LocalDate.of(2020, 9, 12)  // Saturday
         );
 
-        String output = system.findBestRatedHotelWithTotalCost(dates);
+        int totalCost = system.calculateTotalCost(
+                ridgewood,
+                dates,
+                CustomerType.REWARD
+        );
 
-        assertEquals("Ridgewood & Total Rates $370", output);
+        assertEquals(140, totalCost);
     }
 }

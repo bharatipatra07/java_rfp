@@ -1,7 +1,6 @@
 package Day26;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 public class HotelReservationSystem {
@@ -12,29 +11,18 @@ public class HotelReservationSystem {
         this.hotels = hotels;
     }
 
-    // UC7: Best rated hotel + total cost
-    public String findBestRatedHotelWithTotalCost(List<LocalDate> dates) {
+    public int calculateTotalCost(Hotel hotel,
+                                  List<LocalDate> dates,
+                                  CustomerType customerType) {
 
-        Hotel bestRatedHotel = hotels.stream()
-                .max(Comparator.comparingInt(Hotel::getRating))
-                .orElseThrow();
-
-        int totalCost = calculateTotalCost(bestRatedHotel, dates);
-
-        return bestRatedHotel.getName()
-                + " & Total Rates $" + totalCost;
-    }
-
-    private int calculateTotalCost(Hotel hotel, List<LocalDate> dates) {
         int total = 0;
 
         for (LocalDate date : dates) {
-            DayOfWeek day = date.getDayOfWeek();
-            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
-                total += hotel.getWeekendRate();
-            } else {
-                total += hotel.getWeekdayRate();
-            }
+            boolean isWeekend =
+                    date.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                            date.getDayOfWeek() == DayOfWeek.SUNDAY;
+
+            total += hotel.getRate(customerType, isWeekend);
         }
         return total;
     }

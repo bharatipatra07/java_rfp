@@ -24,12 +24,12 @@ public class Hotel {
    public int getRating(){
         return rating;
    }
-    public int getWeekdayRate() {
-        return weekdayRate;
-    }
+    public int getRate(CustomerType customerType, boolean isWeekend) {
 
-    public int getWeekendRate() {
-        return weekendRate;
+        if (customerType == CustomerType.REWARD) {
+            return isWeekend ? rewardWeekendRate : rewardWeekdayRate;
+        }
+        return isWeekend ? regularWeekendRate : regularWeekdayRate;
     }
 
 }
