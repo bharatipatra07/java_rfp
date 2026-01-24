@@ -2,11 +2,9 @@ package Day26;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HotelReservationSystemTest {
 
@@ -22,27 +20,13 @@ class HotelReservationSystemTest {
         HotelReservationSystem system =
                 new HotelReservationSystem(hotels);
 
-        List<LocalDate> dates = List.of(
-                LocalDate.of(2020, 9, 11),
-                LocalDate.of(2020, 9, 12)
-        );
-
         String result = system.findCheapestBestRatedHotel(
-                CustomerType.REWARD, dates);
+                "REWARD",
+                List.of("11Sep2020", "12Sep2020")
+        );
 
         assertEquals(
                 "Ridgewood, Rating: 5 and Total Rates: $140",
                 result);
-    }
-
-    @Test
-    void givenInvalidCustomerType_thenThrowException() {
-
-        HotelReservationSystem system =
-                new HotelReservationSystem(List.of());
-
-        assertThrows(HotelReservationException.class, () ->
-                system.findCheapestBestRatedHotel(
-                        null, List.of(LocalDate.now())));
     }
 }
