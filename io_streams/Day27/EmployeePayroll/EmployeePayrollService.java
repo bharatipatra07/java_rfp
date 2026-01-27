@@ -1,33 +1,97 @@
-package Demo.EmployeePayroll;
+package EmployeePayroll;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 
 public class EmployeePayrollService {
-    private List<EmployeePayrollData> employeePayrollDataList;
-    public EmployeePayrollService(){}
-    public EmployeePayrollService(List<EmployeePayrollData> employeePayrollList){
-        this.employeePayrollDataList=employeePayrollList;
-    }
-    public static void main(String args[]){
-        List<EmployeePayrollData> employeePayrollDataList=new ArrayList<>();
-        EmployeePayrollService employeePayrollService=new EmployeePayrollService(employeePayrollDataList);
-        Scanner consoleInputReader=new Scanner(System.in);
-        employeePayrollService.readEmployeePayrollData(consoleInputReader);
-        employeePayrollService.writeEmployeePayrollData();
+
+    public static void main(String[] args) {
+        EmployeePayrollService service = new EmployeePayrollService();
+
+        service.checkFileExists();
+        service.deleteFileAndVerify();
+        service.createDirectory();
+        service.createEmptyFile();
+        service.listFilesAndDirectories();
+        service.listFilesWithExtension(EmployeePayrollData.FILE_EXTENSION);
     }
 
-    private void readEmployeePayrollData(Scanner sc){
-        System.out.println("Enter employee id:");
-        int id=sc.nextInt();
-        System.out.println("Enter employee name");
-        String name=sc.next();
-        System.out.println("Enter employee salary");
-        double salary=sc.nextDouble();
-        employeePayrollDataList.add(new EmployeePayrollData(id,name,salary));
+    // 1.Check File Exists
+    public void checkFileExists() {
+        File file = new File(
+                EmployeePayrollData.BASE_DIRECTORY,
+                EmployeePayrollData.EMPTY_FILE_NAME
+        );
+        System.out.println("File exists: " + file.exists());
     }
-    private void writeEmployeePayrollData(){
-        System.out.println("\n Employee Payroll data to console \n"+employeePayrollDataList);
+
+    // 2.Delete File and Check Not Exists
+    public void deleteFileAndVerify() {
+        File file = new File(EmployeePayrollData.EMPTY_FILE_NAME);
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            System.out.println("File deleted: " + deleted);
+        }
+        System.out.println("File exists after delete: " + file.exists());
+    }
+
+    // 3.Create Directory
+    public void createDirectory() {
+        File directory = new File(EmployeePayrollData.BASE_DIRECTORY);
+        if (!directory.exists()) {
+            boolean created = directory.mkdir();
+            System.out.println("Directory created: " + created);
+        } else {
+            System.out.println("Directory already exists");
+        }
+    }
+
+    // 4.Create Empty File
+    public void createEmptyFile() {
+        File file = new File(
+                EmployeePayrollData.BASE_DIRECTORY,
+                EmployeePayrollData.EMPTY_FILE_NAME
+        );
+
+        try {
+            if (file.createNewFile()) {
+                System.out.println("Empty file created");
+            } else {
+                System.out.println("File already exists");
+            }
+        } catch (IOException e) {
+            System.out.println("Error creating file: " + e.getMessage());
+        }
+    }
+
+    // 5.List Files and Directories
+    public void listFilesAndDirectories() {
+        File directory = new File(EmployeePayrollData.BASE_DIRECTORY);
+        File[] files = directory.listFiles();
+
+        System.out.println("\nListing files and directories:");
+        if (files != null) {
+            for (File file : files) {
+                System.out.println(
+                        (file.isDirectory() ? "[DIR] " : "[FILE] ")
+                                + file.getName()
+                );
+            }
+        }
+    }
+
+    // 6.List Files with Specific Extension
+    public void listFilesWithExtension(String extension) {
+        File directory = new File(EmployeePayrollData.BASE_DIRECTORY);
+        File[] files = directory.listFiles();
+
+        System.out.println("\nFiles with extension " + extension + ":");
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && file.getName().endsWith(extension)) {
+                    System.out.println(file.getName());
+                }
+            }
+        }
     }
 }
