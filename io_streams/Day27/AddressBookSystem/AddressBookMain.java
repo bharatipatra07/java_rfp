@@ -12,9 +12,6 @@ public class AddressBookMain {
         System.out.println("Enter Last Name:");
         String lastName = scanner.nextLine();
 
-        System.out.println("Enter Address:");
-        String address = scanner.nextLine();
-
         System.out.println("Enter City:");
         String city = scanner.nextLine();
 
@@ -31,7 +28,7 @@ public class AddressBookMain {
         String email = scanner.nextLine();
 
         Contact contact = new Contact(
-                firstName, lastName, address,
+                firstName, lastName,
                 city, state, zip, phone, email
         );
 

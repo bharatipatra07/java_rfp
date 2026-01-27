@@ -2,7 +2,6 @@ package Day27.AddressBookSystem
 public class Contact {
     private String firstName;
     private String lastName;
-    private String address;
     private String city;
     private String state;
     private String zip;
@@ -14,7 +13,6 @@ public class Contact {
                    String phoneNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
@@ -24,10 +22,6 @@ public class Contact {
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public void setCity(String city) {
