@@ -1,48 +1,40 @@
 package EmployeePayroll;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class EmployeePayrollService {
 
     public static void main(String[] args) {
         EmployeePayrollService service = new EmployeePayrollService();
-
-        List<EmployeePayrollData> employees = service.getTestEmployees();
-        service.writeEmployeePayrollToFile(employees);
+        service.printEmployeePayrolls();
         service.countEntriesInFile();
     }
 
-    private List<EmployeePayrollData> getTestEmployees() {
-        List<EmployeePayrollData> employees = new ArrayList<>();
-        employees.add(new EmployeePayrollData(1, "Amit", 50000));
-        employees.add(new EmployeePayrollData(2, "Ravi", 60000));
-        employees.add(new EmployeePayrollData(3, "Neha", 70000));
-        return employees;
-    }
-
-    // Write employee payroll to file using File IO
-    private void writeEmployeePayrollToFile(List<EmployeePayrollData> employees) {
-        createDirectoryIfNotExists();
-
+    // UC5: Print employee payrolls using File IO
+    private void printEmployeePayrolls() {
         File file = new File(
                 EmployeePayrollData.DIRECTORY,
                 EmployeePayrollData.FILE_NAME
         );
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for (EmployeePayrollData employee : employees) {
-                writer.write(employee.toFileString());
-                writer.newLine();
+        System.out.println("Employee Payrolls:");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                EmployeePayrollData employee =
+                        EmployeePayrollData.fromFileString(line);
+                System.out.println(employee);
             }
-            System.out.println("Employee payroll written to file");
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println("Error reading payroll file: " + e.getMessage());
         }
     }
 
-    // Count number of entries in file
+    // UC5: Count number of entries in file
     private void countEntriesInFile() {
         File file = new File(
                 EmployeePayrollData.DIRECTORY,
@@ -55,17 +47,9 @@ public class EmployeePayrollService {
             while (reader.readLine() != null) {
                 count++;
             }
-            System.out.println("Number of entries in file: " + count);
+            System.out.println("\nNumber of entries in file: " + count);
         } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-    }
-
-    // Create directory if not exists
-    private void createDirectoryIfNotExists() {
-        File directory = new File(EmployeePayrollData.DIRECTORY);
-        if (!directory.exists()) {
-            directory.mkdir();
+            System.out.println("Error counting entries: " + e.getMessage());
         }
     }
 }

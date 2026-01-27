@@ -15,7 +15,18 @@ public class EmployeePayrollData {
         this.salary = salary;
     }
 
-    public String toFileString() {
-        return id + "," + name + "," + salary;
+    public static EmployeePayrollData fromFileString(String line) {
+        String[] data = line.split(",");
+        int id = Integer.parseInt(data[0]);
+        String name = data[1];
+        double salary = Double.parseDouble(data[2]);
+        return new EmployeePayrollData(id, name, salary);
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeePayroll{id=" + id +
+                ", name='" + name + '\'' +
+                ", salary=" + salary + '}';
     }
 }
