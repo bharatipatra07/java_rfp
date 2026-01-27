@@ -4,30 +4,39 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeePayrollService {
 
     public static void main(String[] args) {
         EmployeePayrollService service = new EmployeePayrollService();
-        service.showNumberOfEntries();
+        List<EmployeePayrollData> employees = service.readEmployeePayrollFile();
+
+        System.out.println("Employee Payroll Data Loaded:");
+        employees.forEach(System.out::println);
     }
 
-    // UC6: Show number of entries in payroll file
-    private void showNumberOfEntries() {
+    // UC7: Read payroll file using File IO
+    private List<EmployeePayrollData> readEmployeePayrollFile() {
+        List<EmployeePayrollData> employeeList = new ArrayList<>();
+
         File file = new File(
                 EmployeePayrollData.DIRECTORY,
                 EmployeePayrollData.FILE_NAME
         );
 
-        int entryCount = 0;
-
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            while (reader.readLine() != null) {
-                entryCount++;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                EmployeePayrollData employee =
+                        EmployeePayrollData.fromFileString(line);
+                employeeList.add(employee);
             }
-            System.out.println("Number of employee entries: " + entryCount);
         } catch (IOException e) {
             System.out.println("Error reading payroll file: " + e.getMessage());
         }
+
+        return employeeList;
     }
 }
