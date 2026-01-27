@@ -1,97 +1,77 @@
 package EmployeePayroll;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.*;
+
+import static java.nio.file.StandardWatchEventKinds.*;
 
 public class EmployeePayrollService {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         EmployeePayrollService service = new EmployeePayrollService();
 
-        service.checkFileExists();
-        service.deleteFileAndVerify();
-        service.createDirectory();
-        service.createEmptyFile();
-        service.listFilesAndDirectories();
-        service.listFilesWithExtension(EmployeePayrollData.FILE_EXTENSION);
+        service.watchDirectory(EmployeePayrollData.WATCH_DIRECTORY);
+        service.countFileEntries();
     }
 
-    // 1.Check File Exists
-    public void checkFileExists() {
-        File file = new File(
-                EmployeePayrollData.BASE_DIRECTORY,
-                EmployeePayrollData.EMPTY_FILE_NAME
-        );
-        System.out.println("File exists: " + file.exists());
-    }
+    // UC3: Watch Directory (including files & sub-directories)
+    public void watchDirectory(String dirPath) throws IOException, InterruptedException {
+        WatchService watchService = FileSystems.getDefault().newWatchService();
+        Path path = Paths.get(dirPath);
 
-    // 2.Delete File and Check Not Exists
-    public void deleteFileAndVerify() {
-        File file = new File(EmployeePayrollData.EMPTY_FILE_NAME);
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            System.out.println("File deleted: " + deleted);
-        }
-        System.out.println("File exists after delete: " + file.exists());
-    }
+        registerAll(path, watchService);
 
-    // 3.Create Directory
-    public void createDirectory() {
-        File directory = new File(EmployeePayrollData.BASE_DIRECTORY);
-        if (!directory.exists()) {
-            boolean created = directory.mkdir();
-            System.out.println("Directory created: " + created);
-        } else {
-            System.out.println("Directory already exists");
-        }
-    }
+        System.out.println("Watching directory: " + path.toAbsolutePath());
 
-    // 4.Create Empty File
-    public void createEmptyFile() {
-        File file = new File(
-                EmployeePayrollData.BASE_DIRECTORY,
-                EmployeePayrollData.EMPTY_FILE_NAME
-        );
+        while (true) {
+            WatchKey key = watchService.take();
 
-        try {
-            if (file.createNewFile()) {
-                System.out.println("Empty file created");
-            } else {
-                System.out.println("File already exists");
+            for (WatchEvent<?> event : key.pollEvents()) {
+                WatchEvent.Kind<?> kind = event.kind();
+                Path changed = (Path) event.context();
+
+                System.out.println(kind.name() + ": " + changed);
             }
+
+            boolean valid = key.reset();
+            if (!valid) {
+                break;
+            }
+        }
+    }
+
+    // Register directory and sub-directories
+    private void registerAll(Path start, WatchService watchService) throws IOException {
+        Files.walk(start)
+                .filter(Files::isDirectory)
+                .forEach(dir -> {
+                    try {
+                        dir.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+                    } catch (IOException e) {
+                        System.out.println("Error registering directory: " + dir);
+                    }
+                });
+    }
+
+    // UC3: Count number of entries in file
+    public void countFileEntries() {
+        File file = new File(
+                EmployeePayrollData.WATCH_DIRECTORY,
+                EmployeePayrollData.FILE_TO_COUNT
+        );
+
+        int count = 0;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            while (reader.readLine() != null) {
+                count++;
+            }
+            System.out.println("Number of entries in file: " + count);
         } catch (IOException e) {
-            System.out.println("Error creating file: " + e.getMessage());
-        }
-    }
-
-    // 5.List Files and Directories
-    public void listFilesAndDirectories() {
-        File directory = new File(EmployeePayrollData.BASE_DIRECTORY);
-        File[] files = directory.listFiles();
-
-        System.out.println("\nListing files and directories:");
-        if (files != null) {
-            for (File file : files) {
-                System.out.println(
-                        (file.isDirectory() ? "[DIR] " : "[FILE] ")
-                                + file.getName()
-                );
-            }
-        }
-    }
-
-    // 6.List Files with Specific Extension
-    public void listFilesWithExtension(String extension) {
-        File directory = new File(EmployeePayrollData.BASE_DIRECTORY);
-        File[] files = directory.listFiles();
-
-        System.out.println("\nFiles with extension " + extension + ":");
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && file.getName().endsWith(extension)) {
-                    System.out.println(file.getName());
-                }
-            }
+            System.out.println("Error reading file: " + e.getMessage());
         }
     }
 }
