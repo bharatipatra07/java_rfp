@@ -12,6 +12,9 @@ public class AddressBookMain {
         System.out.println("Enter Last Name:");
         String lastName = scanner.nextLine();
 
+        System.out.println("Enter Address:");
+        String address=scanner.nextLine();
+
         System.out.println("Enter City:");
         String city = scanner.nextLine();
 
@@ -28,11 +31,54 @@ public class AddressBookMain {
         String email = scanner.nextLine();
 
         Contact contact = new Contact(
-                firstName, lastName,
+                firstName, lastName,address
                 city, state, zip, phone, email
         );
 
         addressBook.addContact(contact);
         System.out.println("Contact Added Successfully");
+        // ---- Update Contact ----
+        System.out.println("Enter First Name to Update:");
+        String nameToUpdate = scanner.nextLine();
+
+        // VALIDATION FIRST
+        if (!addressBook.isFirstNamePresent(nameToUpdate)) {
+            System.out.println("Invalid first name");
+            scanner.close();
+            return;
+        }
+
+        // ---- Ask new details ONLY if valid ----
+        System.out.println("Enter New Address:");
+        String newAddress = scanner.nextLine();
+
+        System.out.println("Enter New City:");
+        String newCity = scanner.nextLine();
+
+        System.out.println("Enter New State:");
+        String newState = scanner.nextLine();
+
+        System.out.println("Enter New Zip:");
+        String newZip = scanner.nextLine();
+
+        System.out.println("Enter New Phone:");
+        String newPhone = scanner.nextLine();
+
+        System.out.println("Enter New Email:");
+        String newEmail = scanner.nextLine();
+
+        Contact updatedContact = new Contact(
+                nameToUpdate, "", newAddress,
+                newCity, newState, newZip,
+                newPhone, newEmail
+        );
+
+        addressBook.updateContact(nameToUpdate, updatedContact);
+
+        // ---- Display ----
+        System.out.println("Address Book:");
+        addressBook.showContacts();
+
+        scanner.close();
     }
 }
