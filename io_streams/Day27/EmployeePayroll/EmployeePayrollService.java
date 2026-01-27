@@ -9,47 +9,25 @@ public class EmployeePayrollService {
 
     public static void main(String[] args) {
         EmployeePayrollService service = new EmployeePayrollService();
-        service.printEmployeePayrolls();
-        service.countEntriesInFile();
+        service.showNumberOfEntries();
     }
 
-    // UC5: Print employee payrolls using File IO
-    private void printEmployeePayrolls() {
+    // UC6: Show number of entries in payroll file
+    private void showNumberOfEntries() {
         File file = new File(
                 EmployeePayrollData.DIRECTORY,
                 EmployeePayrollData.FILE_NAME
         );
 
-        System.out.println("Employee Payrolls:");
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                EmployeePayrollData employee =
-                        EmployeePayrollData.fromFileString(line);
-                System.out.println(employee);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading payroll file: " + e.getMessage());
-        }
-    }
-
-    // UC5: Count number of entries in file
-    private void countEntriesInFile() {
-        File file = new File(
-                EmployeePayrollData.DIRECTORY,
-                EmployeePayrollData.FILE_NAME
-        );
-
-        int count = 0;
+        int entryCount = 0;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while (reader.readLine() != null) {
-                count++;
+                entryCount++;
             }
-            System.out.println("\nNumber of entries in file: " + count);
+            System.out.println("Number of employee entries: " + entryCount);
         } catch (IOException e) {
-            System.out.println("Error counting entries: " + e.getMessage());
+            System.out.println("Error reading payroll file: " + e.getMessage());
         }
     }
 }
