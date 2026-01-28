@@ -1,27 +1,30 @@
 package AddressBookSystem;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddressBook {
     private List<Contact> contacts = new ArrayList<>();
 
     public void addContact(Contact contact) {
-        contacts.add(contact);
-    }
-    // ✔ validation FIRST
-    public boolean isFirstNamePresent(String firstName) {
-        for (Contact c : contacts) {
-            if (c.getFirstName().equalsIgnoreCase(firstName)) {
-                return true;
-            }
+        if (isDuplicate(contact)) {
+            System.out.println("Duplicate entry! Contact already exists.");
+        } else {
+            contacts.add(contact);
+            System.out.println("Contact added successfully.");
         }
-        return false;
+    }
+
+    // New method to check duplicate
+    public boolean isDuplicate(Contact contact) {
+        return contacts.stream().anyMatch(c -> c.equals(contact));
     }
 
     public void showContacts() {
-        for (Contact c : contacts) {
-            System.out.println(c);
+        if (contacts.isEmpty()) {
+            System.out.println("Address Book is empty.");
+            return;
         }
+        contacts.forEach(System.out::println);
     }
 }

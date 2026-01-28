@@ -10,7 +10,7 @@ public class AddressBookMain {
         boolean systemRunning = true;
         while (systemRunning) {
 
-            System.out.println("\n--- Address Book System Menu ---");
+            System.out.println("--- Address Book System Menu ---");
             System.out.println("1. Create New Address Book");
             System.out.println("2. Add Contact to Address Book");
             System.out.println("3. Show Contacts of Address Book");
@@ -31,7 +31,6 @@ public class AddressBookMain {
                         System.out.println("Address Book '" + bookName + "' created successfully.");
                     }
                     break;
-
                 case "2":
                     System.out.print("Enter the Address Book name to add contact: ");
                     String addBookName = scanner.nextLine();
@@ -45,6 +44,16 @@ public class AddressBookMain {
                     String firstName = scanner.nextLine();
                     System.out.print("Enter Last Name: ");
                     String lastName = scanner.nextLine();
+
+                    // Create a temporary contact for duplicate check
+                    Contact tempContact = new Contact(firstName, lastName, "", "", "", "", "", "");
+
+                    if (addBook.isDuplicate(tempContact)) {
+                        System.out.println("Duplicate entry! Contact already exists.");
+                        break; // Skip asking for other details
+                    }
+
+                    // Only ask for other details if contact is not duplicate
                     System.out.print("Enter Address: ");
                     String address = scanner.nextLine();
                     System.out.print("Enter City: ");
@@ -61,6 +70,7 @@ public class AddressBookMain {
                     Contact contact = new Contact(firstName, lastName, address, city, state, zip, phone, email);
                     addBook.addContact(contact);
                     break;
+
 
                 case "3":
                     System.out.print("Enter the Address Book name to view contacts: ");
