@@ -1,4 +1,4 @@
-package Day28;
+package Demo;
 
 class Contact {
 
@@ -23,6 +23,19 @@ class Contact {
         this.zip = zip;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void update(Contact updatedContact) {
+        this.address = updatedContact.address;
+        this.city = updatedContact.city;
+        this.state = updatedContact.state;
+        this.zip = updatedContact.zip;
+        this.phoneNumber = updatedContact.phoneNumber;
+        this.email = updatedContact.email;
     }
 
     @Override
