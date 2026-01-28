@@ -1,5 +1,8 @@
 package AddressBookSystem;
-public class Contact {
+import java.util.Objects;
+
+class Contact {
+
     private String firstName;
     private String lastName;
     private String address;
@@ -14,7 +17,7 @@ public class Contact {
                    String phoneNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address=address;
+        this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
@@ -22,23 +25,38 @@ public class Contact {
         this.email = email;
     }
 
-    // Overriding equals to check duplicate based on firstName + lastName
+    /* Getters for Streams */
+    public String getCity() { return city; }
+    public String getState() { return state; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+
+    /* Duplicate check: First + Last name */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Contact)) return false;
         Contact other = (Contact) obj;
-        return Objects.equals(this.firstName.toLowerCase(), other.firstName.toLowerCase())
-                && Objects.equals(this.lastName.toLowerCase(), other.lastName.toLowerCase());
+        return firstName.equalsIgnoreCase(other.firstName)
+                && lastName.equalsIgnoreCase(other.lastName);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
     }
+
     @Override
     public String toString() {
-        return "Name: " + firstName + " " + lastName + ", Address: " + address + "," +
-                " City: " + city + ", State: " + state + ", Zip: " + zip + ", Phone: " + phoneNumber + ", Email: " + email;
+        return firstName + " " + lastName +
+                ", City: " + city +
+                ", State: " + state +
+                ", Phone: " + phoneNumber +
+                ", Email: " + email;
     }
 }
+
+
+
+
 
