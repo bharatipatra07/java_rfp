@@ -15,122 +15,83 @@ public class AddressBookMain {
 
         while (running) {
 
-            System.out.println("\n--- Address Book System ---");
+            System.out.println("\n--- Address Book Menu ---");
             System.out.println("1. Create Address Book");
             System.out.println("2. Add Contact");
-            System.out.println("3. Show Contacts");
-            System.out.println("4. Search Person by City");
-            System.out.println("5. Search Person by State");
-            System.out.println("6. Exit");
+            System.out.println("3. View Persons by City");
+            System.out.println("4. View Persons by State");
+            System.out.println("5. Exit");
             System.out.print("Choose option: ");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
 
-                /* ================= CREATE BOOK ================= */
                 case "1":
                     System.out.print("Enter Address Book name: ");
-                    String bookName = scanner.nextLine();
-
-                    if (addressBooks.containsKey(bookName)) {
-                        System.out.println("Address Book already exists.");
-                    } else {
-                        addressBooks.put(bookName, new AddressBook());
-                        System.out.println("Address Book created.");
-                    }
+                    String name = scanner.nextLine();
+                    addressBooks.putIfAbsent(name, new AddressBook());
+                    System.out.println("Address Book created.");
                     break;
 
-                /* ================= ADD CONTACT ================= */
                 case "2":
                     System.out.print("Enter Address Book name: ");
-                    String addBookName = scanner.nextLine();
-                    AddressBook addBook = addressBooks.get(addBookName);
-
-                    if (addBook == null) {
-                        System.out.println("Address Book not found.");
-                        break;
-                    }
-
-                    System.out.print("Enter First Name: ");
-                    String firstName = scanner.nextLine();
-                    System.out.print("Enter Last Name: ");
-                    String lastName = scanner.nextLine();
-
-                    Contact temp = new Contact(firstName, lastName,
-                            "", "", "", "", "", "");
-
-                    if (addBook.isDuplicate(temp)) {
-                        System.out.println("Duplicate entry! Contact already exists.");
-                        break;
-                    }
-
-                    System.out.print("Enter Address: ");
-                    String address = scanner.nextLine();
-                    System.out.print("Enter City: ");
-                    String city = scanner.nextLine();
-                    System.out.print("Enter State: ");
-                    String state = scanner.nextLine();
-                    System.out.print("Enter Zip: ");
-                    String zip = scanner.nextLine();
-                    System.out.print("Enter Phone: ");
-                    String phone = scanner.nextLine();
-                    System.out.print("Enter Email: ");
-                    String email = scanner.nextLine();
-
-                    Contact contact = new Contact(firstName, lastName,
-                            address, city, state, zip, phone, email);
-                    addBook.addContact(contact);
-                    break;
-
-                /* ================= SHOW CONTACTS ================= */
-                case "3":
-                    System.out.print("Enter Address Book name: ");
-                    String viewBook = scanner.nextLine();
-                    AddressBook book = addressBooks.get(viewBook);
-
+                    AddressBook book = addressBooks.get(scanner.nextLine());
                     if (book == null) {
                         System.out.println("Address Book not found.");
+                        break;
+                    }
+
+                    System.out.print("First Name: ");
+                    String fn = scanner.nextLine();
+                    System.out.print("Last Name: ");
+                    String ln = scanner.nextLine();
+                    System.out.print("City: ");
+                    String city = scanner.nextLine();
+                    System.out.print("State: ");
+                    String state = scanner.nextLine();
+                    System.out.print("Phone: ");
+                    String phone = scanner.nextLine();
+                    System.out.print("Email: ");
+                    String email = scanner.nextLine();
+
+                    Contact c = new Contact(fn, ln, city, state, phone, email);
+
+                    if (book.isDuplicate(c)) {
+                        System.out.println("Duplicate contact!");
                     } else {
-                        book.showContacts();
+                        book.addContact(c);
+                        System.out.println("Contact added.");
                     }
                     break;
 
-                /* ================= UC-8 SEARCH BY CITY ================= */
+                /* ========== UC-9 VIEW BY CITY ========== */
+                case "3":
+                    Map<String, List<Contact>> cityMap =
+                            addressBooks.values().stream()
+                                    .flatMap(b -> b.getContacts().stream())
+                                    .collect(Collectors.groupingBy(Contact::getCity));
+
+                    cityMap.forEach((k, v) -> {
+                        System.out.println("\nCity: " + k);
+                        v.forEach(System.out::println);
+                    });
+                    break;
+
+                /* ========== UC-9 VIEW BY STATE ========== */
                 case "4":
-                    System.out.print("Enter City: ");
-                    String searchCity = scanner.nextLine();
+                    Map<String, List<Contact>> stateMap =
+                            addressBooks.values().stream()
+                                    .flatMap(b -> b.getContacts().stream())
+                                    .collect(Collectors.groupingBy(Contact::getState));
 
-                    List<Contact> cityResult = addressBooks.values().stream()
-                            .flatMap(b -> b.getContacts().stream())
-                            .filter(c -> c.getCity().equalsIgnoreCase(searchCity))
-                            .collect(Collectors.toList());
-
-                    if (cityResult.isEmpty()) {
-                        System.out.println("No contacts found in city: " + searchCity);
-                    } else {
-                        cityResult.forEach(System.out::println);
-                    }
+                    stateMap.forEach((k, v) -> {
+                        System.out.println("\nState: " + k);
+                        v.forEach(System.out::println);
+                    });
                     break;
 
-                /* ================= UC-8 SEARCH BY STATE ================= */
                 case "5":
-                    System.out.print("Enter State: ");
-                    String searchState = scanner.nextLine();
-
-                    List<Contact> stateResult = addressBooks.values().stream()
-                            .flatMap(b -> b.getContacts().stream())
-                            .filter(c -> c.getState().equalsIgnoreCase(searchState))
-                            .collect(Collectors.toList());
-
-                    if (stateResult.isEmpty()) {
-                        System.out.println("No contacts found in state: " + searchState);
-                    } else {
-                        stateResult.forEach(System.out::println);
-                    }
-                    break;
-
-                case "6":
                     running = false;
                     System.out.println("Exiting...");
                     break;
