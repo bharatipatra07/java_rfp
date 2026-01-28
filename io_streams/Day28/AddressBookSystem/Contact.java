@@ -30,15 +30,13 @@ public class Contact {
 
     @Override
     public String toString() {
-        return firstName + "," + lastName + "," + city + "," +
-                state + "," + zip + "," + phone + "," + email;
-    }
-
-    public static Contact fromString(String line) {
-        String[] data = line.split(",");
-        return new Contact(
-                data[0], data[1], data[2],
-                data[3], data[4], data[5], data[6]
-        );
+        return "Name: " + firstName + " " + lastName +
+                ", Address: " + address +
+                ", City: " + city +
+                ", State: " + state +
+                ", Zip: " + zip +
+                ", Phone: " + phoneNumber +
+                ", Email: " + email;
     }
 }
+
