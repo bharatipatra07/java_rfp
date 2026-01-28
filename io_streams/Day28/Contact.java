@@ -24,23 +24,10 @@ class Contact {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
+    public String getCity() { return city; }
+    public String getState() { return state; }
+    public String getZip() { return zip; }
 
-    /* Duplicate check: First + Last name */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Contact)) return false;
-        Contact other = (Contact) obj;
-        return firstName.equalsIgnoreCase(other.firstName)
-                && lastName.equalsIgnoreCase(other.lastName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
-    }
 
     @Override
     public String toString() {

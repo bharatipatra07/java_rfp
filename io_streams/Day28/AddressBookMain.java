@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class AddressBookMain {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         Map<String, AddressBook> addressBooks = new HashMap<>();
@@ -16,8 +16,10 @@ public class AddressBookMain {
             System.out.println("\n--- Address Book Menu ---");
             System.out.println("1. Create Address Book");
             System.out.println("2. Add Contact");
-            System.out.println("3. Sort Contacts Alphabetically by Name");
-            System.out.println("4. Exit");
+            System.out.println("3. Sort Contacts by City");
+            System.out.println("4. Sort Contacts by State");
+            System.out.println("5. Sort Contacts by Zip");
+            System.out.println("6. Exit");
             System.out.print("Choose option: ");
 
             String choice = scanner.nextLine();
@@ -43,8 +45,6 @@ public class AddressBookMain {
                     String fn = scanner.nextLine();
                     System.out.print("Last Name: ");
                     String ln = scanner.nextLine();
-                    System.out.print("Address: ");
-                    String  address= scanner.nextLine();
                     System.out.print("City: ");
                     String city = scanner.nextLine();
                     System.out.print("State: ");
@@ -56,28 +56,23 @@ public class AddressBookMain {
                     System.out.print("Email: ");
                     String email = scanner.nextLine();
 
-                    Contact c = new Contact(fn, ln,address, city, state,zip, phone, email);
-
-                    if (book.isDuplicate(c)) {
-                        System.out.println("Duplicate contact!");
-                    } else {
-                        book.addContact(c);
-                        System.out.println("Contact added.");
-                    }
+                    book.addContact(new Contact(fn, ln, city, state, zip, phone, email));
+                    System.out.println("Contact added.");
                     break;
 
-                /* ========== SORT OPTION ========== */
                 case "3":
-                    System.out.print("Enter Address Book name: ");
-                    AddressBook sortBook = addressBooks.get(scanner.nextLine());
-                    if (sortBook == null) {
-                        System.out.println("Address Book not found.");
-                    } else {
-                        sortBook.sortContactsByName();
-                    }
+                    getBook(addressBooks, scanner).sortByCity();
                     break;
 
                 case "4":
+                    getBook(addressBooks, scanner).sortByState();
+                    break;
+
+                case "5":
+                    getBook(addressBooks, scanner).sortByZip();
+                    break;
+
+                case "6":
                     running = false;
                     System.out.println("Exiting...");
                     break;
@@ -87,5 +82,15 @@ public class AddressBookMain {
             }
         }
         scanner.close();
+    }
+
+    private static AddressBook getBook(Map<String, AddressBook> books, Scanner sc) {
+        System.out.print("Enter Address Book name: ");
+        AddressBook book = books.get(sc.nextLine());
+        if (book == null) {
+            System.out.println("Address Book not found.");
+            return new AddressBook();
+        }
+        return book;
     }
 }
