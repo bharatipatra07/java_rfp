@@ -22,11 +22,4 @@ class AddressBook {
             return contacts;
         }
 
-    public void showContacts() {
-        if (contacts.isEmpty()) {
-            System.out.println("No contacts found.");
-            return;
-        }
-        contacts.forEach(System.out::println);
-    }
 }
