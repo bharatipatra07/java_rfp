@@ -18,6 +18,9 @@ class AddressBook {
             System.out.println("Contact added successfully.");
 
         }
+        public List<Contact> getContacts() {
+            return contacts;
+        }
 
     public void showContacts() {
         if (contacts.isEmpty()) {
