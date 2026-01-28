@@ -1,4 +1,5 @@
 package Day28;
+import java.util.Object;
 
 class Contact {
 
@@ -14,7 +15,6 @@ class Contact {
     public Contact(String firstName, String lastName, String address,
                    String city, String state, String zip,
                    String phoneNumber, String email) {
-
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -25,17 +25,32 @@ class Contact {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    /* Getters for Streams */
+    public String getCity() { return city; }
+    public String getState() { return state; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+
+    /* Duplicate check: First + Last name */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Contact)) return false;
+        Contact other = (Contact) obj;
+        return firstName.equalsIgnoreCase(other.firstName)
+                && lastName.equalsIgnoreCase(other.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
     }
 
     @Override
     public String toString() {
-        return "Name: " + firstName + " " + lastName +
-                ", Address: " + address +
+        return firstName + " " + lastName +
                 ", City: " + city +
                 ", State: " + state +
-                ", Zip: " + zip +
                 ", Phone: " + phoneNumber +
                 ", Email: " + email;
     }
