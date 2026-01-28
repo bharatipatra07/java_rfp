@@ -1,61 +1,44 @@
 package AddressBookSystem;
-import java.util.Objects;
 
-class Contact {
-
+public class Contact {
     private String firstName;
     private String lastName;
-    private String address;
     private String city;
     private String state;
     private String zip;
-    private String phoneNumber;
+    private String phone;
     private String email;
 
-    public Contact(String firstName, String lastName, String address,
-                   String city, String state, String zip,
-                   String phoneNumber, String email) {
+    public Contact(String firstName, String lastName, String city,
+                   String state, String zip, String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.email = email;
     }
 
-
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
     public String getCity() { return city; }
     public String getState() { return state; }
     public String getZip() { return zip; }
-
-    /* Duplicate check: First + Last name */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Contact)) return false;
-        Contact other = (Contact) obj;
-        return firstName.equalsIgnoreCase(other.firstName)
-                && lastName.equalsIgnoreCase(other.lastName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
-    }
+    public String getPhone() { return phone; }
+    public String getEmail() { return email; }
 
     @Override
     public String toString() {
-        return firstName + " " + lastName +
-                ", City: " + city +
-                ", State: " + state +
-                ", Phone: " + phoneNumber +
-                ", Email: " + email;
+        return firstName + "," + lastName + "," + city + "," +
+                state + "," + zip + "," + phone + "," + email;
+    }
+
+    public static Contact fromString(String line) {
+        String[] data = line.split(",");
+        return new Contact(
+                data[0], data[1], data[2],
+                data[3], data[4], data[5], data[6]
+        );
     }
 }
-
-
-
-
-
