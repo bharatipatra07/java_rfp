@@ -1,60 +1,44 @@
-package Day28;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-class AddressBook {
+public class AddressBook {
 
     private List<Contact> contacts = new ArrayList<>();
-
-    public boolean isDuplicate(Contact contact) {
-        return contacts.stream().anyMatch(c -> c.equals(contact));
-    }
+    private static final String FILE_PATH = "addressbook.txt";
 
     public void addContact(Contact contact) {
-        if (isDuplicate(contact)) {
-            System.out.println("Duplicate entry! Contact already exists.");
-        } else {
-            contacts.add(contact);
-            System.out.println("Contact added successfully.");
+        contacts.add(contact);
+    }
 
+    // UC 13 – Write contacts to file
+    public void writeToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            for (Contact contact : contacts) {
+                writer.write(contact.toString());
+                writer.newLine();
+            }
+            System.out.println("Address Book written to file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-        public List<Contact> getContacts() {
-            return contacts;
+    // UC 13 – Read contacts from file
+    public void readFromFile() {
+        contacts.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                contacts.add(Contact.fromString(line));
+            }
+            System.out.println("Address Book read from file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        /* ========== SORT BY CITY ========== */
-        public void sortByCity() {
-            sortAndPrint(
-                    Comparator.comparing(Contact::getCity, String.CASE_INSENSITIVE_ORDER),
-                    "City"
-            );
-        }
-        /* ========== SORT BY STATE ========== */
-        public void sortByState() {
-            sortAndPrint(
-                    Comparator.comparing(Contact::getState, String.CASE_INSENSITIVE_ORDER),
-                    "State"
-            );
-        }
+    }
 
-        /* ========== SORT BY ZIP ========== */
-        public void sortByZip() {
-            sortAndPrint(
-                    Comparator.comparing(Contact::getZip),
-                    "Zip"
-            );
-        }
-
-        /* ========== COMMON SORT METHOD ========== */
-        private void sortAndPrint(Comparator<Contact> comparator, String sortField) {
-            List<Contact> sorted = contacts.stream()
-                    .sorted(comparator)
-                    .collect(Collectors.toList());
-
-            System.out.println("\nContacts sorted by " + sortField + ":");
-            sorted.forEach(System.out::println);
-        }
+    public void displayContacts() {
+        contacts.forEach(System.out::println);
+    }
 }
