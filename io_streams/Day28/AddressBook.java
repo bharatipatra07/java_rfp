@@ -7,8 +7,19 @@ class AddressBook {
     private List<Contact> contacts = new ArrayList<>();
 
     public void addContact(Contact contact) {
-        contacts.add(contact);
-        System.out.println("Contact added successfully.\n");
+        // Check for duplicates using streams
+        boolean duplicate = contacts.stream()
+                .anyMatch(c -> c.equals(contact));
+        if (duplicate) {
+            System.out.println("Duplicate entry! Contact already exists.");
+        } else {
+            contacts.add(contact);
+            System.out.println("Contact added successfully.");
+        }
+    }
+    // New method to check duplicate
+    public boolean isDuplicate(Contact contact) {
+        return contacts.stream().anyMatch(c -> c.equals(contact));
     }
 
     public void showContacts() {
@@ -16,8 +27,6 @@ class AddressBook {
             System.out.println("Address Book is empty.");
             return;
         }
-        for (Contact c : contacts) {
-            System.out.println(c);
-        }
+        contacts.forEach(System.out::println);
     }
 }
