@@ -1,4 +1,4 @@
-package Day27.AddressBookSystem
+package AddressBookSystem;
 public class Contact {
     private String firstName;
     private String lastName;
@@ -26,14 +26,6 @@ public class Contact {
         return firstName;
     }
 
-    public void update(Contact updated) {
-        this.address = updated.address;
-        this.city = updated.city;
-        this.state = updated.state;
-        this.zip = updated.zip;
-        this.phoneNumber = updated.phoneNumber;
-        this.email = updated.email;
-    }
 
     @Override
     public String toString() {

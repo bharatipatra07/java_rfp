@@ -1,5 +1,6 @@
-package Day27.AddressBookSystem
+package AddressBookSystem;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AddressBook {
@@ -17,14 +18,23 @@ public class AddressBook {
         }
         return false;
     }
-    public void updateContact(String firstName, Contact updatedData) {
-        for (Contact contact : contacts) {
+
+    // DELETE BY NAME
+    public boolean deleteContact(String firstName) {
+
+        Iterator<Contact> iterator = contacts.iterator();
+
+        while (iterator.hasNext()) {
+            Contact contact = iterator.next();
             if (contact.getFirstName().equalsIgnoreCase(firstName)) {
-                contact.update(updatedData);
-                System.out.println("Contact updated successfully.");
-                return;
+                iterator.remove();
+                System.out.println("Contact deleted successfully.");
+                return true;
             }
         }
+
+        System.out.println("Invalid first name");
+        return false;
     }
 
     public void showContacts() {

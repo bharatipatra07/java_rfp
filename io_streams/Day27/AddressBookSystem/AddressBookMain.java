@@ -1,4 +1,4 @@
-package Day27.AddressBookSystem
+package AddressBookSystem;
 import java.util.Scanner;
 
 public class AddressBookMain {
@@ -31,53 +31,31 @@ public class AddressBookMain {
         String email = scanner.nextLine();
 
         Contact contact = new Contact(
-                firstName, lastName,address
+                firstName, lastName,address,
                 city, state, zip, phone, email
         );
 
         addressBook.addContact(contact);
         System.out.println("Contact Added Successfully");
         // ---- Update Contact ----
-        System.out.println("Enter First Name to Update:");
-        String nameToUpdate = scanner.nextLine();
+        System.out.println("Enter First Name to Delete:");
+        String nameToDelete = scanner.nextLine();
 
         // VALIDATION FIRST
-        if (!addressBook.isFirstNamePresent(nameToUpdate)) {
+        if (!addressBook.isFirstNamePresent(nameToDelete)) {
             System.out.println("Invalid first name");
             scanner.close();
             return;
         }
 
-        // ---- Ask new details ONLY if valid ----
-        System.out.println("Enter New Address:");
-        String newAddress = scanner.nextLine();
-
-        System.out.println("Enter New City:");
-        String newCity = scanner.nextLine();
-
-        System.out.println("Enter New State:");
-        String newState = scanner.nextLine();
-
-        System.out.println("Enter New Zip:");
-        String newZip = scanner.nextLine();
-
-        System.out.println("Enter New Phone:");
-        String newPhone = scanner.nextLine();
-
-        System.out.println("Enter New Email:");
-        String newEmail = scanner.nextLine();
-
-        Contact updatedContact = new Contact(
-                nameToUpdate, "", newAddress,
-                newCity, newState, newZip,
-                newPhone, newEmail
-        );
-
-        addressBook.updateContact(nameToUpdate, updatedContact);
+        boolean deleted=addressBook.deleteContact(nameToDelete);
 
         // ---- Display ----
-        System.out.println("Address Book:");
-        addressBook.showContacts();
+        if(deleted) {
+            System.out.println("Address Book Cleared");
+            addressBook.showContacts();
+        }
+
 
         scanner.close();
     }
