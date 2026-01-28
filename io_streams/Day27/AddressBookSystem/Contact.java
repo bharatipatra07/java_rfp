@@ -26,7 +26,6 @@ public class Contact {
         return firstName;
     }
 
-
     @Override
     public String toString() {
         return firstName + " " + lastName + ", " + city + ", " + phoneNumber;
