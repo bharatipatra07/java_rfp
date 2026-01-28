@@ -25,8 +25,10 @@ class Contact {
         this.email = email;
     }
 
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
+
+    public String getCity() { return city; }
+    public String getState() { return state; }
+    public String getZip() { return zip; }
 
     /* Duplicate check: First + Last name */
     @Override
