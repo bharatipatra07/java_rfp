@@ -10,11 +10,8 @@ import java.util.Iterator;
 import java.io.IOException;
 
 public class StateCensusAnalyser {
-
-	public int loadStateCensusData(String csvFilePath)
-	        throws CensusAnalyserException {
-
-	    try {
+	public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
+       try {
 	        Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
 
 	        CsvToBean<CSVStateCensus> csvToBean =
@@ -29,11 +26,11 @@ public class StateCensusAnalyser {
 	        while (iterator.hasNext()) {
 	            CSVStateCensus data = iterator.next();
 
-	            // Delimiter issue → fields not populated
-	            if (data.state == null) {
+	            // Header validation
+	            if (data.state == null || data.state.isEmpty()) {
 	                throw new CensusAnalyserException(
-	                        "Invalid CSV delimiter",
-	                        CensusAnalyserException.ExceptionType.INVALID_DELIMITER
+	                        "Invalid CSV header",
+	                        CensusAnalyserException.ExceptionType.INVALID_HEADER
 	                );
 	            }
 	            count++;
@@ -48,4 +45,5 @@ public class StateCensusAnalyser {
 	    }
 	}
 
-}
+  
+  }

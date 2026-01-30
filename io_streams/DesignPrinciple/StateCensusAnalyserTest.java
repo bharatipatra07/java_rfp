@@ -5,19 +5,20 @@ import org.junit.jupiter.api.Test;
 public class StateCensusAnalyserTest {
 
 	@Test
-	public void givenStateCensusCSVFile_WhenDelimiterIncorrect_ShouldThrowCustomException() {
+	public void givenStateCensusCSVFile_WhenHeaderIncorrect_ShouldThrowCustomException() {
 
 	    StateCensusAnalyser analyser = new StateCensusAnalyser();
 
 	    try {
 	        analyser.loadStateCensusData(
-	                "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndiaStateCensusData.csv");
+	                "src/test/resources/IndiaStateCensusData_WrongHeader.csv");
 	    } catch (CensusAnalyserException e) {
 	        Assertions.assertEquals(
-	                CensusAnalyserException.ExceptionType.INVALID_DELIMITER,
+	                CensusAnalyserException.ExceptionType.INVALID_HEADER,
 	                e.type
 	        );
 	    }
 	}
+
 
 }
