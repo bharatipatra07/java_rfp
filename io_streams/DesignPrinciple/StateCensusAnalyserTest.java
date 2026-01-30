@@ -6,25 +6,27 @@ import org.junit.jupiter.api.Test;
 public class StateCensusAnalyserTest {
 
     /**
-     * TC1.2
-     * Given the State Census CSV file
-     * If incorrect
-     * Then it should return a custom exception
+     * TC1.3
+     * Given the State Code CSV file
+     * When file type is correct but data format is incorrect
+     * Then it should throw INVALID_FILE_FORMAT exception
      */
     @Test
-    public void givenIncorrectCSVFile_WhenLoaded_ShouldThrowCustomException() {
+    public void givenCSVFileWithIncorrectType_WhenLoaded_ShouldThrowInvalidFileFormatException() {
 
         StateCensusAnalyser analyser = new StateCensusAnalyser();
 
-        try {
-            analyser.loadStateCodeData(
-                    "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndianStateCode.txt"
-            );
-        } catch (CensusAnalyserException e) {
-            Assertions.assertEquals(
-                    CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,
-                    e.type
-            );
-        }
+        CensusAnalyserException exception =
+                Assertions.assertThrows(
+                        CensusAnalyserException.class,
+                        () -> analyser.loadStateCodeData(
+                                "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndianStateCode_WrongDelimiter.csv"
+                        )
+                );
+
+        Assertions.assertEquals(
+                CensusAnalyserException.ExceptionType.INVALID_FILE_FORMAT,
+                exception.type
+        );
     }
 }
