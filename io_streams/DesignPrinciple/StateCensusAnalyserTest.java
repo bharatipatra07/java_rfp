@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 public class StateCensusAnalyserTest {
 
     /**
-     * TC1.4
+     * TC1.5
      * Given the State Code CSV file
-     * When delimiter is incorrect
+     * When CSV header is incorrect
      * Then it should throw INVALID_FILE_FORMAT exception
      */
     @Test
-    public void givenCSVFileWithIncorrectDelimiter_WhenLoaded_ShouldThrowInvalidFileFormatException() {
+    public void givenCSVFileWithIncorrectHeader_WhenLoaded_ShouldThrowInvalidFileFormatException() {
 
         StateCensusAnalyser analyser = new StateCensusAnalyser();
 
@@ -20,7 +20,7 @@ public class StateCensusAnalyserTest {
                 Assertions.assertThrows(
                         CensusAnalyserException.class,
                         () -> analyser.loadStateCodeData(
-                                "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndianStateCode_WrongDelimiter.csv"
+                                "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndianStateCode_WrongHeader.csv"
                         )
                 );
 
