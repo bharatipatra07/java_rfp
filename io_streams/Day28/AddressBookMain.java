@@ -2,31 +2,23 @@ package Day28;
 
 import java.util.Scanner;
 
-import com.opencsv.exceptions.CsvValidationException;
-
 public class AddressBookMain {
     public static void main(String[] args) {
+
         AddressBook book = new AddressBook();
-        try {
-			book.readFromCSV();
-		} catch (CsvValidationException e) {
-			e.printStackTrace();
-		}
+        book.readFromJSON(); 
+
         Scanner sc = new Scanner(System.in);
         boolean running = true;
 
         while (running) {
-            System.out.println("\n--- Address Book Menu ---");
-            System.out.println("1. Add Contact");
-            System.out.println("2. Display Contacts");
-            System.out.println("3. Write Contacts to CSV");
-            System.out.println("4. Read Contacts from CSV");
-            System.out.println("5. Exit");
+            System.out.println("\n--- Address Book Menu (JSON) ---");
+            System.out.println("1. Add Contact and write Contacts to JSON");
+            System.out.println("2. Display Contacts from JSON");
+            System.out.println("3. Exit");
             System.out.print("Choose option: ");
 
-            String choice = sc.nextLine();
-
-            switch (choice) {
+            switch (sc.nextLine()) {
                 case "1":
                     System.out.print("First Name: "); String fn = sc.nextLine();
                     System.out.print("Last Name: "); String ln = sc.nextLine();
@@ -38,27 +30,17 @@ public class AddressBookMain {
                     System.out.print("Email: "); String email = sc.nextLine();
 
                     book.addContact(new Contact(fn, ln, addr, city, state, zip, phone, email));
+                    book.writeToJSON();
                     System.out.println("Contact added!");
                     break;
 
+              
                 case "2":
+                    book.readFromJSON();
                     book.displayContacts();
                     break;
 
                 case "3":
-                    book.writeToCSV();
-                    break;
-
-                case "4":
-				try {
-					book.readFromCSV();
-					book.displayContacts();
-				} catch (CsvValidationException e) {
-					e.printStackTrace();
-				}
-                    break;
-
-                case "5":
                     running = false;
                     System.out.println("Exiting...");
                     break;

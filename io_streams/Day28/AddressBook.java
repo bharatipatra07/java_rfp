@@ -1,17 +1,21 @@
 package Day28;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBook {
+
     private List<Contact> contacts = new ArrayList<>();
-    private static final String CSV_FILE = "addressbook.csv";
+    private static final String JSON_FILE = "addressbook.json";
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public void addContact(Contact contact) {
         contacts.add(contact);
@@ -25,42 +29,30 @@ public class AddressBook {
         contacts.forEach(System.out::println);
     }
 
-    // Write contacts to CSV
-    public void writeToCSV() {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(CSV_FILE))) {
-            // Write header
-            writer.writeNext(new String[]{"FirstName","LastName","Address","City","State","Zip","Phone","Email"});
-            // Write rows
-            for (Contact c : contacts) {
-                writer.writeNext(c.toCSVRow());
-            }
-            System.out.println("Contacts written to CSV successfully.");
+    // Write to JSON
+    public void writeToJSON() {
+        try (FileWriter writer = new FileWriter(JSON_FILE)) {
+            gson.toJson(contacts, writer);
+            System.out.println("Contacts written to JSON successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // Read contacts from CSV
-    public void readFromCSV() {
-        contacts.clear();
-        try (CSVReader reader = new CSVReader(new FileReader(CSV_FILE))) {
-            String[] nextLine;
-            boolean firstLine = true;
-            while ((nextLine = reader.readNext()) != null) {
-                if (firstLine) { // skip header
-                    firstLine = false;
-                    continue;
-                }
-                Contact c = new Contact(
-                        nextLine[0], nextLine[1], nextLine[2],
-                        nextLine[3], nextLine[4], nextLine[5],
-                        nextLine[6], nextLine[7]
-                );
-                contacts.add(c);
+    // Read from JSON
+    public void readFromJSON() {
+        try (FileReader reader = new FileReader(JSON_FILE)) {
+            Type listType = new TypeToken<List<Contact>>() {}.getType();
+            List<Contact> data = gson.fromJson(reader, listType);
+
+            if (data != null) {
+                contacts.clear();
+                contacts.addAll(data);
             }
-            System.out.println("Contacts read from CSV successfully.");
+
+            System.out.println("Contacts read from JSON successfully.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("JSON file not found. Starting with empty address book.");
         }
     }
 }

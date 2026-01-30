@@ -1,4 +1,5 @@
 package Day28;
+
 public class Contact {
     private String firstName;
     private String lastName;
@@ -20,10 +21,6 @@ public class Contact {
         this.zip = zip;
         this.phone = phone;
         this.email = email;
-    }
-
-    public String[] toCSVRow() {
-        return new String[] { firstName, lastName, address, city, state, zip, phone, email };
     }
 
     @Override
