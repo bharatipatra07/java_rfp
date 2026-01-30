@@ -1,13 +1,13 @@
 package DesignPrinciple;
+
 public class CensusAnalyserException extends Exception {
 
-	public enum ExceptionType {
-	    CENSUS_FILE_PROBLEM,
-	    INVALID_FILE_FORMAT,
-	    INVALID_DELIMITER,
-	    INVALID_HEADER
-	}
-
+    public enum ExceptionType {
+        CSV_FILE_PROBLEM,
+        INVALID_FILE_FORMAT,
+        INVALID_DELIMITER,
+        INVALID_HEADER
+    }
 
     public ExceptionType type;
 
