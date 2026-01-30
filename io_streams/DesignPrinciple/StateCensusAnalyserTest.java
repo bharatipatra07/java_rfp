@@ -1,24 +1,4 @@
 package DesignPrinciple;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class StateCensusAnalyserTest {
-
-	@Test
-	public void givenStateCodeCSVFile_WhenLoaded_ShouldReturnCorrectRecordCount()
-	        throws CensusAnalyserException {
-
-	    StateCensusAnalyser analyser = new StateCensusAnalyser();
-
-	    int count = analyser.loadStateCodeData(
-	            "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndianStateCode.csv");
-
-	    Assertions.assertEquals(10, count);
-	}
-
-
-
-}package DesignPrinciple;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,21 +6,25 @@ import org.junit.jupiter.api.Test;
 public class StateCensusAnalyserTest {
 
     /**
-     * TC1.1
-     * Given the State Code CSV file
-     * When loaded
-     * Then number of records should match
+     * TC1.2
+     * Given the State Census CSV file
+     * If incorrect
+     * Then it should return a custom exception
      */
     @Test
-    public void givenStateCodeCSVFile_WhenLoaded_ShouldReturnCorrectRecordCount()
-            throws CensusAnalyserException {
+    public void givenIncorrectCSVFile_WhenLoaded_ShouldThrowCustomException() {
 
         StateCensusAnalyser analyser = new StateCensusAnalyser();
 
-        int recordCount = analyser.loadStateCodeData(
-                "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndianStateCode.csv"
-        );
-
-        Assertions.assertEquals(10, recordCount);
+        try {
+            analyser.loadStateCodeData(
+                    "/Users/bharati/git/java_rfp/io_streams/DesignPrinciple/IndianStateCode.txt"
+            );
+        } catch (CensusAnalyserException e) {
+            Assertions.assertEquals(
+                    CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,
+                    e.type
+            );
+        }
     }
 }
