@@ -10,27 +10,28 @@ import java.util.Iterator;
 import java.io.IOException;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
-       try {
+	public int loadStateCodeData(String csvFilePath)
+	        throws CensusAnalyserException {
+
+	    try {
 	        Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
 
-	        CsvToBean<CSVStateCensus> csvToBean =
-	                new CsvToBeanBuilder<CSVStateCensus>(reader)
-	                        .withType(CSVStateCensus.class)
+	        CsvToBean<CSVStates> csvToBean =
+	                new CsvToBeanBuilder<CSVStates>(reader)
+	                        .withType(CSVStates.class)
 	                        .withIgnoreLeadingWhiteSpace(true)
 	                        .build();
 
-	        Iterator<CSVStateCensus> iterator = csvToBean.iterator();
+	        Iterator<CSVStates> iterator = csvToBean.iterator();
 
 	        int count = 0;
 	        while (iterator.hasNext()) {
-	            CSVStateCensus data = iterator.next();
+	            CSVStates data = iterator.next();
 
-	            // Header validation
-	            if (data.state == null || data.state.isEmpty()) {
+	            if (data.stateName == null || data.stateCode == null) {
 	                throw new CensusAnalyserException(
-	                        "Invalid CSV header",
-	                        CensusAnalyserException.ExceptionType.INVALID_HEADER
+	                        "Invalid State Code CSV",
+	                        CensusAnalyserException.ExceptionType.INVALID_FILE_FORMAT
 	                );
 	            }
 	            count++;
@@ -44,6 +45,5 @@ public class StateCensusAnalyser {
 	        );
 	    }
 	}
-
   
   }
