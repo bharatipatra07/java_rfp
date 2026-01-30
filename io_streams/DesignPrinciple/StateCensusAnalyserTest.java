@@ -7,14 +7,15 @@ public class StateCensusAnalyserTest {
     @Test
     public void givenIncorrectCSVFile_WhenLoaded_ShouldThrowCustomException() {
 
+
         StateCensusAnalyser analyser = new StateCensusAnalyser();
 
         try {
-            analyser.loadStateCensusData("wrong/path/IndiaStateCensusData.csv");
+            analyser.loadStateCensusData("/Users/bharati/git/java_rfp/DesignPrinciple/IndiaStateCensusData.csv");
         } catch (CensusAnalyserException e) {
             Assertions.assertEquals(
-                    CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,
-                    e.type
+                CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE,
+                e.type
             );
         }
     }

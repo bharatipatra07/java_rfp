@@ -11,7 +11,16 @@ import java.io.IOException;
 
 public class StateCensusAnalyser {
 
-    public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
+    public int loadStateCensusData(String csvFilePath)
+            throws CensusAnalyserException {
+
+        // FILE TYPE CHECK
+        if (!csvFilePath.endsWith(".csv")) {
+            throw new CensusAnalyserException(
+                    "Invalid file type",
+                    CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE
+            );
+        }
 
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
@@ -33,7 +42,7 @@ public class StateCensusAnalyser {
 
         } catch (IOException e) {
             throw new CensusAnalyserException(
-                    "Incorrect file path",
+                    "File path problem",
                     CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM
             );
         }
