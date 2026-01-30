@@ -6,18 +6,22 @@ import org.junit.jupiter.api.Test;
 public class InvoiceGeneratorTest {
 
     @Test
-    public void givenMultipleRides_ShouldReturnInvoiceSummary() {
+    public void givenNormalRide_ShouldCalculateFare() {
         InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
 
-        Ride[] rides = {
-                new Ride(2.0, 5),   // fare = 25
-                new Ride(0.1, 1)    // fare = 5 (minimum)
-        };
+        Ride ride = new Ride(2.0, 5, RideType.NORMAL);
+        double fare = invoiceGenerator.calculateFare(ride);
 
-        InvoiceSummary summary = invoiceGenerator.calculateInvoiceSummary(rides);
+        Assertions.assertEquals(25, fare);
+    }
 
-        Assertions.assertEquals(2, summary.totalRides);
-        Assertions.assertEquals(30, summary.totalFare);
-        Assertions.assertEquals(15, summary.averageFare);
+    @Test
+    public void givenPremiumRide_ShouldCalculateFare() {
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+
+        Ride ride = new Ride(2.0, 5, RideType.PREMIUM);
+        double fare = invoiceGenerator.calculateFare(ride);
+
+        Assertions.assertEquals(40, fare);
     }
 }
