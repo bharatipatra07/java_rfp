@@ -1,3 +1,8 @@
+SHOW DATABASES;
+CREATE DATABASE payroll_service;
+SHOW DATABASES;
+USE payroll_service;
+select database();
 -- Switch to payroll service database
 USE payroll_service;
 
@@ -9,3 +14,13 @@ CREATE TABLE employee_payroll (
     start_date DATE NOT NULL,
     PRIMARY KEY (id)
 );
+
+-- Insert employee payroll data
+INSERT INTO employee_payroll (name, salary, start_date)
+VALUES
+    ('Bill', 1000000.00, '2018-01-03'),
+    ('Terisa', 2000000.00, '2019-11-13'),
+    ('Charlie', 3000000.00, '2020-05-21');
+
+
+
