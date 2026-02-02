@@ -25,3 +25,15 @@ VALUES
 
 -- Retrieve all employee payroll records
 SELECT * FROM employee_payroll;
+
+
+-- Retrieve salary of a particular employee (Bill)
+SELECT salary
+FROM employee_payroll
+WHERE name = 'Bill';
+
+-- Retrieve employees who joined between a date range
+SELECT *
+FROM employee_payroll
+WHERE start BETWEEN CAST('2018-01-01' AS DATE)
+              AND DATE(NOW());
