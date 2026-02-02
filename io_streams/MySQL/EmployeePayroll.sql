@@ -23,4 +23,5 @@ VALUES
     ('Charlie', 3000000.00, '2020-05-21');
 
 
-
+-- Retrieve all employee payroll records
+SELECT * FROM employee_payroll;
