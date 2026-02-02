@@ -37,3 +37,20 @@ SELECT *
 FROM employee_payroll
 WHERE start BETWEEN CAST('2018-01-01' AS DATE)
               AND DATE(NOW());
+
+              -- Add gender column after name
+ALTER TABLE employee_payroll
+ADD gender CHAR(1) AFTER name;
+
+-- Update gender for male employees
+UPDATE employee_payroll
+SET gender = 'M'
+WHERE id = 1 OR id=3;
+
+-- Update gender for female employee
+UPDATE employee_payroll
+SET gender = 'F'
+WHERE id = 2;
+
+-- View updated table
+SELECT * FROM employee_payroll;
