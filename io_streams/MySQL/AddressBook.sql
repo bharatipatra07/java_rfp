@@ -19,3 +19,12 @@ INSERT INTO address_book
 VALUES
 ('Anita', 'Patel', 'Ring Road', 'Ahmedabad', 'Gujarat', '380001', '9123456789', 'anita.patel@gmail.com'),
 ('Suresh', 'Naik', 'Beach Road', 'Goa', 'Goa', '403001', '9988776655', 'suresh.naik@gmail.com');
+
+-- Update existing contact details
+UPDATE address_book
+SET 
+    phone_number = '9001122334',
+    city = 'Pune',
+    state = 'Maharashtra'
+WHERE first_name = 'Anita'
+  AND last_name = 'Patel';
