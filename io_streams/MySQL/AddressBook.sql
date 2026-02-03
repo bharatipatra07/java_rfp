@@ -1,45 +1,54 @@
--- Use existing Address Book Service database
+-- Create Address Book database
+CREATE DATABASE address_book_service;
+
+-- Show all databases
+SHOW DATABASES;
+
+-- Use the Address Book database
 USE address_book_service;
 
--- Create Address Book table
-CREATE TABLE address_book (
-    id INT NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    address VARCHAR(200) NOT NULL,
-    city VARCHAR(50) NOT NULL,
-    state VARCHAR(50) NOT NULL,
-    zip VARCHAR(10) NOT NULL,
-    phone_number VARCHAR(15) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)
+CREATE TABLE person (
+    person_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    address VARCHAR(200),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    zip VARCHAR(10),
+    phone_number VARCHAR(15),
+    email VARCHAR(100)
 );
-INSERT INTO address_book
-(first_name, last_name, address, city, state, zip, phone_number, email)
+
+CREATE TABLE address_book_type (
+    type_id INT AUTO_INCREMENT PRIMARY KEY,
+    type_name VARCHAR(30) UNIQUE
+);
+
+INSERT INTO address_book_type (type_name)
+VALUES ('Family'), ('Friends'), ('Profession');
+
+CREATE TABLE person_address_book (
+    person_id INT,
+    type_id INT,
+    PRIMARY KEY (person_id, type_id),
+    FOREIGN KEY (person_id) REFERENCES person(person_id),
+    FOREIGN KEY (type_id) REFERENCES address_book_type(type_id)
+);
+
+INSERT INTO person
+(first_name, last_name, city, state, phone_number, email)
 VALUES
-('Amit', 'Kumar', 'MG Road', 'Bangalore', 'Karnataka', '560001', '9876543210', 'amit.kumar@gmail.com'),
-('Riya', 'Sharma', 'Park Street', 'Kolkata', 'West Bengal', '700016', '9123456780', 'riya.sharma@gmail.com');
+('Riya', 'Sharma', 'Bangalore', 'Karnataka', '9876543210', 'riya@gmail.com');
 
--- Add address book name and type columns
-ALTER TABLE address_book
-ADD address_book_name VARCHAR(50) NOT NULL,
-ADD address_book_type VARCHAR(30) NOT NULL;
+-- Add Riya as Family
+INSERT INTO person_address_book (person_id, type_id)
+VALUES (1, 1);
 
-UPDATE address_book
-SET address_book_name = 'Personal',
-    address_book_type = 'Family'
-WHERE first_name = 'Amit'
-  AND last_name = 'Kumar';
+-- Add Riya as Friend
+INSERT INTO person_address_book (person_id, type_id)
+VALUES (1, 2);
 
-UPDATE address_book
-SET address_book_name = 'Office',
-    address_book_type = 'Profession'
-WHERE first_name = 'Riya'
-  AND last_name = 'Sharma';
- 
--- Count number of contacts by address book type
-SELECT address_book_type, COUNT(*) AS contact_count
-FROM address_book
-GROUP BY address_book_type;
-
-
+SELECT p.first_name, p.last_name, t.type_name
+FROM person p
+JOIN person_address_book pa ON p.person_id = pa.person_id
+JOIN address_book_type t ON pa.type_id = t.type_id;
