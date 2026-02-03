@@ -18,16 +18,14 @@ INSERT INTO address_book
 (first_name, last_name, address, city, state, zip, phone_number, email)
 VALUES
 ('Anita', 'Patel', 'Ring Road', 'Ahmedabad', 'Gujarat', '380001', '9123456789', 'anita.patel@gmail.com'),
-('Suresh', 'Naik', 'Beach Road', 'Goa', 'Goa', '403001', '9988776655', 'suresh.naik@gmail.com');
+('Suresh', 'Naik', 'Beach Road', 'Goa', 'Goa', '403001', '9988776655', 'suresh.naik@gmail.com'),
+('Amit', 'Kumar', 'MG Road', 'Bangalore', 'Karnataka', '560001', '9876543210', 'amit.kumar@gmail.com'),
+('Riya', 'Sharma', 'Park Street', 'Kolkata', 'West Bengal', '700016', '9123456780', 'riya.sharma@gmail.com');
 
-
--- Count number of contacts in each city
-SELECT city, COUNT(*) AS contact_count
+-- Sort alphabetically by first name, then last name
+SELECT *
 FROM address_book
-GROUP BY city;
+WHERE city = 'Bangalore'
+ORDER BY first_name ASC, last_name ASC;
 
--- Count number of contacts in each state
-SELECT state, COUNT(*) AS contact_count
-FROM address_book
-GROUP BY state;
 
