@@ -14,3 +14,8 @@ CREATE TABLE address_book (
     email VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
+INSERT INTO address_book
+(first_name, last_name, address, city, state, zip, phone_number, email)
+VALUES
+('Anita', 'Patel', 'Ring Road', 'Ahmedabad', 'Gujarat', '380001', '9123456789', 'anita.patel@gmail.com'),
+('Suresh', 'Naik', 'Beach Road', 'Goa', 'Goa', '403001', '9988776655', 'suresh.naik@gmail.com');
