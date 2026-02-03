@@ -20,10 +20,16 @@ VALUES
 ('Anita', 'Patel', 'Ring Road', 'Ahmedabad', 'Gujarat', '380001', '9123456789', 'anita.patel@gmail.com'),
 ('Suresh', 'Naik', 'Beach Road', 'Goa', 'Goa', '403001', '9988776655', 'suresh.naik@gmail.com');
 
--- Delete a contact from address_book
-DELETE FROM address_book
-WHERE first_name = 'Rahul'
-  AND last_name = 'Verma';
+
+-- Retrieve persons belonging to a specific city
+SELECT *
+FROM address_book
+WHERE city = 'Goa';
+
+-- Retrieve persons belonging to a specific state
+SELECT *
+FROM address_book
+WHERE state = 'Gujarat';
 
 -- View records
 SELECT * FROM address_book;
