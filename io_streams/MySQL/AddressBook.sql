@@ -37,8 +37,9 @@ SET address_book_name = 'Office',
 WHERE first_name = 'Riya'
   AND last_name = 'Sharma';
  
-SELECT * FROM address_book;
-
-
+-- Count number of contacts by address book type
+SELECT address_book_type, COUNT(*) AS contact_count
+FROM address_book
+GROUP BY address_book_type;
 
 
