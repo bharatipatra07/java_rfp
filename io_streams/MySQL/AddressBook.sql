@@ -21,15 +21,13 @@ VALUES
 ('Suresh', 'Naik', 'Beach Road', 'Goa', 'Goa', '403001', '9988776655', 'suresh.naik@gmail.com');
 
 
--- Retrieve persons belonging to a specific city
-SELECT *
+-- Count number of contacts in each city
+SELECT city, COUNT(*) AS contact_count
 FROM address_book
-WHERE city = 'Goa';
+GROUP BY city;
 
--- Retrieve persons belonging to a specific state
-SELECT *
+-- Count number of contacts in each state
+SELECT state, COUNT(*) AS contact_count
 FROM address_book
-WHERE state = 'Gujarat';
+GROUP BY state;
 
--- View records
-SELECT * FROM address_book;
