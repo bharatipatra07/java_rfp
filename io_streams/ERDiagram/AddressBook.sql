@@ -24,3 +24,15 @@ VALUES
 
 SELECT * FROM AddressBook;
 
+-- UC4: Update contact details using first name
+UPDATE AddressBook
+SET
+    PhoneNumber = '9999999999',
+    Email = 'kishor.updated@gmail.com',
+    City = 'Hyderabad'
+WHERE FirstName = 'Kishor';
+
+-- UC5: Delete contact using first name
+DELETE FROM AddressBook
+WHERE FirstName = 'Amit';
+
