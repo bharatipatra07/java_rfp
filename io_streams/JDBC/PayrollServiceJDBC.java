@@ -4,120 +4,88 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class PayrollService {
 
-    // Singleton object
-    private static PayrollService payrollService;
-
-    // Database credentials
     private static final String URL =
             "jdbc:mysql://localhost:3306/payroll_service";
 
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
-    // Cached PreparedStatement
-    private PreparedStatement employeePayrollDataStatement;
-
     /*
-     * Private constructor
-     * Prevent object creation from outside
+     * UC6
+     * Find SUM, AVG, MIN, MAX and COUNT by gender
      */
-    private PayrollService() {
-
-        try {
-
-            // Create DB connection
-            Connection connection =
-                    DriverManager.getConnection(URL, USER, PASSWORD);
-
-            /*
-             * PreparedStatement cached at
-             * Driver + DB + Program level
-             */
-            employeePayrollDataStatement =
-                    connection.prepareStatement(
-                            "SELECT * FROM employee_payroll WHERE name = ?"
-                    );
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-    }
-
-    /*
-     * Singleton method
-     * Only one object created
-     */
-    public static PayrollService getInstance() {
-
-        if (payrollService == null) {
-
-            payrollService = new PayrollService();
-        }
-
-        return payrollService;
-    }
-
-    /*
-     * Retrieve employee payroll data using cached PreparedStatement
-     */
-    public EmployeePayroll getEmployeePayrollData(String name)
+    public void getEmployeeSalaryStatistics()
             throws PayrollException {
 
-        try {
+        // SQL query using aggregate functions
+        String query =
+                "SELECT gender, " +
+                "SUM(salary) AS total_salary, " +
+                "AVG(salary) AS average_salary, " +
+                "MIN(salary) AS minimum_salary, " +
+                "MAX(salary) AS maximum_salary, " +
+                "COUNT(*) AS employee_count " +
+                "FROM employee_payroll " +
+                "GROUP BY gender";
 
-            // Set dynamic value
-            employeePayrollDataStatement.setString(1, name);
+        try (
+                // Create DB connection
+                Connection connection =
+                        DriverManager.getConnection(URL, USER, PASSWORD);
 
-            // Reuse PreparedStatement
+                // Create PreparedStatement
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(query)
+        ) {
+
+            // Execute query
             ResultSet resultSet =
-                    employeePayrollDataStatement.executeQuery();
+                    preparedStatement.executeQuery();
 
-            /*
-             * Reuse ResultSet to populate object
-             */
-            if (resultSet.next()) {
+            // Print statistics
+            while (resultSet.next()) {
 
-                return getEmployeePayrollData(resultSet);
+                System.out.println(
+                        "Gender : " +
+                        resultSet.getString("gender")
+                );
+
+                System.out.println(
+                        "SUM : " +
+                        resultSet.getDouble("total_salary")
+                );
+
+                System.out.println(
+                        "AVG : " +
+                        resultSet.getDouble("average_salary")
+                );
+
+                System.out.println(
+                        "MIN : " +
+                        resultSet.getDouble("minimum_salary")
+                );
+
+                System.out.println(
+                        "MAX : " +
+                        resultSet.getDouble("maximum_salary")
+                );
+
+                System.out.println(
+                        "COUNT : " +
+                        resultSet.getInt("employee_count")
+                );
+
+                System.out.println("-------------------");
             }
 
         } catch (SQLException e) {
 
             throw new PayrollException(
-                    "Unable to retrieve employee payroll data"
+                    "Unable to retrieve employee salary statistics"
             );
         }
-
-        return null;
-    }
-
-    /*
-     * Convert ResultSet -> EmployeePayroll Object
-     */
-    private EmployeePayroll getEmployeePayrollData(ResultSet resultSet)
-            throws SQLException {
-
-        int id = resultSet.getInt("id");
-
-        String name =
-                resultSet.getString("name");
-
-        double salary =
-                resultSet.getDouble("salary");
-
-        LocalDate startDate =
-                resultSet.getDate("start_date").toLocalDate();
-
-        return new EmployeePayroll(
-                id,
-                name,
-                salary,
-                startDate
-        );
     }
 }
-
