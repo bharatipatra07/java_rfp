@@ -4,8 +4,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
-public class PayrollServiceJDBC {
+public class PayrollService {
+
+    // Singleton object
+    private static PayrollService payrollService;
 
     // Database credentials
     private static final String URL =
@@ -14,91 +18,105 @@ public class PayrollServiceJDBC {
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
+    // Cached PreparedStatement
+    private PreparedStatement employeePayrollDataStatement;
+
     /*
-     * UC3
-     * Update employee salary using JDBC PreparedStatement
+     * Private constructor
+     * Prevent object creation from outside
      */
-    public void updateEmployeeSalary(String name, double salary)
-            throws PayrollException {
+    private PayrollService() {
 
-        // SQL query for updating salary
-        String query =
-                "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+        try {
 
-        try (
-                // Establish DB connection
-                Connection connection =
-                        DriverManager.getConnection(URL, USER, PASSWORD);
+            // Create DB connection
+            Connection connection =
+                    DriverManager.getConnection(URL, USER, PASSWORD);
 
-                // Create PreparedStatement
-                PreparedStatement preparedStatement =
-                        connection.prepareStatement(query)
-        ) {
-
-            // Set values dynamically
-            preparedStatement.setDouble(1, salary);
-            preparedStatement.setString(2, name);
-
-            // Execute update query
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            // If no rows updated
-            if (rowsAffected == 0) {
-                throw new PayrollException("Employee not found");
-            }
+            /*
+             * PreparedStatement cached at
+             * Driver + DB + Program level
+             */
+            employeePayrollDataStatement =
+                    connection.prepareStatement(
+                            "SELECT * FROM employee_payroll WHERE name = ?"
+                    );
 
         } catch (SQLException e) {
 
-            // Custom exception handling
-            throw new PayrollException(
-                    "Unable to update employee salary"
-            );
+            e.printStackTrace();
         }
     }
 
     /*
-     * Fetch employee payroll data from database
+     * Singleton method
+     * Only one object created
      */
-    public EmployeePayroll getEmployeePayroll(String name)
+    public static PayrollService getInstance() {
+
+        if (payrollService == null) {
+
+            payrollService = new PayrollService();
+        }
+
+        return payrollService;
+    }
+
+    /*
+     * Retrieve employee payroll data using cached PreparedStatement
+     */
+    public EmployeePayroll getEmployeePayrollData(String name)
             throws PayrollException {
 
-        // SQL query
-        String query =
-                "SELECT * FROM employee_payroll WHERE name = ?";
+        try {
 
-        try (
-                Connection connection =
-                        DriverManager.getConnection(URL, USER, PASSWORD);
+            // Set dynamic value
+            employeePayrollDataStatement.setString(1, name);
 
-                PreparedStatement preparedStatement =
-                        connection.prepareStatement(query)
-        ) {
-
-            // Set employee name
-            preparedStatement.setString(1, name);
-
-            // Execute select query
+            // Reuse PreparedStatement
             ResultSet resultSet =
-                    preparedStatement.executeQuery();
+                    employeePayrollDataStatement.executeQuery();
 
-            // Convert ResultSet -> Object
+            /*
+             * Reuse ResultSet to populate object
+             */
             if (resultSet.next()) {
 
-                return new EmployeePayroll(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getDouble("salary"),
-                        resultSet.getDate("start_date").toLocalDate()
-                );
+                return getEmployeePayrollData(resultSet);
             }
 
         } catch (SQLException e) {
 
             throw new PayrollException(
-                    "Unable to fetch employee payroll data"
+                    "Unable to retrieve employee payroll data"
             );
         }
 
         return null;
+    }
+
+    /*
+     * Convert ResultSet -> EmployeePayroll Object
+     */
+    private EmployeePayroll getEmployeePayrollData(ResultSet resultSet)
+            throws SQLException {
+
+        int id = resultSet.getInt("id");
+
+        String name =
+                resultSet.getString("name");
+
+        double salary =
+                resultSet.getDouble("salary");
+
+        LocalDate startDate =
+                resultSet.getDate("start_date").toLocalDate();
+
+        return new EmployeePayroll(
+                id,
+                name,
+                salary,
+                startDate
+        );
     }
 }
