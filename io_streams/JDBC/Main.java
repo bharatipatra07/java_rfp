@@ -1,4 +1,4 @@
-package javarfp;
+package JDBC;
 
 import java.util.List;
 

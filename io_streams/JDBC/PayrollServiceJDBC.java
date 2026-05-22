@@ -1,3 +1,4 @@
+package JDBC;
 import java.time.LocalDate;
 
  class EmployeePayroll {
@@ -71,4 +72,52 @@ import java.time.LocalDate;
 
          return employeeList;
      }
+     //UC3 - Update Salary
+     public void updateEmployeeSalary(String name, double salary) throws PayrollException {
+
+    	    String query = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+
+    	    try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+    	         PreparedStatement statement = connection.prepareStatement(query)) {
+
+    	        statement.setDouble(1, salary);
+    	        statement.setString(2, name);
+
+    	        int rowsAffected = statement.executeUpdate();
+
+    	        if (rowsAffected == 0) {
+    	            throw new PayrollException("Employee not found");
+    	        }
+
+    	    } catch (SQLException e) {
+    	        throw new PayrollException("Unable to update salary");
+    	    }
+    	}
+     public EmployeePayroll getEmployeePayrollData(String name) throws PayrollException {
+
+    	    String query = "SELECT * FROM employee_payroll WHERE name = ?";
+
+    	    try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+    	         PreparedStatement statement = connection.prepareStatement(query)) {
+
+    	        statement.setString(1, name);
+
+    	        ResultSet rs = statement.executeQuery();
+
+    	        if (rs.next()) {
+
+    	            return new EmployeePayroll(
+    	                    rs.getInt("id"),
+    	                    rs.getString("name"),
+    	                    rs.getDouble("salary"),
+    	                    rs.getDate("start_date").toLocalDate()
+    	            );
+    	        }
+
+    	    } catch (SQLException e) {
+    	        throw new PayrollException("Unable to fetch employee");
+    	    }
+
+    	    return null;
+    	}
  }
