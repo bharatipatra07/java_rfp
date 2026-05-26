@@ -11,8 +11,10 @@ public class Main {
 
         try {
 
-            // Add employee
-            payrollService.addEmployee(
+            /*
+             * Add employee with payroll details
+             */
+            payrollService.addEmployeeWithPayrollDetails(
                     "Terisa",
                     3000000.00,
                     "F",
