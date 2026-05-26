@@ -1,31 +1,38 @@
 package EmployeePayroll;
-import java.time.LocalDate;
+iimport java.time.LocalDate;
 import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
 
-    	 PayrollService payrollService =
-                 new PayrollService();
+        PayrollService payrollService =
+                new PayrollService();
 
-         try {
+        try {
 
-             payrollService.addEmployee(
-                     "Terisa",
-                     "F",
-                     "9876543210",
-                     "Chennai",
-                     3000000.00,
-                     LocalDate.now(),
-                     Arrays.asList(
-                             "HR",
-                             "Sales"
-                     )
-             );
+            /*
+             * Add employee payroll
+             */
+            payrollService.addEmployee(
+                    "Terisa",
+                    "F",
+                    "9876543210",
+                    "Chennai",
+                    3000000.00,
+                    LocalDate.now(),
+                    Arrays.asList(
+                            "HR",
+                            "Sales"
+                    )
+            );
 
-         } catch (PayrollException e) {
+            // Display employee list
+            payrollService.displayEmployees();
 
-             System.out.println(e.getMessage());
-         }
+        } catch (PayrollException e) {
+
+            System.out.println(e.getMessage());
+        }
     }
 }

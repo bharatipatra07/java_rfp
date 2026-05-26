@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 public class PayrollService {
 
     private static final String URL =
@@ -18,8 +19,14 @@ public class PayrollService {
 
     private static final String PASSWORD = "root";
 
+    // Store employee objects
+    private List<EmployeePayroll> employeeList =
+            new ArrayList<>();
+
     /*
-     * Add employee payroll with transaction management
+     * UC11
+     * Add employee using single transaction
+     * Multiple tables are impacted
      */
     public void addEmployee(
             String name,
@@ -30,10 +37,12 @@ public class PayrollService {
             LocalDate startDate,
             List<String> departments
     ) throws PayrollException {
-    	Connection connection = null;
+
+        Connection connection = null;
 
         try {
 
+            // Create DB connection
             connection =
                     DriverManager.getConnection(
                             URL,
@@ -41,16 +50,19 @@ public class PayrollService {
                             PASSWORD
                     );
 
-            // Start transaction
+            /*
+             * Start transaction
+             */
             connection.setAutoCommit(false);
 
             /*
-             * Insert into employee_payroll
+             * Insert employee data
              */
             String employeeQuery =
                     "INSERT INTO employee_payroll " +
                     "(name, gender, phone_number, address, start_date) " +
                     "VALUES (?, ?, ?, ?, ?)";
+
             PreparedStatement employeeStatement =
                     connection.prepareStatement(
                             employeeQuery,
@@ -61,39 +73,53 @@ public class PayrollService {
             employeeStatement.setString(2, gender);
             employeeStatement.setString(3, phoneNumber);
             employeeStatement.setString(4, address);
-            employeeStatement.setDate(5, Date.valueOf(startDate));
+
+            employeeStatement.setDate(
+                    5,
+                    Date.valueOf(startDate)
+            );
 
             int employeeRows =
                     employeeStatement.executeUpdate();
 
+            /*
+             * Fetch generated employee id
+             */
             ResultSet generatedKeys =
                     employeeStatement.getGeneratedKeys();
 
             int employeeId = 0;
 
             if (generatedKeys.next()) {
-            	employeeId =
+
+                employeeId =
                         generatedKeys.getInt(1);
             }
 
             /*
              * Payroll calculations
              */
-            double deductions = salary * 0.20;
+            double deductions =
+                    salary * 0.20;
 
-            double taxablePay = salary - deductions;
+            double taxablePay =
+                    salary - deductions;
 
-            double tax = taxablePay * 0.10;
+            double tax =
+                    taxablePay * 0.10;
 
-            double netPay = salary - tax;
+            double netPay =
+                    salary - tax;
 
             /*
              * Insert payroll details
              */
             String payrollQuery =
                     "INSERT INTO payroll_details " +
-                    "(employee_id, basic_pay, deductions, taxable_pay, tax, net_pay) " +
+                    "(employee_id, basic_pay, deductions, " +
+                    "taxable_pay, tax, net_pay) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
+
             PreparedStatement payrollStatement =
                     connection.prepareStatement(payrollQuery);
 
@@ -106,8 +132,9 @@ public class PayrollService {
 
             int payrollRows =
                     payrollStatement.executeUpdate();
+
             /*
-             * Insert departments
+             * Insert department mapping
              */
             int departmentRows = 0;
 
@@ -121,7 +148,10 @@ public class PayrollService {
                 PreparedStatement departmentStatement =
                         connection.prepareStatement(departmentQuery);
 
-                departmentStatement.setString(1, departmentName);
+                departmentStatement.setString(
+                        1,
+                        departmentName
+                );
 
                 ResultSet departmentResult =
                         departmentStatement.executeQuery();
@@ -130,10 +160,15 @@ public class PayrollService {
 
                 if (departmentResult.next()) {
 
-                    departmentId =departmentResult.getInt("department_id");
+                    departmentId =
+                            departmentResult.getInt(
+                                    "department_id"
+                            );
                 }
 
-                // Insert employee-department mapping
+                /*
+                 * Insert employee department mapping
+                 */
                 String mappingQuery =
                         "INSERT INTO employee_department " +
                         "(employee_id, department_id) " +
@@ -143,19 +178,41 @@ public class PayrollService {
                         connection.prepareStatement(mappingQuery);
 
                 mappingStatement.setInt(1, employeeId);
+
                 mappingStatement.setInt(2, departmentId);
 
                 departmentRows +=
                         mappingStatement.executeUpdate();
             }
+
             /*
-             * Commit transaction only if all inserts successful
+             * Commit transaction only if
+             * all inserts successful
              */
             if (employeeRows > 0 &&
                     payrollRows > 0 &&
                     departmentRows == departments.size()) {
 
+                // Commit transaction
                 connection.commit();
+
+                /*
+                 * Update object only after
+                 * successful transaction
+                 */
+                EmployeePayroll employee =
+                        new EmployeePayroll(
+                                employeeId,
+                                name,
+                                gender,
+                                phoneNumber,
+                                address,
+                                salary,
+                                startDate,
+                                departments
+                        );
+
+                employeeList.add(employee);
 
                 System.out.println(
                         "Employee payroll added successfully"
@@ -163,6 +220,7 @@ public class PayrollService {
 
             } else {
 
+                // Rollback transaction
                 connection.rollback();
 
                 throw new PayrollException(
@@ -171,7 +229,8 @@ public class PayrollService {
             }
 
         } catch (SQLException e) {
-        	try {
+
+            try {
 
                 if (connection != null) {
 
@@ -197,8 +256,17 @@ public class PayrollService {
                 }
 
             } catch (SQLException e) {
-            	e.printStackTrace();
+
+                e.printStackTrace();
             }
-            }
+        }
+    }
+
+    /*
+     * Display employees
+     */
+    public void displayEmployees() {
+
+        employeeList.forEach(System.out::println);
     }
 }
