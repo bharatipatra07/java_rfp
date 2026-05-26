@@ -11,18 +11,13 @@ public class Main {
 
         try {
 
-            /*
-             * Add employee with payroll details
-             */
-            payrollService.addEmployeeWithPayrollDetails(
+            // Add employee
+            payrollService.addEmployee(
                     "Terisa",
                     3000000.00,
                     "F",
                     LocalDate.now()
             );
-
-            // Display employees
-            payrollService.displayEmployees();
 
         } catch (PayrollException e) {
 

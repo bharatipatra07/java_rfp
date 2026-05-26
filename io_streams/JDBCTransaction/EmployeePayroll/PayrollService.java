@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PayrollService {
 
@@ -18,16 +16,11 @@ public class PayrollService {
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
-    // Store employee objects
-    private List<EmployeePayroll> employeeList =
-            new ArrayList<>();
-
     /*
-     * UC8
      * Add employee and payroll details
-     * using transaction management
+     * in single transaction
      */
-    public void addEmployeeWithPayrollDetails(
+    public void addEmployee(
             String name,
             double salary,
             String gender,
@@ -47,13 +40,12 @@ public class PayrollService {
                     );
 
             /*
-             * Disable auto commit
-             * Transaction starts
+             * Start transaction
              */
             connection.setAutoCommit(false);
 
             /*
-             * Insert into employee_payroll
+             * Insert employee data
              */
             String employeeQuery =
                     "INSERT INTO employee_payroll " +
@@ -79,21 +71,21 @@ public class PayrollService {
                     employeeStatement.executeUpdate();
 
             /*
-             * Get generated employee id
+             * Fetch generated employee id
              */
-            ResultSet generatedKeys =
+            ResultSet resultSet =
                     employeeStatement.getGeneratedKeys();
 
             int employeeId = 0;
 
-            if (generatedKeys.next()) {
+            if (resultSet.next()) {
 
                 employeeId =
-                        generatedKeys.getInt(1);
+                        resultSet.getInt(1);
             }
 
             /*
-             * Derived payroll calculations
+             * Payroll calculations
              */
             double deductions =
                     salary * 0.20;
@@ -108,7 +100,7 @@ public class PayrollService {
                     salary - tax;
 
             /*
-             * Insert into payroll_details
+             * Insert payroll details
              */
             String payrollQuery =
                     "INSERT INTO payroll_details " +
@@ -130,25 +122,13 @@ public class PayrollService {
                     payrollStatement.executeUpdate();
 
             /*
-             * Commit only if both inserts successful
+             * Commit transaction only if
+             * both inserts successful
              */
             if (employeeRows > 0 &&
                     payrollRows > 0) {
 
                 connection.commit();
-
-                /*
-                 * Add employee object to list
-                 */
-                EmployeePayroll employee =
-                        new EmployeePayroll(
-                                employeeId,
-                                name,
-                                salary,
-                                startDate
-                        );
-
-                employeeList.add(employee);
 
                 System.out.println(
                         "Employee and payroll details added successfully"
@@ -156,6 +136,7 @@ public class PayrollService {
 
             } else {
 
+                // Rollback transaction
                 connection.rollback();
 
                 throw new PayrollException(
@@ -169,7 +150,6 @@ public class PayrollService {
 
                 if (connection != null) {
 
-                    // Rollback transaction
                     connection.rollback();
                 }
 
@@ -196,13 +176,5 @@ public class PayrollService {
                 e.printStackTrace();
             }
         }
-    }
-
-    /*
-     * Display employees
-     */
-    public void displayEmployees() {
-
-        employeeList.forEach(System.out::println);
     }
 }
