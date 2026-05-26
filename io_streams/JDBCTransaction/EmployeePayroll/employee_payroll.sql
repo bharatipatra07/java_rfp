@@ -12,3 +12,5 @@ CREATE TABLE employee_payroll (
 
     start_date DATE
 );
+ALTER TABLE employee_payroll
+ADD is_active BOOLEAN DEFAULT TRUE;

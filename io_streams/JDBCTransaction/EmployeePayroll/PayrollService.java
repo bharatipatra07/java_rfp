@@ -1,12 +1,9 @@
 package EmployeePayroll;
 
-import java.sql.Connection;
-import java.sql.Date;
+iimport java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,254 +16,114 @@ public class PayrollService {
 
     private static final String PASSWORD = "root";
 
-    // Store employee objects
+    // Active employee list
     private List<EmployeePayroll> employeeList =
             new ArrayList<>();
 
     /*
-     * UC11
-     * Add employee using single transaction
-     * Multiple tables are impacted
+     * UC12
+     * Remove employee logically
+     * Set is_active = false
      */
-    public void addEmployee(
-            String name,
-            String gender,
-            String phoneNumber,
-            String address,
-            double salary,
-            LocalDate startDate,
-            List<String> departments
-    ) throws PayrollException {
+    public void removeEmployee(String name)
+            throws PayrollException {
 
-        Connection connection = null;
+        // SQL query
+        String query =
+                "UPDATE employee_payroll " +
+                "SET is_active = false " +
+                "WHERE name = ?";
 
-        try {
-
-            // Create DB connection
-            connection =
-                    DriverManager.getConnection(
-                            URL,
-                            USER,
-                            PASSWORD
-                    );
-
-            /*
-             * Start transaction
-             */
-            connection.setAutoCommit(false);
-
-            /*
-             * Insert employee data
-             */
-            String employeeQuery =
-                    "INSERT INTO employee_payroll " +
-                    "(name, gender, phone_number, address, start_date) " +
-                    "VALUES (?, ?, ?, ?, ?)";
-
-            PreparedStatement employeeStatement =
-                    connection.prepareStatement(
-                            employeeQuery,
-                            PreparedStatement.RETURN_GENERATED_KEYS
-                    );
-
-            employeeStatement.setString(1, name);
-            employeeStatement.setString(2, gender);
-            employeeStatement.setString(3, phoneNumber);
-            employeeStatement.setString(4, address);
-
-            employeeStatement.setDate(
-                    5,
-                    Date.valueOf(startDate)
-            );
-
-            int employeeRows =
-                    employeeStatement.executeUpdate();
-
-            /*
-             * Fetch generated employee id
-             */
-            ResultSet generatedKeys =
-                    employeeStatement.getGeneratedKeys();
-
-            int employeeId = 0;
-
-            if (generatedKeys.next()) {
-
-                employeeId =
-                        generatedKeys.getInt(1);
-            }
-
-            /*
-             * Payroll calculations
-             */
-            double deductions =
-                    salary * 0.20;
-
-            double taxablePay =
-                    salary - deductions;
-
-            double tax =
-                    taxablePay * 0.10;
-
-            double netPay =
-                    salary - tax;
-
-            /*
-             * Insert payroll details
-             */
-            String payrollQuery =
-                    "INSERT INTO payroll_details " +
-                    "(employee_id, basic_pay, deductions, " +
-                    "taxable_pay, tax, net_pay) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
-
-            PreparedStatement payrollStatement =
-                    connection.prepareStatement(payrollQuery);
-
-            payrollStatement.setInt(1, employeeId);
-            payrollStatement.setDouble(2, salary);
-            payrollStatement.setDouble(3, deductions);
-            payrollStatement.setDouble(4, taxablePay);
-            payrollStatement.setDouble(5, tax);
-            payrollStatement.setDouble(6, netPay);
-
-            int payrollRows =
-                    payrollStatement.executeUpdate();
-
-            /*
-             * Insert department mapping
-             */
-            int departmentRows = 0;
-
-            for (String departmentName : departments) {
-
-                // Fetch department id
-                String departmentQuery =
-                        "SELECT department_id FROM department " +
-                        "WHERE department_name = ?";
-
-                PreparedStatement departmentStatement =
-                        connection.prepareStatement(departmentQuery);
-
-                departmentStatement.setString(
-                        1,
-                        departmentName
-                );
-
-                ResultSet departmentResult =
-                        departmentStatement.executeQuery();
-
-                int departmentId = 0;
-
-                if (departmentResult.next()) {
-
-                    departmentId =
-                            departmentResult.getInt(
-                                    "department_id"
-                            );
-                }
-
-                /*
-                 * Insert employee department mapping
-                 */
-                String mappingQuery =
-                        "INSERT INTO employee_department " +
-                        "(employee_id, department_id) " +
-                        "VALUES (?, ?)";
-
-                PreparedStatement mappingStatement =
-                        connection.prepareStatement(mappingQuery);
-
-                mappingStatement.setInt(1, employeeId);
-
-                mappingStatement.setInt(2, departmentId);
-
-                departmentRows +=
-                        mappingStatement.executeUpdate();
-            }
-
-            /*
-             * Commit transaction only if
-             * all inserts successful
-             */
-            if (employeeRows > 0 &&
-                    payrollRows > 0 &&
-                    departmentRows == departments.size()) {
-
-                // Commit transaction
-                connection.commit();
-
-                /*
-                 * Update object only after
-                 * successful transaction
-                 */
-                EmployeePayroll employee =
-                        new EmployeePayroll(
-                                employeeId,
-                                name,
-                                gender,
-                                phoneNumber,
-                                address,
-                                salary,
-                                startDate,
-                                departments
+        try (
+                // Create DB connection
+                Connection connection =
+                        DriverManager.getConnection(
+                                URL,
+                                USER,
+                                PASSWORD
                         );
 
-                employeeList.add(employee);
+                // Create PreparedStatement
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(query)
+        ) {
+
+            // Set employee name
+            preparedStatement.setString(1, name);
+
+            // Execute update query
+            int rowsAffected =
+                    preparedStatement.executeUpdate();
+
+            /*
+             * Remove employee object
+             * only if DB update successful
+             */
+            if (rowsAffected > 0) {
+
+                employeeList.removeIf(
+                        employee ->
+                                employee.getName()
+                                        .equals(name)
+                );
 
                 System.out.println(
-                        "Employee payroll added successfully"
+                        "Employee removed successfully"
                 );
 
             } else {
 
-                // Rollback transaction
-                connection.rollback();
-
                 throw new PayrollException(
-                        "Unable to add employee payroll"
+                        "Employee not found"
                 );
             }
 
         } catch (SQLException e) {
 
-            try {
-
-                if (connection != null) {
-
-                    connection.rollback();
-                }
-
-            } catch (SQLException ex) {
-
-                ex.printStackTrace();
-            }
-
             throw new PayrollException(
-                    "Database transaction failed"
+                    "Unable to remove employee"
             );
-
-        } finally {
-
-            try {
-
-                if (connection != null) {
-
-                    connection.close();
-                }
-
-            } catch (SQLException e) {
-
-                e.printStackTrace();
-            }
         }
     }
 
     /*
-     * Display employees
+     * Retrieve only active employees
      */
-    public void displayEmployees() {
+    public void getActiveEmployees()
+            throws PayrollException {
 
-        employeeList.forEach(System.out::println);
+        String query =
+                "SELECT * FROM employee_payroll " +
+                "WHERE is_active = true";
+
+        try (
+                Connection connection =
+                        DriverManager.getConnection(
+                                URL,
+                                USER,
+                                PASSWORD
+                        );
+
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(query)
+        ) {
+
+            var resultSet =
+                    preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                System.out.println(
+                        resultSet.getInt("id") + " " +
+                        resultSet.getString("name")
+                );
+            }
+
+        } catch (SQLException e) {
+
+            throw new PayrollException(
+                    "Unable to retrieve active employees"
+            );
+        }
     }
 }

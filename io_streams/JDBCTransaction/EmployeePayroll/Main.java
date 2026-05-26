@@ -1,7 +1,4 @@
 package EmployeePayroll;
-iimport java.time.LocalDate;
-import java.util.Arrays;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -12,23 +9,16 @@ public class Main {
         try {
 
             /*
-             * Add employee payroll
+             * Remove employee from payroll
              */
-            payrollService.addEmployee(
-                    "Terisa",
-                    "F",
-                    "9876543210",
-                    "Chennai",
-                    3000000.00,
-                    LocalDate.now(),
-                    Arrays.asList(
-                            "HR",
-                            "Sales"
-                    )
+            payrollService.removeEmployee(
+                    "Terisa"
             );
 
-            // Display employee list
-            payrollService.displayEmployees();
+            /*
+             * Display active employees
+             */
+            payrollService.getActiveEmployees();
 
         } catch (PayrollException e) {
 
