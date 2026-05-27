@@ -1,6 +1,6 @@
-// UC1: Validate Indian PIN Code
+// UC2: Validate PIN Code
 
-let pinCode = "400088";
+let pinCode = "A400088";
 
 let pinRegex = /^[1-9][0-9]{5}$/;
 
