@@ -1,4 +1,4 @@
-// UC6: Count Contacts using reduce()
+// UC7: Prevent Duplicate Contacts in Address Book
 
 class Contact {
 
@@ -14,13 +14,48 @@ class Contact {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    // Display Contact
+    display() {
+
+        return `
+First Name  : ${this.firstName}
+Last Name   : ${this.lastName}
+City        : ${this.city}
+Phone Number: ${this.phoneNumber}
+Email       : ${this.email}
+`;
+    }
 }
 
 // Address Book Array
 let addressBook = [];
 
+// Function to Add Contact
+function addContact(contact) {
+
+    // Check Duplicate using some()
+    let isDuplicate = addressBook.some(person =>
+        person.firstName === contact.firstName &&
+        person.lastName === contact.lastName
+    );
+
+    if (isDuplicate) {
+
+        console.log(
+            `Duplicate Entry Found for ${contact.firstName} ${contact.lastName}`
+        );
+
+    } else {
+
+        addressBook.push(contact);
+
+        console.log("Contact Added Successfully");
+    }
+}
+
 // Add Contacts
-addressBook.push(
+addContact(
     new Contact(
         "Bharati",
         "Patra",
@@ -33,7 +68,7 @@ addressBook.push(
     )
 );
 
-addressBook.push(
+addContact(
     new Contact(
         "Rahul",
         "Sharma",
@@ -46,18 +81,26 @@ addressBook.push(
     )
 );
 
-addressBook.push(
+// Duplicate Contact
+addContact(
     new Contact(
-        "Ankit",
-        "Verma",
-        "78 Lake View",
-        "Delhi",
-        "Delhi",
-        "110001",
-        "9876501234",
-        "ankit@bridgelabz.co.in"
+        "Rahul",
+        "Sharma",
+        "New Address",
+        "Pune",
+        "Maharashtra",
+        "411001",
+        "9999999999",
+        "rahul@bridgelabz.co.in"
     )
 );
+
+// Display Address Book
+console.log("\nAll Contacts:");
+
+addressBook.forEach(contact => {
+    console.log(contact.display());
+});
 
 // Count Contacts using reduce()
 let count = addressBook.reduce(
@@ -65,4 +108,4 @@ let count = addressBook.reduce(
     0
 );
 
-console.log("Number of Contacts:", count);
+console.log("Total Contacts:", count);
