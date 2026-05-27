@@ -1,11 +1,11 @@
-// UC4: Validate PIN Code with optional space
+// UC1: Validate basic email format
 
-let pinCode = "400 088";
+let email = "abc@bridgelabz.co";
 
-let pinRegex = /^[1-9][0-9]{2}\s?[0-9]{3}$/;
+let emailRegex = /^[a-z]{3}@[a-z]{5,}\.[a-z]{2,}$/;
 
-if (pinRegex.test(pinCode)) {
-    console.log("Valid PIN Code");
+if (emailRegex.test(email)) {
+    console.log("Valid Email");
 } else {
-    console.log("Invalid PIN Code");
+    console.log("Invalid Email");
 }
