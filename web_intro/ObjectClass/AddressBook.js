@@ -1,4 +1,4 @@
-// UC4: Find and Edit Contact in Address Book
+// UC5: Find and Delete Contact from Address Book
 
 class Contact {
 
@@ -61,26 +61,27 @@ addressBook.push(
     )
 );
 
-// Find Contact by First Name
-let contact = addressBook.find(
-    person => person.firstName === "Rahul"
+// Name to Delete
+let personName = "Rahul";
+
+// Find Index of Contact
+let contactIndex = addressBook.findIndex(
+    person => person.firstName === personName
 );
 
-// Edit Contact Details
-if (contact) {
+// Delete Contact
+if (contactIndex !== -1) {
 
-    contact.city = "Pune";
-    contact.state = "Maharashtra";
-    contact.phoneNumber = "9999999999";
+    addressBook.splice(contactIndex, 1);
 
-    console.log("Contact Updated Successfully");
+    console.log("Contact Deleted Successfully");
 
 } else {
 
     console.log("Contact Not Found");
 }
 
-// Display Updated Address Book
+// Display Remaining Contacts
 addressBook.forEach(person => {
     console.log(person.display());
 });
