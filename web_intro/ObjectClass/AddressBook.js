@@ -1,4 +1,4 @@
-// UC7: Prevent Duplicate Contacts in Address Book
+// UC8: Search Person by City or State
 
 class Contact {
 
@@ -19,11 +19,10 @@ class Contact {
     display() {
 
         return `
-First Name  : ${this.firstName}
-Last Name   : ${this.lastName}
-City        : ${this.city}
-Phone Number: ${this.phoneNumber}
-Email       : ${this.email}
+First Name : ${this.firstName}
+Last Name  : ${this.lastName}
+City       : ${this.city}
+State      : ${this.state}
 `;
     }
 }
@@ -31,31 +30,8 @@ Email       : ${this.email}
 // Address Book Array
 let addressBook = [];
 
-// Function to Add Contact
-function addContact(contact) {
-
-    // Check Duplicate using some()
-    let isDuplicate = addressBook.some(person =>
-        person.firstName === contact.firstName &&
-        person.lastName === contact.lastName
-    );
-
-    if (isDuplicate) {
-
-        console.log(
-            `Duplicate Entry Found for ${contact.firstName} ${contact.lastName}`
-        );
-
-    } else {
-
-        addressBook.push(contact);
-
-        console.log("Contact Added Successfully");
-    }
-}
-
 // Add Contacts
-addContact(
+addressBook.push(
     new Contact(
         "Bharati",
         "Patra",
@@ -68,7 +44,7 @@ addContact(
     )
 );
 
-addContact(
+addressBook.push(
     new Contact(
         "Rahul",
         "Sharma",
@@ -81,31 +57,41 @@ addContact(
     )
 );
 
-// Duplicate Contact
-addContact(
+addressBook.push(
     new Contact(
-        "Rahul",
-        "Sharma",
-        "New Address",
-        "Pune",
-        "Maharashtra",
-        "411001",
-        "9999999999",
-        "rahul@bridgelabz.co.in"
+        "Ankit",
+        "Verma",
+        "78 Lake View",
+        "Chennai",
+        "TamilNadu",
+        "110001",
+        "9876501234",
+        "ankit@bridgelabz.co.in"
     )
 );
 
-// Display Address Book
-console.log("\nAll Contacts:");
+// Search by City
+let cityName = "Chennai";
 
-addressBook.forEach(contact => {
-    console.log(contact.display());
-});
-
-// Count Contacts using reduce()
-let count = addressBook.reduce(
-    (total, contact) => total + 1,
-    0
+let personsInCity = addressBook.filter(
+    person => person.city === cityName
 );
 
-console.log("Total Contacts:", count);
+console.log(`Persons in City: ${cityName}`);
+
+personsInCity.forEach(person => {
+    console.log(person.display());
+});
+
+// Search by State
+let stateName = "Maharashtra";
+
+let personsInState = addressBook.filter(
+    person => person.state === stateName
+);
+
+console.log(`Persons in State: ${stateName}`);
+
+personsInState.forEach(person => {
+    console.log(person.display());
+});
