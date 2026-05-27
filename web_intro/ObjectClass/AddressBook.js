@@ -1,4 +1,4 @@
-// UC11: Sort Address Book by Person Name
+// UC12: Sort Address Book by City, State, or ZIP
 
 class Contact {
 
@@ -23,6 +23,7 @@ First Name : ${this.firstName}
 Last Name  : ${this.lastName}
 City       : ${this.city}
 State      : ${this.state}
+ZIP        : ${this.zip}
 `;
     }
 }
@@ -70,14 +71,47 @@ addressBook.push(
     )
 );
 
-// Sort Contacts Alphabetically by First Name
-addressBook.sort((a, b) =>
-    a.firstName.localeCompare(b.firstName)
-);
+// Function to Sort by City
+function sortByCity() {
 
-// Display Sorted Contacts
-console.log("Sorted Address Book:");
+    return [...addressBook].sort((a, b) =>
+        a.city.localeCompare(b.city)
+    );
+}
 
-addressBook.forEach(contact => {
+// Function to Sort by State
+function sortByState() {
+
+    return [...addressBook].sort((a, b) =>
+        a.state.localeCompare(b.state)
+    );
+}
+
+// Function to Sort by ZIP
+function sortByZip() {
+
+    return [...addressBook].sort((a, b) =>
+        a.zip.localeCompare(b.zip)
+    );
+}
+
+// Display Sorted by City
+console.log("Sorted By City:");
+
+sortByCity().forEach(contact => {
+    console.log(contact.display());
+});
+
+// Display Sorted by State
+console.log("Sorted By State:");
+
+sortByState().forEach(contact => {
+    console.log(contact.display());
+});
+
+// Display Sorted by ZIP
+console.log("Sorted By ZIP:");
+
+sortByZip().forEach(contact => {
     console.log(contact.display());
 });
