@@ -1,4 +1,4 @@
-// UC10: Count Contacts by City and State
+// UC11: Sort Address Book by Person Name
 
 class Contact {
 
@@ -14,25 +14,23 @@ class Contact {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    // Display Contact
+    display() {
+
+        return `
+First Name : ${this.firstName}
+Last Name  : ${this.lastName}
+City       : ${this.city}
+State      : ${this.state}
+`;
+    }
 }
 
 // Address Book Array
 let addressBook = [];
 
 // Add Contacts
-addressBook.push(
-    new Contact(
-        "Bharati",
-        "Patra",
-        "12 Gandhi Street",
-        "Chennai",
-        "TamilNadu",
-        "600001",
-        "9876543210",
-        "abc.xyz@bridgelabz.co.in"
-    )
-);
-
 addressBook.push(
     new Contact(
         "Rahul",
@@ -48,44 +46,38 @@ addressBook.push(
 
 addressBook.push(
     new Contact(
+        "Bharati",
+        "Patra",
+        "12 Gandhi Street",
+        "Chennai",
+        "TamilNadu",
+        "600001",
+        "9876543210",
+        "abc.xyz@bridgelabz.co.in"
+    )
+);
+
+addressBook.push(
+    new Contact(
         "Ankit",
         "Verma",
         "78 Lake View",
-        "Chennai",
-        "TamilNadu",
+        "Delhi",
+        "Delhi",
         "110001",
         "9876501234",
         "ankit@bridgelabz.co.in"
     )
 );
 
-addressBook.push(
-    new Contact(
-        "Priya",
-        "Singh",
-        "22 Park Street",
-        "Mumbai",
-        "Maharashtra",
-        "400001",
-        "9876512345",
-        "priya@bridgelabz.co.in"
-    )
+// Sort Contacts Alphabetically by First Name
+addressBook.sort((a, b) =>
+    a.firstName.localeCompare(b.firstName)
 );
 
-// Count by City
-let cityName = "Chennai";
+// Display Sorted Contacts
+console.log("Sorted Address Book:");
 
-let cityCount = addressBook
-    .filter(person => person.city === cityName)
-    .reduce((count, person) => count + 1, 0);
-
-console.log(`Number of Contacts in ${cityName}: ${cityCount}`);
-
-// Count by State
-let stateName = "Maharashtra";
-
-let stateCount = addressBook
-    .filter(person => person.state === stateName)
-    .reduce((count, person) => count + 1, 0);
-
-console.log(`Number of Contacts in ${stateName}: ${stateCount}`);
+addressBook.forEach(contact => {
+    console.log(contact.display());
+});
