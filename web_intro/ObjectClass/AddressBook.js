@@ -1,4 +1,4 @@
-// UC8: Search Person by City or State
+// UC9: View Persons by City or State
 
 class Contact {
 
@@ -13,17 +13,6 @@ class Contact {
         this.zip = zip;
         this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    // Display Contact
-    display() {
-
-        return `
-First Name : ${this.firstName}
-Last Name  : ${this.lastName}
-City       : ${this.city}
-State      : ${this.state}
-`;
     }
 }
 
@@ -70,28 +59,22 @@ addressBook.push(
     )
 );
 
-// Search by City
+// View Persons by City
 let cityName = "Chennai";
 
-let personsInCity = addressBook.filter(
-    person => person.city === cityName
-);
+let personsByCity = addressBook
+    .filter(person => person.city === cityName)
+    .map(person => `${person.firstName} ${person.lastName}`);
 
-console.log(`Persons in City: ${cityName}`);
+console.log(`Persons in City ${cityName}:`);
+console.log(personsByCity);
 
-personsInCity.forEach(person => {
-    console.log(person.display());
-});
+// View Persons by State
+let stateName = "TamilNadu";
 
-// Search by State
-let stateName = "Maharashtra";
+let personsByState = addressBook
+    .filter(person => person.state === stateName)
+    .map(person => `${person.firstName} ${person.lastName}`);
 
-let personsInState = addressBook.filter(
-    person => person.state === stateName
-);
-
-console.log(`Persons in State: ${stateName}`);
-
-personsInState.forEach(person => {
-    console.log(person.display());
-});
+console.log(`Persons in State ${stateName}:`);
+console.log(personsByState);
