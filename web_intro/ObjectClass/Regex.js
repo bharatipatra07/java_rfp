@@ -1,9 +1,8 @@
-// UC3: Validate PIN Code
+// UC4: Validate PIN Code with optional space
 
-let pinCode = "400088B";
+let pinCode = "400 088";
 
-
-let pinRegex = /^[1-9][0-9]{5}$/;
+let pinRegex = /^[1-9][0-9]{2}\s?[0-9]{3}$/;
 
 if (pinRegex.test(pinCode)) {
     console.log("Valid PIN Code");
