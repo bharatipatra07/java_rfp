@@ -1,4 +1,4 @@
-// UC5: Find and Delete Contact from Address Book
+// UC6: Count Contacts using reduce()
 
 class Contact {
 
@@ -13,21 +13,6 @@ class Contact {
         this.zip = zip;
         this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    // Display Contact
-    display() {
-
-        return `
-First Name  : ${this.firstName}
-Last Name   : ${this.lastName}
-Address     : ${this.address}
-City        : ${this.city}
-State       : ${this.state}
-ZIP         : ${this.zip}
-Phone Number: ${this.phoneNumber}
-Email       : ${this.email}
-`;
     }
 }
 
@@ -61,27 +46,23 @@ addressBook.push(
     )
 );
 
-// Name to Delete
-let personName = "Rahul";
-
-// Find Index of Contact
-let contactIndex = addressBook.findIndex(
-    person => person.firstName === personName
+addressBook.push(
+    new Contact(
+        "Ankit",
+        "Verma",
+        "78 Lake View",
+        "Delhi",
+        "Delhi",
+        "110001",
+        "9876501234",
+        "ankit@bridgelabz.co.in"
+    )
 );
 
-// Delete Contact
-if (contactIndex !== -1) {
+// Count Contacts using reduce()
+let count = addressBook.reduce(
+    (total, contact) => total + 1,
+    0
+);
 
-    addressBook.splice(contactIndex, 1);
-
-    console.log("Contact Deleted Successfully");
-
-} else {
-
-    console.log("Contact Not Found");
-}
-
-// Display Remaining Contacts
-addressBook.forEach(person => {
-    console.log(person.display());
-});
+console.log("Number of Contacts:", count);
