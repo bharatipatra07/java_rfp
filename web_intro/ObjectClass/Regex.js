@@ -1,9 +1,8 @@
-// UC2: Validate email with mandatory @ and domain name
+// UC3: Validate email with mandatory .co
 
-let email = "abc@bridgelabz";
+let email = "abc@bridgelabz.co";
 
-
-let emailRegex = /^[a-z]{3}@[a-z]{5,}$/;
+let emailRegex = /^[a-z]{3}@[a-z]{5,}\.[a-z]{2}$/;
 
 if (emailRegex.test(email)) {
     console.log("Valid Email");
