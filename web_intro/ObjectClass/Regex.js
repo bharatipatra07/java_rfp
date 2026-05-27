@@ -1,6 +1,7 @@
-// UC2: Validate PIN Code
+// UC3: Validate PIN Code
 
-let pinCode = "A400088";
+let pinCode = "400088B";
+
 
 let pinRegex = /^[1-9][0-9]{5}$/;
 
