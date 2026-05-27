@@ -1,4 +1,4 @@
-// UC3: Create Address Book and Add Contacts
+// UC4: Find and Edit Contact in Address Book
 
 class Contact {
 
@@ -15,7 +15,7 @@ class Contact {
         this.email = email;
     }
 
-    // Display Contact Details
+    // Display Contact
     display() {
 
         return `
@@ -34,34 +34,53 @@ Email       : ${this.email}
 // Address Book Array
 let addressBook = [];
 
-// Create Contacts
-let contact1 = new Contact(
-    "Bharati",
-    "Patra",
-    "12 Gandhi Street",
-    "Chennai",
-    "TamilNadu",
-    "600001",
-    "9876543210",
-    "abc.xyz@bridgelabz.co.in"
+// Add Contacts
+addressBook.push(
+    new Contact(
+        "Bharati",
+        "Patra",
+        "12 Gandhi Street",
+        "Chennai",
+        "TamilNadu",
+        "600001",
+        "9876543210",
+        "abc.xyz@bridgelabz.co.in"
+    )
 );
 
-let contact2 = new Contact(
-    "Rahul",
-    "Sharma",
-    "45 Nehru Road",
-    "Mumbai",
-    "Maharashtra",
-    "400088",
-    "9876541230",
-    "rahul@bridgelabz.co"
+addressBook.push(
+    new Contact(
+        "Rahul",
+        "Sharma",
+        "45 Nehru Road",
+        "Mumbai",
+        "Maharashtra",
+        "400088",
+        "9876541230",
+        "rahul@bridgelabz.co"
+    )
 );
 
-// Add Contacts to Address Book
-addressBook.push(contact1);
-addressBook.push(contact2);
+// Find Contact by First Name
+let contact = addressBook.find(
+    person => person.firstName === "Rahul"
+);
 
-// Display All Contacts
-addressBook.forEach(contact => {
-    console.log(contact.display());
+// Edit Contact Details
+if (contact) {
+
+    contact.city = "Pune";
+    contact.state = "Maharashtra";
+    contact.phoneNumber = "9999999999";
+
+    console.log("Contact Updated Successfully");
+
+} else {
+
+    console.log("Contact Not Found");
+}
+
+// Display Updated Address Book
+addressBook.forEach(person => {
+    console.log(person.display());
 });
