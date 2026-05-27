@@ -1,4 +1,4 @@
-// UC9: View Persons by City or State
+// UC10: Count Contacts by City and State
 
 class Contact {
 
@@ -59,22 +59,33 @@ addressBook.push(
     )
 );
 
-// View Persons by City
+addressBook.push(
+    new Contact(
+        "Priya",
+        "Singh",
+        "22 Park Street",
+        "Mumbai",
+        "Maharashtra",
+        "400001",
+        "9876512345",
+        "priya@bridgelabz.co.in"
+    )
+);
+
+// Count by City
 let cityName = "Chennai";
 
-let personsByCity = addressBook
+let cityCount = addressBook
     .filter(person => person.city === cityName)
-    .map(person => `${person.firstName} ${person.lastName}`);
+    .reduce((count, person) => count + 1, 0);
 
-console.log(`Persons in City ${cityName}:`);
-console.log(personsByCity);
+console.log(`Number of Contacts in ${cityName}: ${cityCount}`);
 
-// View Persons by State
-let stateName = "TamilNadu";
+// Count by State
+let stateName = "Maharashtra";
 
-let personsByState = addressBook
+let stateCount = addressBook
     .filter(person => person.state === stateName)
-    .map(person => `${person.firstName} ${person.lastName}`);
+    .reduce((count, person) => count + 1, 0);
 
-console.log(`Persons in State ${stateName}:`);
-console.log(personsByState);
+console.log(`Number of Contacts in ${stateName}: ${stateCount}`);
