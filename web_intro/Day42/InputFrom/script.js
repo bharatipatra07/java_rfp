@@ -1,15 +1,19 @@
-function validateEmail() {
+function validateMobile() {
 
-    const email = document.getElementById("email").value;
+    const mobile = document.getElementById("mobile").value;
     const message = document.getElementById("message");
-    const emailRegex =
-        /^[a-z]{3}([._+-][a-z]{3,})?@[a-z]{2,}\.[a-z]{2,}(\.[a-z]{2})?$/;
 
-    if (emailRegex.test(email)) {
-        message.textContent = "Valid Email Address";
+    // Format: 91 9919819801
+    // Country code + space + 10 digit mobile number
+
+    const mobileRegex = /^[0-9]{2}\s[0-9]{10}$/;
+
+    if (mobileRegex.test(mobile)) {
+        message.textContent = "Valid Mobile Number";
         message.style.color = "green";
     } else {
-        message.textContent = "Invalid Email Address";
+        message.textContent =
+            "Invalid! Format should be: 91 9919819801";
         message.style.color = "red";
     }
 }
