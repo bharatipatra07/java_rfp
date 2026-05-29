@@ -12,55 +12,93 @@
 
         <h2>Employee Payroll Form</h2>
 
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" id="name">
-            <span id="nameError" class="error"></span>
-        </div>
+        <form id="employeeForm">
 
-        <div class="form-group">
-            <label>Salary</label>
-            <input type="range"
-                   id="salary"
-                   min="10000"
-                   max="100000"
-                   step="1000"
-                   value="40000">
-            <output id="salaryOutput">40000</output>
-        </div>
+            <!-- Name -->
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="name">
+                <span id="nameError" class="error"></span>
+            </div>
 
-        <div class="form-group">
-            <label>Gender</label>
+            <!-- Salary -->
+            <div class="form-group">
+                <label>Salary</label>
+                <input
+                    type="range"
+                    id="salary"
+                    min="10000"
+                    max="100000"
+                    step="1000"
+                    value="40000">
 
-            <input type="radio" name="gender" value="Male"> Male
-            <input type="radio" name="gender" value="Female"> Female
-        </div>
+                <output id="salaryOutput">40000</output>
+            </div>
 
-        <div class="form-group">
-            <label>Department</label>
+            <!-- Gender -->
+            <div class="form-group">
+                <label>Gender</label>
 
-            <input type="checkbox" name="department" value="HR"> HR
-            <input type="checkbox" name="department" value="Sales"> Sales
-            <input type="checkbox" name="department" value="Finance"> Finance
-            <input type="checkbox" name="department" value="Engineering"> Engineering
-        </div>
+                <input type="radio" name="gender" value="Male"> Male
 
-        <div class="form-group">
-            <label>Notes</label>
-            <textarea id="notes"></textarea>
-        </div>
+                <input type="radio" name="gender" value="Female"> Female
+            </div>
 
-        <div class="form-group">
-            <label>Start Date</label>
-            <input type="date" id="startDate">
-            <span id="dateError" class="error"></span>
-        </div>
+            <!-- Department -->
+            <div class="form-group">
+                <label>Department</label>
 
-        <button onclick="saveEmployee()">
-            Save Employee
-        </button>
+                <input type="checkbox"
+                       name="department"
+                       value="HR"> HR
+
+                <input type="checkbox"
+                       name="department"
+                       value="Sales"> Sales
+
+                <input type="checkbox"
+                       name="department"
+                       value="Finance"> Finance
+
+                <input type="checkbox"
+                       name="department"
+                       value="Engineering"> Engineering
+            </div>
+
+            <!-- Notes -->
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="notes"></textarea>
+            </div>
+
+            <!-- Start Date -->
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" id="startDate">
+                <span id="dateError" class="error"></span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+
+                <button
+                    type="button"
+                    onclick="saveEmployee()">
+                    Save
+                </button>
+
+                <button
+                    type="button"
+                    onclick="resetForm()">
+                    Reset
+                </button>
+
+            </div>
+
+        </form>
 
         <h3>Saved Employees</h3>
+
         <div id="employeeList"></div>
 
     </div>

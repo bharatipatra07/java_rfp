@@ -11,7 +11,7 @@ class EmployeePayrollData {
         if (nameRegex.test(name)) {
             this._name = name;
         } else {
-            throw "Name should start with Capital and have minimum 3 characters";
+            throw "Name should start with a Capital letter and have minimum 3 characters";
         }
     }
 
@@ -53,7 +53,7 @@ class EmployeePayrollData {
 
     set startDate(startDate) {
 
-        const today = new Date();
+        let today = new Date();
 
         if (new Date(startDate) > today) {
             throw "Start Date cannot be a future date";
@@ -63,7 +63,7 @@ class EmployeePayrollData {
     }
 }
 
-// Document Load
+// Load Page
 window.addEventListener("DOMContentLoaded", () => {
 
     const salary = document.getElementById("salary");
@@ -124,9 +124,9 @@ function saveEmployee() {
 
         alert("Employee Saved Successfully");
 
-        document.querySelector("form")?.reset();
-
         displayEmployees();
+
+        resetForm();
 
     } catch (error) {
 
@@ -138,6 +138,21 @@ function saveEmployee() {
             document.getElementById("dateError").textContent = error;
         }
     }
+}
+
+// Reset Form
+function resetForm() {
+
+    document.getElementById("employeeForm").reset();
+
+    document.getElementById("salary").value = 40000;
+
+    document.getElementById("salaryOutput").textContent =
+        40000;
+
+    document.getElementById("nameError").textContent = "";
+
+    document.getElementById("dateError").textContent = "";
 }
 
 // Display Employees
