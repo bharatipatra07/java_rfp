@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Payroll Home</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
     <!-- Header -->
-    <header>
+    <header class="header">
         <div class="logo-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            <img src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png"
                  alt="logo">
-            <div>
-                <span class="green">EMPLOYEE</span><br>
+
+            <div class="logo-text">
+                <span>EMPLOYEE</span>
                 <span>PAYROLL</span>
             </div>
         </div>
@@ -25,9 +28,12 @@
     <!-- Main Content -->
     <div class="container">
 
-        <div class="top-bar">
+        <div class="top-section">
 
-            <h2>Employee Details</h2>
+            <h2>
+                Employee Details
+                <span class="count-badge">10</span>
+            </h2>
 
             <div class="actions">
 
@@ -35,7 +41,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
 
-                <button class="add-btn">
+                <button class="add-btn" onclick="addUser()">
                     <i class="fa-solid fa-plus"></i>
                     Add User
                 </button>
@@ -45,7 +51,6 @@
         </div>
 
         <!-- Employee Table -->
-
         <table>
 
             <thead>
@@ -59,7 +64,7 @@
                 </tr>
             </thead>
 
-            <tbody id="employeeTable">
+            <tbody id="employeeTableBody">
 
             </tbody>
 
@@ -68,5 +73,6 @@
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>

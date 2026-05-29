@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Employee Payroll</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+    }
+
+    /* HEADER */
+
+    .header {
+      width: 100%;
+      background: white;
+      padding: 15px 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 20px;
+    }
+
+    .logo-text span:first-child {
+      color: #82a70c;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .logo-text span:last-child {
+      color: #42515f;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    /* TITLE */
+
+    .title {
+      text-align: center;
+      margin: 25px 0;
+      color: #0b67d1;
+      font-size: 45px;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    /* FORM CONTAINER */
+
+    .container {
+      width: 70%;
+      margin: auto;
+      background: white;
+      padding: 50px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #42515f;
+      margin-bottom: 40px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 35px;
+    }
+
+    .form-group label {
+      width: 150px;
+      font-size: 20px;
+      color: #42515f;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group select {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 18px;
+      outline: none;
+    }
+
+    /* PROFILE */
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .profile-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-option img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    input[type="radio"]:checked + img {
+      border: 3px solid #82a70c;
+    }
+
+    /* GENDER */
+
+    .gender-container {
+      display: flex;
+      gap: 30px;
+      font-size: 20px;
+      color: #42515f;
+    }
+
+    .gender-container label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: auto;
+    }
+
+    /* DEPARTMENT */
+
+    .department-container {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .department-container label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: auto;
+      font-size: 18px;
+    }
+
+    /* DATE */
+
+    .date-container {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .date-container select {
+      width: 180px;
+    }
+
+    textarea {
+      resize: none;
+      height: 120px;
+    }
+
+    /* BUTTONS */
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+
+    .right-buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      padding: 14px 45px;
+      border: 1px solid #969696;
+      background: #e2e2e2;
+      font-size: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #82a70c;
+      color: white;
+      border: none;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 768px) {
+
+      .container {
+        width: 95%;
+        padding: 25px;
+      }
+
+      .title {
+        font-size: 28px;
+      }
+
+      .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .form-group label {
+        width: 100%;
+      }
+
+      .profile-container {
+        flex-wrap: wrap;
+      }
+
+      .date-container {
+        flex-direction: column;
+      }
+
+      .date-container select {
+        width: 100%;
+      }
+
+      .button-group {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .right-buttons {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <div class="header">
+    <i class="fa-solid fa-money-check-dollar fa-2x" style="color:#82a70c;"></i>
+
+    <div class="logo-text">
+      <span>EMPLOYEE</span>
+      <span>PAYROLL</span>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+
+  <h1 class="title">Add Employee Payroll UI/UX Design</h1>
+
+  <!-- FORM -->
+
+  <div class="container">
+
+    <div class="form-title">Employee Payroll Form</div>
+
+    <form id="employeeForm">
+
+      <!-- NAME -->
+
+      <div class="form-group">
+        <label>Name</label>
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter employee name"
+          required
+        />
+      </div>
+
+      <!-- PROFILE -->
+
+      <div class="form-group">
+
+        <label>Profile Image</label>
+
+        <div class="profile-container">
+
+          <label class="profile-option">
+            <input type="radio" name="profile" value="1" />
+            <img src="https://randomuser.me/api/portraits/women/44.jpg">
+          </label>
+
+          <label class="profile-option">
+            <input type="radio" name="profile" value="2" />
+            <img src="https://randomuser.me/api/portraits/men/32.jpg">
+          </label>
+
+          <label class="profile-option">
+            <input type="radio" name="profile" value="3" />
+            <img src="https://randomuser.me/api/portraits/women/68.jpg">
+          </label>
+
+          <label class="profile-option">
+            <input type="radio" name="profile" value="4" />
+            <img src="https://randomuser.me/api/portraits/men/75.jpg">
+          </label>
+
+        </div>
+      </div>
+
+      <!-- GENDER -->
+
+      <div class="form-group">
+
+        <label>Gender</label>
+
+        <div class="gender-container">
+
+          <label>
+            <input type="radio" name="gender" value="Male">
+            Male
+          </label>
+
+          <label>
+            <input type="radio" name="gender" value="Female">
+            Female
+          </label>
+
+        </div>
+      </div>
+
+      <!-- DEPARTMENT -->
+
+      <div class="form-group">
+
+        <label>Department</label>
+
+        <div class="department-container">
+
+          <label>
+            <input type="checkbox" value="HR">
+            HR
+          </label>
+
+          <label>
+            <input type="checkbox" value="Sales">
+            Sales
+          </label>
+
+          <label>
+            <input type="checkbox" value="Finance">
+            Finance
+          </label>
+
+          <label>
+            <input type="checkbox" value="Engineer">
+            Engineer
+          </label>
+
+          <label>
+            <input type="checkbox" value="Others">
+            Others
+          </label>
+
+        </div>
+      </div>
+
+      <!-- SALARY -->
+
+      <div class="form-group">
+
+        <label>Salary</label>
+
+        <select id="salary">
+
+          <option>Select Salary</option>
+          <option>₹ 10,000</option>
+          <option>₹ 20,000</option>
+          <option>₹ 30,000</option>
+          <option>₹ 40,000</option>
+          <option>₹ 50,000</option>
+
+        </select>
+      </div>
+
+      <!-- START DATE -->
+
+      <div class="form-group">
+
+        <label>Start Date</label>
+
+        <div class="date-container">
+
+          <select>
+            <option>Day</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+          </select>
+
+          <select>
+            <option>Month</option>
+            <option>January</option>
+            <option>February</option>
+            <option>March</option>
+          </select>
+
+          <select>
+            <option>Year</option>
+            <option>2024</option>
+            <option>2025</option>
+            <option>2026</option>
+          </select>
+
+        </div>
+      </div>
+
+      <!-- NOTES -->
+
+      <div class="form-group">
+
+        <label>Notes</label>
+
+        <textarea placeholder="Write notes here..."></textarea>
+
+      </div>
+
+      <!-- BUTTONS -->
+
+      <div class="button-group">
+
+        <button type="button" id="cancelBtn">
+          Cancel
+        </button>
+
+        <div class="right-buttons">
+
+          <button type="submit">
+            Submit
+          </button>
+
+          <button type="reset">
+            Reset
+          </button>
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <script>
+
+    const form = document.getElementById("employeeForm");
+
+    form.addEventListener("submit", function(e) {
+
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+
+      alert(`${name} added successfully!`);
+
+      form.reset();
+
+    });
+
+    document.getElementById("cancelBtn")
+      .addEventListener("click", () => {
+
+        window.history.back();
+
+      });
+
+  </script>
+
+</body>
+</html>

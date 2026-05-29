@@ -1,62 +1,57 @@
+// Sample Employee Data
+
 const employees = [
     {
         name: "Bharati Patra",
         gender: "Female",
         department: ["HR", "Finance"],
-        salary: 50000,
-        startDate: "29 Oct 2019",
-        image: "https://randomuser.me/api/portraits/women/1.jpg"
+        salary: "₹50,000",
+        startDate: "29 May 2026"
     },
     {
         name: "Rahul Sharma",
         gender: "Male",
-        department: ["Sales", "Engineer"],
-        salary: 60000,
-        startDate: "15 Jan 2020",
-        image: "https://randomuser.me/api/portraits/men/2.jpg"
-    },
-    {
-        name: "Ankit Verma",
-        gender: "Male",
-        department: ["HR"],
-        salary: 45000,
-        startDate: "10 Mar 2021",
-        image: "https://randomuser.me/api/portraits/men/5.jpg"
+        department: ["Sales"],
+        salary: "₹45,000",
+        startDate: "20 May 2026"
     }
 ];
 
-const table = document.getElementById("employeeTable");
+// Load Employees
+window.onload = function () {
 
-employees.forEach(emp => {
+    const tableBody =
+        document.getElementById("employeeTableBody");
 
-    const row = document.createElement("tr");
+    employees.forEach(emp => {
 
-    row.innerHTML = `
-        <td>
-            <div class="name-cell">
-                <img class="profile"
-                     src="${emp.image}">
-                ${emp.name}
-            </div>
-        </td>
+        tableBody.innerHTML += `
+            <tr>
+                <td>${emp.name}</td>
 
-        <td>${emp.gender}</td>
+                <td>${emp.gender}</td>
 
-        <td>
-            ${emp.department.map(
-                d => `<span class="department">${d}</span>`
-            ).join("")}
-        </td>
+                <td>${emp.department.join(", ")}</td>
 
-        <td>₹ ${emp.salary.toLocaleString()}</td>
+                <td>${emp.salary}</td>
 
-        <td>${emp.startDate}</td>
+                <td>${emp.startDate}</td>
 
-        <td>
-            <i class="fa-solid fa-trash action-icon"></i>
-            <i class="fa-solid fa-pen action-icon"></i>
-        </td>
-    `;
+                <td>
+                    <div class="action-icons">
+                        <i class="fa-solid fa-trash"></i>
+                        <i class="fa-solid fa-pen"></i>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+};
 
-    table.appendChild(row);
-});
+// Add User Function
+function addUser() {
+
+    // Redirect to Add Employee Page
+    window.location.href = "add-employee.html";
+
+}
