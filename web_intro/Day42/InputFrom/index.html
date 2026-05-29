@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Number Validation</title>
+    <title>Password Validation</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
-        <h2>Mobile Number Validation</h2>
+        <h2>Password Validation - Rule 1</h2>
 
-        <label for="mobile">Mobile Number:</label>
+        <label for="password">Password:</label>
         <input
-            type="text"
-            id="mobile"
-            placeholder="Example: 91 9919819801"
+            type="password"
+            id="password"
+            placeholder="Enter Password"
         >
 
-        <button onclick="validateMobile()">Validate</button>
+        <button onclick="validatePassword()">
+            Validate
+        </button>
 
         <p id="message"></p>
     </div>

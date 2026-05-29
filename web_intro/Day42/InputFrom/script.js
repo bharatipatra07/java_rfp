@@ -1,19 +1,18 @@
-function validateMobile() {
+function validatePassword() {
 
-    const mobile = document.getElementById("mobile").value;
+    const password = document.getElementById("password").value;
     const message = document.getElementById("message");
 
-    // Format: 91 9919819801
-    // Country code + space + 10 digit mobile number
+    // Rule 1: Minimum 8 Characters
 
-    const mobileRegex = /^[0-9]{2}\s[0-9]{10}$/;
+    const passwordRegex = /^.{8,}$/;
 
-    if (mobileRegex.test(mobile)) {
-        message.textContent = "Valid Mobile Number";
+    if (passwordRegex.test(password)) {
+        message.textContent = "Valid Password";
         message.style.color = "green";
     } else {
         message.textContent =
-            "Invalid! Format should be: 91 9919819801";
+            "Invalid! Password must contain at least 8 characters.";
         message.style.color = "red";
     }
 }
