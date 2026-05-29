@@ -12,52 +12,38 @@
 
         <h2>Employee Payroll Form</h2>
 
+        <!-- Name -->
         <div class="form-group">
             <label>Name</label>
             <input type="text" id="name">
+            <span class="error" id="nameError"></span>
         </div>
 
+        <!-- Salary -->
         <div class="form-group">
             <label>Salary</label>
-            <input type="number" id="salary">
+
+            <input
+                type="range"
+                id="salary"
+                min="10000"
+                max="100000"
+                step="1000"
+                value="40000">
+
+            <output id="salaryOutput">40000</output>
         </div>
 
+        <!-- Start Date -->
         <div class="form-group">
-            <label>Gender</label>
-
-            <input type="radio" name="gender" value="Male"> Male
-            <input type="radio" name="gender" value="Female"> Female
+            <label>Start Date</label>
+            <input type="date" id="startDate">
+            <span class="error" id="dateError"></span>
         </div>
 
-        <div class="form-group">
-            <label>Department</label>
-
-            <input type="checkbox" value="HR" class="department"> HR
-            <input type="checkbox" value="Sales" class="department"> Sales
-            <input type="checkbox" value="Finance" class="department"> Finance
-            <input type="checkbox" value="Engineer" class="department"> Engineer
-        </div>
-
-        <div class="form-group">
-            <label>Profile Picture</label>
-
-            <select id="profilePic">
-                <option value="Profile1.png">Profile1</option>
-                <option value="Profile2.png">Profile2</option>
-                <option value="Profile3.png">Profile3</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Notes</label>
-            <textarea id="notes"></textarea>
-        </div>
-
-        <button onclick="saveEmployee()">Save Employee</button>
-
-        <h3>Employee Details</h3>
-
-        <pre id="output"></pre>
+        <button onclick="saveEmployee()">
+            Save Employee
+        </button>
 
     </div>
 

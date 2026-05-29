@@ -1,108 +1,66 @@
-class EmployeePayroll {
+window.addEventListener("DOMContentLoaded", () => {
 
-    constructor() {
-        this._name = "";
-        this._salary = 0;
-        this._gender = "";
-        this._department = [];
-        this._profilePic = "";
-        this._notes = "";
-    }
+    // Salary Event Listener
+    const salary = document.getElementById("salary");
+    const salaryOutput = document.getElementById("salaryOutput");
 
-    // Name
-    get name() {
-        return this._name;
-    }
+    salaryOutput.textContent = salary.value;
 
-    set name(name) {
-        this._name = name;
-    }
+    salary.addEventListener("input", () => {
+        salaryOutput.textContent = salary.value;
+    });
 
-    // Salary
-    get salary() {
-        return this._salary;
-    }
+    // Name Validation Event Listener
+    const name = document.getElementById("name");
 
-    set salary(salary) {
-        this._salary = salary;
-    }
+    name.addEventListener("input", () => {
 
-    // Gender
-    get gender() {
-        return this._gender;
-    }
+        const nameRegex = /^[A-Z][a-zA-Z]{2,}$/;
 
-    set gender(gender) {
-        this._gender = gender;
-    }
+        if (name.value.length === 0) {
+            document.getElementById("nameError").textContent = "";
+        }
+        else if (!nameRegex.test(name.value)) {
+            document.getElementById("nameError").textContent =
+                "Name should start with a capital letter and have minimum 3 characters";
+        }
+        else {
+            document.getElementById("nameError").textContent = "";
+        }
+    });
 
-    // Department
-    get department() {
-        return this._department;
-    }
+    // Date Validation Event Listener
+    const startDate = document.getElementById("startDate");
 
-    set department(department) {
-        this._department = department;
-    }
+    startDate.addEventListener("change", () => {
 
-    // Profile Picture
-    get profilePic() {
-        return this._profilePic;
-    }
+        const selectedDate = new Date(startDate.value);
+        const today = new Date();
 
-    set profilePic(profilePic) {
-        this._profilePic = profilePic;
-    }
+        today.setHours(0, 0, 0, 0);
 
-    // Notes
-    get notes() {
-        return this._notes;
-    }
-
-    set notes(notes) {
-        this._notes = notes;
-    }
-
-    toString() {
-        return `
-Name       : ${this.name}
-Salary     : ${this.salary}
-Gender     : ${this.gender}
-Department : ${this.department.join(", ")}
-ProfilePic : ${this.profilePic}
-Notes      : ${this.notes}
-`;
-    }
-}
+        if (selectedDate > today) {
+            document.getElementById("dateError").textContent =
+                "Future date is not allowed";
+        }
+        else {
+            document.getElementById("dateError").textContent = "";
+        }
+    });
+});
 
 function saveEmployee() {
 
-    let employee = new EmployeePayroll();
+    const nameError =
+        document.getElementById("nameError").textContent;
 
-    employee.name = document.getElementById("name").value;
+    const dateError =
+        document.getElementById("dateError").textContent;
 
-    employee.salary =
-        document.getElementById("salary").value;
+    if (nameError || dateError) {
+        alert("Please fix validation errors.");
+        return;
+    }
 
-    employee.gender =
-        document.querySelector(
-            'input[name="gender"]:checked'
-        )?.value || "";
-
-    let departments = [];
-
-    document
-        .querySelectorAll(".department:checked")
-        .forEach(dept => departments.push(dept.value));
-
-    employee.department = departments;
-
-    employee.profilePic =
-        document.getElementById("profilePic").value;
-
-    employee.notes =
-        document.getElementById("notes").value;
-
-    document.getElementById("output").textContent =
-        employee.toString();
+    alert("Employee Saved Successfully");
 }
