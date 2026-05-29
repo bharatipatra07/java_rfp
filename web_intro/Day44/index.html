@@ -40,10 +40,27 @@
             <input type="date" id="startDate">
             <span class="error" id="dateError"></span>
         </div>
+		<input type="text" id="name">
+		<span id="nameError" class="error"></span>
 
-        <button onclick="saveEmployee()">
-            Save Employee
-        </button>
+		<input type="range" id="salary" min="10000" max="100000" value="40000">
+		<output id="salaryOutput">40000</output>
+
+		<input type="radio" name="gender" value="Male"> Male
+		<input type="radio" name="gender" value="Female"> Female
+
+		<input type="checkbox" name="department" value="HR"> HR
+		<input type="checkbox" name="department" value="Sales"> Sales
+		<input type="checkbox" name="department" value="Finance"> Finance
+
+		<textarea id="notes"></textarea>
+
+		<input type="date" id="startDate">
+		<span id="dateError" class="error"></span>
+
+		<button type="button" onclick="saveEmployee()">
+		    Save
+		</button>
 
     </div>
 
