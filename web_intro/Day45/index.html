@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payroll Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                 alt="logo">
+            <div>
+                <span class="green">EMPLOYEE</span><br>
+                <span>PAYROLL</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <div class="top-bar">
+
+            <h2>Employee Details</h2>
+
+            <div class="actions">
+
+                <button class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
+                <button class="add-btn">
+                    <i class="fa-solid fa-plus"></i>
+                    Add User
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Employee Table -->
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>GENDER</th>
+                    <th>DEPARTMENT</th>
+                    <th>SALARY</th>
+                    <th>START DATE</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+
+            <tbody id="employeeTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

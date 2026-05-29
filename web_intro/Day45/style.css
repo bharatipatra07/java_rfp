@@ -1,0 +1,123 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+header{
+    background:white;
+    padding:15px 40px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo-section img{
+    width:45px;
+}
+
+.logo-section span{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.green{
+    color:#82A70C;
+}
+
+.container{
+    width:92%;
+    margin:30px auto;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.top-bar h2{
+    color:#42515F;
+}
+
+.actions{
+    display:flex;
+    gap:15px;
+}
+
+.search-btn{
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    cursor:pointer;
+    font-size:18px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+.add-btn{
+    background:#82A70C;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:4px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+thead{
+    background:#42515F;
+    color:white;
+}
+
+th,td{
+    padding:15px;
+    text-align:left;
+}
+
+tbody tr{
+    border-bottom:1px solid #ddd;
+}
+
+.profile{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    margin-right:10px;
+}
+
+.name-cell{
+    display:flex;
+    align-items:center;
+}
+
+.department{
+    background:#d8ed8d;
+    padding:5px 12px;
+    border-radius:20px;
+    margin-right:5px;
+    font-size:12px;
+}
+
+.action-icon{
+    cursor:pointer;
+    margin-right:15px;
+    color:#42515F;
+}
