@@ -1,22 +1,20 @@
 class EmployeePayrollData {
 
-    // Name
     get name() {
         return this._name;
     }
 
     set name(name) {
 
-        let nameRegex = /^[A-Z][a-zA-Z]{2,}$/;
+        const nameRegex = /^[A-Z][a-zA-Z]{2,}$/;
 
         if (nameRegex.test(name)) {
             this._name = name;
         } else {
-            throw "Name is Incorrect!";
+            throw "Name should start with Capital and have minimum 3 characters";
         }
     }
 
-    // Salary
     get salary() {
         return this._salary;
     }
@@ -25,7 +23,6 @@ class EmployeePayrollData {
         this._salary = salary;
     }
 
-    // Gender
     get gender() {
         return this._gender;
     }
@@ -34,7 +31,6 @@ class EmployeePayrollData {
         this._gender = gender;
     }
 
-    // Department
     get department() {
         return this._department;
     }
@@ -43,7 +39,6 @@ class EmployeePayrollData {
         this._department = department;
     }
 
-    // Notes
     get notes() {
         return this._notes;
     }
@@ -52,35 +47,23 @@ class EmployeePayrollData {
         this._notes = notes;
     }
 
-    // Start Date
     get startDate() {
         return this._startDate;
     }
 
     set startDate(startDate) {
 
-        let today = new Date();
+        const today = new Date();
 
         if (new Date(startDate) > today) {
-            throw "Start Date cannot be a future date!";
+            throw "Start Date cannot be a future date";
         }
 
         this._startDate = startDate;
     }
-
-    toString() {
-        return `
-Name       : ${this.name}
-Salary     : ${this.salary}
-Gender     : ${this.gender}
-Department : ${this.department}
-Notes      : ${this.notes}
-Start Date : ${this.startDate}
-`;
-    }
 }
 
-// Event Listeners
+// Document Load
 window.addEventListener("DOMContentLoaded", () => {
 
     const salary = document.getElementById("salary");
@@ -92,66 +75,95 @@ window.addEventListener("DOMContentLoaded", () => {
         salaryOutput.textContent = salary.value;
     });
 
-    // Live Name Validation
-    document.getElementById("name")
-        .addEventListener("input", () => {
-
-            const name = document.getElementById("name").value;
-            const error = document.getElementById("nameError");
-
-            const regex = /^[A-Z][a-zA-Z]{2,}$/;
-
-            error.textContent =
-                regex.test(name)
-                    ? ""
-                    : "Name should start with Capital and have minimum 3 characters";
-        });
+    displayEmployees();
 });
 
 // Save Employee
 function saveEmployee() {
 
+    document.getElementById("nameError").textContent = "";
+    document.getElementById("dateError").textContent = "";
+
     try {
 
-        let employeePayrollData =
-            new EmployeePayrollData();
+        let employee = new EmployeePayrollData();
 
-        employeePayrollData.name =
+        employee.name =
             document.getElementById("name").value;
 
-        employeePayrollData.salary =
+        employee.salary =
             document.getElementById("salary").value;
 
-        employeePayrollData.gender =
+        employee.gender =
             document.querySelector(
                 'input[name="gender"]:checked'
-            )?.value;
+            )?.value || "";
 
-        employeePayrollData.department =
+        employee.department =
             [...document.querySelectorAll(
                 'input[name="department"]:checked'
             )].map(dept => dept.value);
 
-        employeePayrollData.notes =
+        employee.notes =
             document.getElementById("notes").value;
 
-        employeePayrollData.startDate =
+        employee.startDate =
             document.getElementById("startDate").value;
 
-        console.log(employeePayrollData.toString());
+        let employeeList =
+            JSON.parse(
+                localStorage.getItem("employeePayrollList")
+            ) || [];
 
-        alert("Employee Payroll Object Created Successfully!");
+        employeeList.push(employee);
 
-    } catch (e) {
+        localStorage.setItem(
+            "employeePayrollList",
+            JSON.stringify(employeeList)
+        );
 
-        if (e.includes("Name")) {
-            document.getElementById("nameError")
-                .textContent = e;
+        alert("Employee Saved Successfully");
+
+        document.querySelector("form")?.reset();
+
+        displayEmployees();
+
+    } catch (error) {
+
+        if (error.includes("Name")) {
+            document.getElementById("nameError").textContent = error;
         }
 
-        if (e.includes("Date")) {
-            document.getElementById("dateError")
-                .textContent = e;
+        if (error.includes("Date")) {
+            document.getElementById("dateError").textContent = error;
         }
     }
+}
+
+// Display Employees
+function displayEmployees() {
+
+    let employeeList =
+        JSON.parse(
+            localStorage.getItem("employeePayrollList")
+        ) || [];
+
+    const employeeDiv =
+        document.getElementById("employeeList");
+
+    employeeDiv.innerHTML = "";
+
+    employeeList.forEach(employee => {
+
+        employeeDiv.innerHTML += `
+            <div class="employee-card">
+                <p><strong>Name:</strong> ${employee._name}</p>
+                <p><strong>Salary:</strong> ₹${employee._salary}</p>
+                <p><strong>Gender:</strong> ${employee._gender}</p>
+                <p><strong>Department:</strong> ${employee._department.join(", ")}</p>
+                <p><strong>Notes:</strong> ${employee._notes}</p>
+                <p><strong>Start Date:</strong> ${employee._startDate}</p>
+            </div>
+        `;
+    });
 }
