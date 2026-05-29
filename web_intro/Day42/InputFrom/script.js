@@ -1,17 +1,15 @@
-function validateName() {
+function validateEmail() {
 
-    const firstName = document.getElementById("firstName").value;
+    const email = document.getElementById("email").value;
     const message = document.getElementById("message");
+    const emailRegex =
+        /^[a-z]{3}([._+-][a-z]{3,})?@[a-z]{2,}\.[a-z]{2,}(\.[a-z]{2})?$/;
 
-    // First letter capital, minimum 3 characters
-    const regex = /^[A-Z][a-z]{2,}$/;
-
-    if (regex.test(firstName)) {
-        message.textContent = "Valid First Name";
+    if (emailRegex.test(email)) {
+        message.textContent = "Valid Email Address";
         message.style.color = "green";
     } else {
-        message.textContent =
-            "Invalid! First Name must start with a capital letter and contain at least 3 characters.";
+        message.textContent = "Invalid Email Address";
         message.style.color = "red";
     }
 }
