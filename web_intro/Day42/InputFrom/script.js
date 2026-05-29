@@ -3,16 +3,15 @@ function validatePassword() {
     const password = document.getElementById("password").value;
     const message = document.getElementById("message");
 
-    // Rule 1: Minimum 8 Characters
-
-    const passwordRegex = /^.{8,}$/;
+    const passwordRegex =
+        /^(?=.*[A-Z])(?=.*\d)(?=(?:.*[^A-Za-z0-9]){1}$).{8,}$/;
 
     if (passwordRegex.test(password)) {
         message.textContent = "Valid Password";
         message.style.color = "green";
     } else {
         message.textContent =
-            "Invalid! Password must contain at least 8 characters.";
+            "Password must have minimum 8 characters, 1 uppercase letter, 1 number, and exactly 1 special character.";
         message.style.color = "red";
     }
 }
