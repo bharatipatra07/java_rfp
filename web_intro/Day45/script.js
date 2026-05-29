@@ -1,4 +1,3 @@
-// Get employees from localStorage
 
 let employees =
     JSON.parse(localStorage.getItem("employees"));
@@ -36,58 +35,36 @@ if (!employees) {
 
 // Load Employees
 
-window.onload = function () {
-
+document.addEventListener("DOMContentLoaded", () => {
     displayEmployees();
-};
+});
 
 
 // Display Employees
 
 function displayEmployees() {
+    const tableBody = document.getElementById("employeeTableBody");
 
-    const tableBody =
-        document.getElementById("employeeTableBody");
+    const rows = employees.map((emp, index) => `
+        <tr>
+            <td>${emp.name}</td>
+            <td>${emp.gender}</td>
+            <td>${emp.department.join(", ")}</td>
+            <td>${emp.salary}</td>
+            <td>${emp.startDate}</td>
+            <td>
+                <div class="action-icons">
+                    <i class="fa-solid fa-trash" onclick="deleteEmployee(${index})"></i>
+                    <i class="fa-solid fa-pen"></i>
+                </div>
+            </td>
+        </tr>
+    `).join("");
 
-    tableBody.innerHTML = "";
-
-    employees.forEach((emp, index) => {
-
-        tableBody.innerHTML += `
-
-            <tr>
-
-                <td>${emp.name}</td>
-
-                <td>${emp.gender}</td>
-
-                <td>${emp.department.join(", ")}</td>
-
-                <td>${emp.salary}</td>
-
-                <td>${emp.startDate}</td>
-
-                <td>
-
-                    <div class="action-icons">
-
-                        <i class="fa-solid fa-trash"
-                           onclick="deleteEmployee(${index})"></i>
-
-                        <i class="fa-solid fa-pen"></i>
-
-                    </div>
-
-                </td>
-
-            </tr>
-        `;
-    });
+    tableBody.innerHTML = rows;
 
     // Update Count
-
-    document.querySelector(".count-badge")
-        .innerText = employees.length;
+    document.querySelector(".count-badge").innerText = employees.length;
 }
 
 
