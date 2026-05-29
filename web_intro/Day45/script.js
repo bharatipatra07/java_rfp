@@ -44,22 +44,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function displayEmployees() {
     const tableBody = document.getElementById("employeeTableBody");
+    let rows = "";
 
-    const rows = employees.map((emp, index) => `
-        <tr>
-            <td>${emp.name}</td>
-            <td>${emp.gender}</td>
-            <td>${emp.department.join(", ")}</td>
-            <td>${emp.salary}</td>
-            <td>${emp.startDate}</td>
-            <td>
-                <div class="action-icons">
-                    <i class="fa-solid fa-trash" onclick="deleteEmployee(${index})"></i>
-                    <i class="fa-solid fa-pen"></i>
-                </div>
-            </td>
-        </tr>
-    `).join("");
+    for (let index = 0; index < employees.length; index++) {
+        const emp = employees[index];
+        const deptHtml = emp.department
+            .map((dept) => `<span class="department-item">${dept}</span>`)
+            .join("");
+
+        rows += `
+            <tr>
+                <td>${emp.name}</td>
+                <td>${emp.gender}</td>
+                <td>${deptHtml}</td>
+                <td>${emp.salary}</td>
+                <td>${emp.startDate}</td>
+                <td>
+                    <div class="action-icons">
+                        <i class="fa-solid fa-trash" onclick="deleteEmployee(${index})"></i>
+                        <i class="fa-solid fa-pen"></i>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
 
     tableBody.innerHTML = rows;
 
