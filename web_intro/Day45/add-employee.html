@@ -411,21 +411,21 @@
 
         <div class="date-container">
 
-          <select>
+          <select id="day">
             <option>Day</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
           </select>
 
-          <select>
+          <select id="month">
             <option>Month</option>
             <option>January</option>
             <option>February</option>
             <option>March</option>
           </select>
 
-          <select>
+          <select id="year">
             <option>Year</option>
             <option>2024</option>
             <option>2025</option>
@@ -476,23 +476,64 @@
     const form = document.getElementById("employeeForm");
 
     form.addEventListener("submit", function(e) {
-
       e.preventDefault();
 
-      const name = document.getElementById("name").value;
+      const name = document.getElementById("name").value.trim();
+      const gender = document.querySelector('input[name="gender"]:checked')?.value || "";
+      const profile = document.querySelector('input[name="profile"]:checked')?.value || "";
+      const salary = document.getElementById("salary").value;
+      const day = document.getElementById("day").value;
+      const month = document.getElementById("month").value;
+      const year = document.getElementById("year").value;
+      const departments = Array.from(document.querySelectorAll('.department-container input[type="checkbox"]:checked')).map(
+        (checkbox) => checkbox.value
+      );
+
+      if (!name) {
+        alert("Please enter a name.");
+        return;
+      }
+
+      if (!gender) {
+        alert("Please select a gender.");
+        return;
+      }
+
+      if (departments.length === 0) {
+        alert("Please choose at least one department.");
+        return;
+      }
+
+      if (salary === "Select Salary") {
+        alert("Please select a salary.");
+        return;
+      }
+
+      if (day === "Day" || month === "Month" || year === "Year") {
+        alert("Please select a valid start date.");
+        return;
+      }
+
+      const employee = {
+        name,
+        gender,
+        profile,
+        department: departments,
+        salary,
+        startDate: `${day} ${month} ${year}`
+      };
+
+      const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
+      storedEmployees.push(employee);
+      localStorage.setItem("employees", JSON.stringify(storedEmployees));
 
       alert(`${name} added successfully!`);
-
-      form.reset();
-
+      window.location.href = "index.html";
     });
 
-    document.getElementById("cancelBtn")
-      .addEventListener("click", () => {
-
-        window.history.back();
-
-      });
+    document.getElementById("cancelBtn").addEventListener("click", () => {
+      window.history.back();
+    });
 
   </script>
 

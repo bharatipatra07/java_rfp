@@ -1,32 +1,62 @@
-// Sample Employee Data
+// Get employees from localStorage
 
-const employees = [
-    {
-        name: "Bharati Patra",
-        gender: "Female",
-        department: ["HR", "Finance"],
-        salary: "₹50,000",
-        startDate: "29 May 2026"
-    },
-    {
-        name: "Rahul Sharma",
-        gender: "Male",
-        department: ["Sales"],
-        salary: "₹45,000",
-        startDate: "20 May 2026"
-    }
-];
+let employees =
+    JSON.parse(localStorage.getItem("employees"));
+
+
+// If localStorage empty then add default data
+
+if (!employees) {
+
+    employees = [
+
+        {
+            name: "Bharati Patra",
+            gender: "Female",
+            department: ["HR", "Finance"],
+            salary: "₹50,000",
+            startDate: "29 May 2026"
+        },
+
+        {
+            name: "Rahul Sharma",
+            gender: "Male",
+            department: ["Sales"],
+            salary: "₹45,000",
+            startDate: "20 May 2026"
+        }
+    ];
+
+    localStorage.setItem(
+        "employees",
+        JSON.stringify(employees)
+    );
+}
+
 
 // Load Employees
+
 window.onload = function () {
+
+    displayEmployees();
+};
+
+
+// Display Employees
+
+function displayEmployees() {
 
     const tableBody =
         document.getElementById("employeeTableBody");
 
-    employees.forEach(emp => {
+    tableBody.innerHTML = "";
+
+    employees.forEach((emp, index) => {
 
         tableBody.innerHTML += `
+
             <tr>
+
                 <td>${emp.name}</td>
 
                 <td>${emp.gender}</td>
@@ -38,20 +68,47 @@ window.onload = function () {
                 <td>${emp.startDate}</td>
 
                 <td>
+
                     <div class="action-icons">
-                        <i class="fa-solid fa-trash"></i>
+
+                        <i class="fa-solid fa-trash"
+                           onclick="deleteEmployee(${index})"></i>
+
                         <i class="fa-solid fa-pen"></i>
+
                     </div>
+
                 </td>
+
             </tr>
         `;
     });
-};
 
-// Add User Function
+    // Update Count
+
+    document.querySelector(".count-badge")
+        .innerText = employees.length;
+}
+
+
+// Delete Employee
+
+function deleteEmployee(index) {
+
+    employees.splice(index, 1);
+
+    localStorage.setItem(
+        "employees",
+        JSON.stringify(employees)
+    );
+
+    displayEmployees();
+}
+
+
+// Add User Page Redirect
+
 function addUser() {
 
-    // Redirect to Add Employee Page
     window.location.href = "add-employee.html";
-
 }
