@@ -1,0 +1,39 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "department": "IT",
+      "salary": 60000,
+      "designation": "Senior Developer"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "department": "HR",
+      "salary": 50000,
+      "designation": "HR Manager"
+    },
+    {
+      "id": 3,
+      "name": "Michael Johnson",
+      "department": "Finance",
+      "salary": 55000,
+      "designation": "Financial Analyst"
+    },
+    {
+      "id": 4,
+      "name": "Sarah Williams",
+      "department": "IT",
+      "salary": 65000,
+      "designation": "Project Lead"
+    },
+    {
+      "id": 5,
+      "name": "Robert Brown",
+      "department": "Operations",
+      "salary": 52000,
+      "designation": "Operations Manager"
+    }
+  ]
+}

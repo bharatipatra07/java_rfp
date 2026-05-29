@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payroll REST Services - JSON Server Testing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input, select {
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .button-group button {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .output {
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .output pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .message {
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info-msg {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .loading {
+            display: inline-block;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .loading::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: '';
+            }
+            40% {
+                content: '.';
+            }
+            60% {
+                content: '..';
+            }
+            80%, 100% {
+                content: '...';
+            }
+        }
+
+        .employee-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .employee-list li {
+            background: white;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .employee-info {
+            flex-grow: 1;
+        }
+
+        .employee-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .employee-actions button {
+            padding: 6px 12px;
+            font-size: 0.85em;
+            margin: 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: #e9ecef;
+            color: #333;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Employee Payroll REST Services</h1>
+            <p>Testing with JSON Server using Promise - UC 4</p>
+        </div>
+
+        <div class="content">
+            <!-- GET ALL EMPLOYEES -->
+            <div class="section">
+                <h2>1. GET - All Employees</h2>
+                <button class="info" onclick="getAllEmployees()">Fetch All Employees</button>
+                <div id="getAllOutput" class="output" style="display: none;">
+                    <pre id="getAllResult"></pre>
+                </div>
+            </div>
+
+            <!-- GET EMPLOYEE BY ID -->
+            <div class="section">
+                <h2>2. GET - Employee by ID</h2>
+                <div class="form-group">
+                    <label for="getEmployeeId">Enter Employee ID:</label>
+                    <input type="number" id="getEmployeeId" placeholder="e.g., 1" min="1">
+                </div>
+                <button class="info" onclick="getEmployeeById()">Get Employee</button>
+                <div id="getByIdOutput" class="output" style="display: none;">
+                    <pre id="getByIdResult"></pre>
+                </div>
+            </div>
+
+            <!-- POST - ADD NEW EMPLOYEE -->
+            <div class="section">
+                <h2>3. POST - Add New Employee</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="empName">Employee Name:</label>
+                        <input type="text" id="empName" placeholder="e.g., John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="empDept">Department:</label>
+                        <input type="text" id="empDept" placeholder="e.g., IT">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="empSalary">Salary:</label>
+                        <input type="number" id="empSalary" placeholder="e.g., 50000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="empDesignation">Designation:</label>
+                        <input type="text" id="empDesignation" placeholder="e.g., Developer">
+                    </div>
+                </div>
+                <button class="success" onclick="addEmployee()">Add Employee</button>
+                <div id="postOutput" class="output" style="display: none;">
+                    <pre id="postResult"></pre>
+                </div>
+            </div>
+
+            <!-- DELETE EMPLOYEE -->
+            <div class="section">
+                <h2>4. DELETE - Remove Employee</h2>
+                <div class="form-group">
+                    <label for="deleteEmployeeId">Enter Employee ID to Delete:</label>
+                    <input type="number" id="deleteEmployeeId" placeholder="e.g., 1" min="1">
+                </div>
+                <button class="danger" onclick="deleteEmployee()">Delete Employee</button>
+                <div id="deleteOutput" class="output" style="display: none;">
+                    <pre id="deleteResult"></pre>
+                </div>
+            </div>
+
+            <!-- INSTRUCTIONS -->
+            <div class="section" style="background: #e7f3ff; border-left-color: #4facfe;">
+                <h2 style="color: #0056b3;">Setup Instructions</h2>
+                <p style="margin-bottom: 15px;">To test this application, you need to run JSON Server:</p>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>Install JSON Server: <code style="background: #f5f5f5; padding: 2px 5px; border-radius: 3px;">npm install -g json-server</code></li>
+                    <li>Create a <code style="background: #f5f5f5; padding: 2px 5px; border-radius: 3px;">db.json</code> file with sample data</li>
+                    <li>Start JSON Server: <code style="background: #f5f5f5; padding: 2px 5px; border-radius: 3px;">json-server --watch db.json</code></li>
+                    <li>Server will run on <code style="background: #f5f5f5; padding: 2px 5px; border-radius: 3px;">http://localhost:3000</code></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include HTTP Services -->
+    <script src="http_services.js"></script>
+
+    <script>
+        // Display message in the UI
+        function displayMessage(elementId, message, type = 'info') {
+            const output = document.getElementById(elementId);
+            output.style.display = 'block';
+            const result = document.getElementById(elementId.replace('Output', 'Result'));
+            result.textContent = message;
+        }
+
+        // Format JSON for display
+        function formatJSON(data) {
+            return JSON.stringify(data, null, 2);
+        }
+
+        // GET - All Employees
+        function getAllEmployees() {
+            displayMessage('getAllOutput', '⏳ Loading...');
+            
+            httpServices.getEmployees()
+                .then(employees => {
+                    console.log('All Employees:', employees);
+                    displayMessage('getAllOutput', formatJSON(employees), 'success');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayMessage('getAllOutput', `❌ Error: ${error.message}`, 'error');
+                });
+        }
+
+        // GET - Employee by ID
+        function getEmployeeById() {
+            const id = document.getElementById('getEmployeeId').value;
+            
+            if (!id) {
+                displayMessage('getByIdOutput', '❌ Please enter an Employee ID', 'error');
+                return;
+            }
+
+            displayMessage('getByIdOutput', '⏳ Loading...');
+            
+            httpServices.getEmployeeById(id)
+                .then(employee => {
+                    console.log('Employee:', employee);
+                    displayMessage('getByIdOutput', formatJSON(employee), 'success');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayMessage('getByIdOutput', `❌ Error: ${error.message}`, 'error');
+                });
+        }
+
+        // POST - Add New Employee
+        function addEmployee() {
+            const name = document.getElementById('empName').value;
+            const department = document.getElementById('empDept').value;
+            const salary = document.getElementById('empSalary').value;
+            const designation = document.getElementById('empDesignation').value;
+
+            if (!name || !department || !salary || !designation) {
+                displayMessage('postOutput', '❌ Please fill in all fields', 'error');
+                return;
+            }
+
+            const employeeData = {
+                name: name,
+                department: department,
+                salary: parseFloat(salary),
+                designation: designation
+            };
+
+            displayMessage('postOutput', '⏳ Adding employee...');
+            
+            httpServices.addEmployee(employeeData)
+                .then(newEmployee => {
+                    console.log('New Employee Added:', newEmployee);
+                    displayMessage('postOutput', `✅ Employee added successfully!\n\n${formatJSON(newEmployee)}`, 'success');
+                    // Clear form
+                    document.getElementById('empName').value = '';
+                    document.getElementById('empDept').value = '';
+                    document.getElementById('empSalary').value = '';
+                    document.getElementById('empDesignation').value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayMessage('postOutput', `❌ Error: ${error.message}`, 'error');
+                });
+        }
+
+        // DELETE - Remove Employee
+        function deleteEmployee() {
+            const id = document.getElementById('deleteEmployeeId').value;
+            
+            if (!id) {
+                displayMessage('deleteOutput', '❌ Please enter an Employee ID', 'error');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to delete employee with ID ${id}?`)) {
+                return;
+            }
+
+            displayMessage('deleteOutput', '⏳ Deleting employee...');
+            
+            httpServices.deleteEmployee(id)
+                .then(response => {
+                    console.log('Employee Deleted:', response);
+                    displayMessage('deleteOutput', `✅ Employee with ID ${id} deleted successfully!`, 'success');
+                    document.getElementById('deleteEmployeeId').value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayMessage('deleteOutput', `❌ Error: ${error.message}`, 'error');
+                });
+        }
+
+        // Initialize - Show a welcome message
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Employee Payroll REST Services - Ready for Testing');
+            console.log('Ensure JSON Server is running on http://localhost:3000');
+        });
+    </script>
+</body>
+</html>
