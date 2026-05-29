@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payroll Service - Complete Learning Package</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+
+        .header-description {
+            font-size: 1.05em;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title .icon {
+            font-size: 1.3em;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            color: #333;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .card-features {
+            list-style: none;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .card-features li {
+            color: #666;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .card-features li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .card-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .card-link:hover {
+            transform: translateX(5px);
+        }
+
+        .learning-path {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .learning-path h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .path-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .path-steps li {
+            counter-increment: step-counter;
+            color: #555;
+            margin-bottom: 15px;
+            padding-left: 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .path-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .file-list {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .file-list h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .file-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-left: 3px solid #667eea;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .file-desc {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .file-type {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .key-concepts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .concept-box {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .concept-box h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .concept-box p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .concept-highlight {
+            background: #fff9e6;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            color: #856404;
+            font-weight: 500;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.95em;
+            opacity: 0.95;
+        }
+
+        .comparison-highlights {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .comparison-highlights h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .comparison-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .comparison-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .faq-section {
+            margin-top: 25px;
+        }
+
+        .faq-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .footer {
+            background: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+            padding: 25px 40px;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid, .key-concepts {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .emoji {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Employee Payroll Service</h1>
+            <div class="header-subtitle">Local Storage vs JSON Server - Complete Learning Package</div>
+            <div class="header-description">
+                Master the fundamental difference between browser-local data storage and centralized server-based architecture. 
+                Understand why Local Storage is isolated and JSON Server enables true data sharing.
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- QUICK START SECTION -->
+            <section class="section">
+                <div class="section-title">
+                    <span class="icon">⚡</span>
+                    Quick Start (5 Minutes)
+                </div>
+
+                <div class="learning-path">
+                    <h3>Get Started in 5 Easy Steps:</h3>
+                    <ol class="path-steps">
+                        <li>
+                            <strong>Start JSON Server:</strong><br/>
+                            Open terminal and run: <code>json-server --watch db.json</code>
+                        </li>
+                        <li>
+                            <strong>Open comparison_demo.html:</strong><br/>
+                            This is your interactive testing tool
+                        </li>
+                        <li>
+                            <strong>Test Local Storage:</strong><br/>
+                            Add employee to Local Storage, then open in different browser
+                        </li>
+                        <li>
+                            <strong>Test JSON Server:</strong><br/>
+                            Click "Get All Employees" - see how both browsers see same data
+                        </li>
+                        <li>
+                            <strong>Understand the Difference:</strong><br/>
+                            You now see why Local Storage is "very local" and JSON Server is "universal"
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Data Storage Models</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Interactive Demos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Isolation Levels</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Learning Depth</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KEY CONCEPTS SECTION -->
+            <section class="section">
+                <div class="section-title">
+                    <span class="icon">💡</span>
+                    Core Concepts at a Glance
+                </div>
+
+                <div class="key-concepts">
+                    <div class="concept-box">
+                        <h4>📱 Local Storage (Browser-Local)</h4>
+                        <p>
+                            Data stored INSIDE the browser on your device. Each browser instance, 
+                            user account, and device has completely separate storage.
+                        </p>
+                        <div class="concept-highlight">
+                            <strong>Key:</strong> Very Local = Browser-specific + User-specific + Device-specific
+                        </div>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4>🌐 JSON Server (Server-Based)</h4>
+                        <p>
+                            Data stored ON a server that all browsers connect to via HTTP. 
+                            Central database accessible from ANY client worldwide.
+                        </p>
+                        <div class="concept-highlight">
+                            <strong>Key:</strong> Universal Access = Any browser + Any user + Any device
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-highlights">
+                    <h4>At a Glance Comparison:</h4>
+                    <div class="comparison-row">
+                        <div>
+                            <span class="comparison-label">💾 Local Storage:</span>
+                            <div class="comparison-content">Trapped in one browser on one device</div>
+                        </div>
+                        <div>
+                            <span class="comparison-label">🖥️ JSON Server:</span>
+                            <div class="comparison-content">Accessible from any HTTP client anywhere</div>
+                        </div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>
+                            <span class="comparison-label">💾 Local Storage:</span>
+                            <div class="comparison-content">Browser A ≠ Browser B (isolated)</div>
+                        </div>
+                        <div>
+                            <span class="comparison-label">🖥️ JSON Server:</span>
+                            <div class="comparison-content">Browser A = Browser B (shared)</div>
+                        </div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>
+                            <span class="comparison-label">💾 Local Storage:</span>
+                            <div class="comparison-content">Single user experience</div>
+                        </div>
+                        <div>
+                            <span class="comparison-label">🖥️ JSON Server:</span>
+                            <div class="comparison-content">Multi-user collaboration</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEARNING MATERIALS SECTION -->
+            <section class="section">
+                <div class="section-title">
+                    <span class="icon">📚</span>
+                    Learning Materials
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">🧪</div>
+                        <div class="card-title">comparison_demo.html</div>
+                        <div class="card-description">
+                            Interactive demonstration showing both approaches in action. Test Local Storage isolation and JSON Server sharing.
+                        </div>
+                        <ul class="card-features">
+                            <li>Local Storage demo</li>
+                            <li>JSON Server demo</li>
+                            <li>Real-time output</li>
+                            <li>Live testing</li>
+                        </ul>
+                        <a href="comparison_demo.html" class="card-link">
+                            <span class="emoji">→</span>Open Demo
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">💻</div>
+                        <div class="card-title">code_examples.html</div>
+                        <div class="card-description">
+                            Side-by-side code comparisons for all CRUD operations. See exact implementation differences.
+                        </div>
+                        <ul class="card-features">
+                            <li>Basic operations</li>
+                            <li>Pros and cons</li>
+                            <li>Real-world scenarios</li>
+                            <li>API reference</li>
+                        </ul>
+                        <a href="code_examples.html" class="card-link">
+                            <span class="emoji">→</span>View Examples
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">📖</div>
+                        <div class="card-title">LOCAL_VS_SERVER.md</div>
+                        <div class="card-description">
+                            Comprehensive technical documentation with architecture diagrams, detailed explanations, and tables.
+                        </div>
+                        <ul class="card-features">
+                            <li>Architecture overview</li>
+                            <li>Detailed comparison</li>
+                            <li>Flow diagrams</li>
+                            <li>Technical breakdown</li>
+                        </ul>
+                        <a href="LOCAL_VS_SERVER.md" target="_blank" class="card-link">
+                            <span class="emoji">→</span>Read Documentation
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">🎓</div>
+                        <div class="card-title">LEARNING_GUIDE.md</div>
+                        <div class="card-description">
+                            Complete learning module with objectives, testing checklist, FAQs, and migration strategy.
+                        </div>
+                        <ul class="card-features">
+                            <li>Learning objectives</li>
+                            <li>Testing checklist</li>
+                            <li>Real-world apps</li>
+                            <li>Migration guide</li>
+                        </ul>
+                        <a href="LEARNING_GUIDE.md" target="_blank" class="card-link">
+                            <span class="emoji">→</span>Study Guide
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">💼</div>
+                        <div class="card-title">Original Services</div>
+                        <div class="card-description">
+                            The original index.html payroll service and http_services.js for reference and testing.
+                        </div>
+                        <ul class="card-features">
+                            <li>HTTP Service class</li>
+                            <li>CRUD operations</li>
+                            <li>Promise-based</li>
+                            <li>Full documentation</li>
+                        </ul>
+                        <a href="index.html" class="card-link">
+                            <span class="emoji">→</span>Open Service
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">📊</div>
+                        <div class="card-title">db.json</div>
+                        <div class="card-description">
+                            Sample database with employee data. Used by JSON Server to serve REST endpoints.
+                        </div>
+                        <ul class="card-features">
+                            <li>Sample employees</li>
+                            <li>Ready to use</li>
+                            <li>Edit anytime</li>
+                            <li>Auto-saved</li>
+                        </ul>
+                        <a href="db.json" target="_blank" class="card-link">
+                            <span class="emoji">→</span>View Database
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DETAILED LEARNING PATH -->
+            <section class="section">
+                <div class="section-title">
+                    <span class="icon">📍</span>
+                    Recommended Learning Path
+                </div>
+
+                <div class="learning-path">
+                    <h3>Beginner (30 minutes):</h3>
+                    <ol class="path-steps">
+                        <li>
+                            <strong>Read the Core Concepts above</strong> - Understand the big difference
+                        </li>
+                        <li>
+                            <strong>Open comparison_demo.html</strong> - See both approaches in action
+                        </li>
+                        <li>
+                            <strong>Run the tests:</strong>
+                            <ul style="margin-top: 5px; margin-left: 20px;">
+                                <li>Add to Local Storage, open in different browser (data disappears!)</li>
+                                <li>Start JSON Server, see same data in multiple browsers</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Understand why</strong> - Local Storage is per-browser, JSON Server is shared
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="learning-path" style="margin-top: 20px;">
+                    <h3>Intermediate (1-2 hours):</h3>
+                    <ol class="path-steps">
+                        <li>
+                            <strong>Study code_examples.html</strong> - See exact implementation differences
+                        </li>
+                        <li>
+                            <strong>Read LOCAL_VS_SERVER.md</strong> - Deep technical understanding
+                        </li>
+                        <li>
+                            <strong>Review the four scenarios</strong> - When and why to use each
+                        </li>
+                        <li>
+                            <strong>Test edge cases:</strong>
+                            <ul style="margin-top: 5px; margin-left: 20px;">
+                                <li>Different browsers on same computer</li>
+                                <li>Different Windows user accounts</li>
+                                <li>Different devices (if available)</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="learning-path" style="margin-top: 20px;">
+                    <h3>Advanced (2-4 hours):</h3>
+                    <ol class="path-steps">
+                        <li>
+                            <strong>Study LEARNING_GUIDE.md</strong> - Complete module with all aspects
+                        </li>
+                        <li>
+                            <strong>Modify the code:</strong>
+                            <ul style="margin-top: 5px; margin-left: 20px;">
+                                <li>Add new fields to employee data</li>
+                                <li>Implement additional CRUD operations</li>
+                                <li>Add error handling and validation</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Build your own project:</strong>
+                            <ul style="margin-top: 5px; margin-left: 20px;">
+                                <li>Decide: Local Storage or JSON Server?</li>
+                                <li>Implement both approaches</li>
+                                <li>Compare and document differences</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Review the migration guide</strong> - Convert Local Storage to JSON Server
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- FILES INCLUDED -->
+            <section class="section">
+                <div class="section-title">
+                    <span class="icon">📁</span>
+                    Files Included in This Package
+                </div>
+
+                <div class="file-list">
+                    <h4>📄 HTML Files (Interactive Demos)</h4>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">comparison_demo.html</div>
+                            <div class="file-desc">Interactive side-by-side demo of Local Storage vs JSON Server</div>
+                        </div>
+                        <span class="file-type">START HERE</span>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">code_examples.html</div>
+                            <div class="file-desc">Code comparison, pros/cons, real-world scenarios, API reference</div>
+                        </div>
+                        <span class="file-type">Learning</span>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">index.html</div>
+                            <div class="file-desc">Original Employee Payroll Service - Testing with REST API</div>
+                        </div>
+                        <span class="file-type">Reference</span>
+                    </div>
+                </div>
+
+                <div class="file-list" style="margin-top: 20px;">
+                    <h4>📋 Documentation Files (Markdown)</h4>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">LOCAL_VS_SERVER.md</div>
+                            <div class="file-desc">Comprehensive technical documentation with diagrams and tables</div>
+                        </div>
+                        <span class="file-type">Technical</span>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">LEARNING_GUIDE.md</div>
+                            <div class="file-desc">Complete module with objectives, checklist, FAQs, migration guide</div>
+                        </div>
+                        <span class="file-type">Module</span>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">README.md</div>
+                            <div class="file-desc">Original package documentation and setup instructions</div>
+                        </div>
+                        <span class="file-type">Setup</span>
+                    </div>
+                </div>
+
+                <div class="file-list" style="margin-top: 20px;">
+                    <h4>💻 Code Files</h4>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">http_services.js</div>
+                            <div class="file-desc">HTTP Service class with Promise-based CRUD operations</div>
+                        </div>
+                        <span class="file-type">JavaScript</span>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">db.json</div>
+                            <div class="file-desc">Sample database for JSON Server with employee data</div>
+                        </div>
+                        <span class="file-type">Database</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ SECTION -->
+            <section class="section">
+                <div class="section-title">
+                    <span class="icon">❓</span>
+                    Frequently Asked Questions
+                </div>
+
+                <div class="faq-section" onclick="toggleFAQ(event)">
+                    <div class="faq-item">
+                        <div class="faq-question">Why is Local Storage called "very local"?</div>
+                        <div class="faq-answer">
+                            Because it's stored INSIDE the browser on your device. It's isolated at three levels:
+                            1) Browser level (Chrome ≠ Firefox), 2) User level (User A ≠ User B), 3) Device level (Laptop ≠ Desktop).
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">Can multiple browsers share Local Storage?</div>
+                        <div class="faq-answer">
+                            No. Each browser instance has its own isolated storage. Chrome and Firefox cannot access each other's Local Storage,
+                            even on the same computer.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">Why can JSON Server be accessed from any browser?</div>
+                        <div class="faq-answer">
+                            Because JSON Server is a central server that all browsers connect to via HTTP. They're not storing data locally,
+                            they're fetching it from the server. HTTP is a universal protocol accessible by any client.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">What if different Windows users need to access payroll data?</div>
+                        <div class="faq-answer">
+                            With Local Storage: Impossible. Each Windows user has separate Local Storage. With JSON Server: Works perfectly.
+                            Both users connect to the same server and see the same data.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">Can I use JSON Server in production?</div>
+                        <div class="faq-answer">
+                            JSON Server is for development and learning only. For production, you need a real backend like Express.js,
+                            Django, Spring Boot, etc. with proper authentication, security, and scaling.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">When should I use Local Storage?</div>
+                        <div class="faq-answer">
+                            Use Local Storage for single-user applications like personal todo apps, user preferences, form auto-save,
+                            offline functionality. Not for shared or multi-user applications.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">When should I use JSON Server / Server-based storage?</div>
+                        <div class="faq-answer">
+                            Use server-based storage for multi-user applications, team collaboration, data sharing, real-time updates,
+                            cross-device access, and any production application.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">How do I start JSON Server?</div>
+                        <div class="faq-answer">
+                            1) Install: npm install -g json-server
+                            2) Navigate to your project directory
+                            3) Run: json-server --watch db.json
+                            4) Server runs on http://localhost:3000
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">Can I test this on my phone?</div>
+                        <div class="faq-answer">
+                            Yes! For Local Storage testing: Just open in any mobile browser - it will have its own isolated storage.
+                            For JSON Server: Change localhost:3000 to your computer's IP address and make sure phone is on same network.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">What's the main advantage of JSON Server over Local Storage?</div>
+                        <div class="faq-answer">
+                            Data sharing. With Local Storage, each client has separate data. With JSON Server, all clients see the
+                            SAME data from the server, enabling true multi-user collaboration and real-time updates.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CALL TO ACTION -->
+            <section class="section" style="text-align: center;">
+                <div class="section-title" style="justify-content: center;">
+                    <span class="icon">🚀</span>
+                    Ready to Learn?
+                </div>
+
+                <div class="button-group">
+                    <a href="comparison_demo.html" class="cta-button">
+                        <span class="emoji">🧪</span> Start Interactive Demo
+                    </a>
+                    <a href="code_examples.html" class="cta-button">
+                        <span class="emoji">💻</span> View Code Examples
+                    </a>
+                </div>
+
+                <p style="color: #666; margin-top: 25px; line-height: 1.8;">
+                    <strong>Pro Tip:</strong> Start with the interactive demo, then study the code examples and documentation.
+                    The hands-on experience will make the concepts crystal clear!
+                </p>
+            </section>
+        </div>
+
+        <div class="footer">
+            <p>
+                <strong>Employee Payroll Service - Local Storage vs JSON Server</strong><br/>
+                Complete Learning Package | UC 4 - REST Services with Promise
+            </p>
+            <p style="margin-top: 15px; opacity: 0.7;">
+                Created for understanding data storage models and client-server architecture
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function toggleFAQ(event) {
+            if (event.target.closest('.faq-item')) {
+                const item = event.target.closest('.faq-item');
+                item.classList.toggle('active');
+            }
+        }
+
+        // Add click to expand animation
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        console.log('=== Employee Payroll Service ===');
+        console.log('Local Storage vs JSON Server - Learning Package');
+        console.log('Start with: comparison_demo.html');
+        console.log('Then study: code_examples.html');
+        console.log('Deep dive: LOCAL_VS_SERVER.md');
+        console.log('Complete: LEARNING_GUIDE.md');
+    </script>
+</body>
+</html>

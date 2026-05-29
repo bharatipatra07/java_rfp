@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage vs JSON Server - Code Examples</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.05em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .code-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .code-block {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .code-block:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .code-header {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-header.local {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .code-header.server {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .code-content {
+            padding: 20px;
+            background: #f8f8f8;
+            overflow-x: auto;
+        }
+
+        .code-content code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #333;
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .pros, .cons {
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .pros {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+
+        .cons {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+
+        .pros h4, .cons h4 {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .pros h4 {
+            color: #2e7d32;
+        }
+
+        .cons h4 {
+            color: #c62828;
+        }
+
+        .pros ul, .cons ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .pros li, .cons li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #555;
+        }
+
+        .pros li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .cons li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .scenario {
+            background: #f0f4ff;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+
+        .scenario h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .scenario p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .result {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .result-local {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+
+        .result-server {
+            border-left-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .comparison-flow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .flow-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .flow-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .flow-step-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .flow-step-content {
+            flex-grow: 1;
+            color: #555;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .data-location {
+            background: #eceff1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.85em;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .diagram-box {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            margin: 20px 0;
+        }
+
+        .diagram-box h4 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .api-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .api-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .api-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .api-table tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        .api-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .method {
+            font-family: monospace;
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .code-comparison,
+            .pros-cons,
+            .comparison-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .note-title {
+            color: #856404;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .note-content {
+            color: #856404;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Code Examples: Local Storage vs JSON Server</h1>
+            <p>Side-by-Side Implementation Comparison</p>
+        </div>
+
+        <div class="content">
+            <!-- SECTION 1: BASIC OPERATIONS -->
+            <section class="section">
+                <h2>📝 Basic Operations</h2>
+
+                <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 25px;">Adding Employee Data</h3>
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-header local">
+                            <span class="icon">💾</span>
+                            Local Storage
+                        </div>
+                        <div class="code-content">
+                            <code>// Create employee object
+const employee = {
+    name: "John Doe",
+    department: "IT",
+    salary: 50000,
+    designation: "Developer"
+};
+
+// Convert to JSON string
+const jsonString = JSON.stringify(employee);
+
+// Save to Local Storage
+localStorage.setItem('emp_1', jsonString);
+
+// Result: Data stored in browser's
+// Local Storage (isolated to this browser)
+localStorage.setItem('timestamp', 
+    new Date().toISOString());
+
+// Verify it was saved
+console.log(localStorage.getItem('emp_1'));</code>
+                        </div>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header server">
+                            <span class="icon">🌐</span>
+                            JSON Server (HTTP)
+                        </div>
+                        <div class="code-content">
+                            <code>// Create employee object
+const employee = {
+    name: "John Doe",
+    department: "IT",
+    salary: 50000,
+    designation: "Developer"
+};
+
+// Send to server via HTTP POST
+fetch('http://localhost:3000/employees', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(employee)
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Added with ID:', data.id);
+    // Result: Data stored on server
+    // in db.json (accessible to all clients)
+})
+.catch(error => console.error(error));</code>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 25px;">Retrieving Employee Data</h3>
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-header local">
+                            <span class="icon">💾</span>
+                            Local Storage
+                        </div>
+                        <div class="code-content">
+                            <code>// Get single employee
+const empData = localStorage.getItem('emp_1');
+const employee = JSON.parse(empData);
+console.log(employee.name); // "John Doe"
+
+// Get all employees (manual iteration)
+const allEmployees = [];
+for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    allEmployees.push(JSON.parse(value));
+}
+
+console.log(allEmployees);
+
+// This data is ONLY in THIS browser
+// Other browsers won't have it</code>
+                        </div>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header server">
+                            <span class="icon">🌐</span>
+                            JSON Server (HTTP)
+                        </div>
+                        <div class="code-content">
+                            <code>// Get single employee
+fetch('http://localhost:3000/employees/1')
+    .then(response => response.json())
+    .then(employee => {
+        console.log(employee.name); // "John Doe"
+    });
+
+// Get all employees
+fetch('http://localhost:3000/employees')
+    .then(response => response.json())
+    .then(employees => {
+        console.log(employees);
+    });
+
+// This data is SHARED on the server
+// ANY browser, ANY program can access it
+// Try in Postman:
+// GET http://localhost:3000/employees</code>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 25px;">Deleting Employee Data</h3>
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-header local">
+                            <span class="icon">💾</span>
+                            Local Storage
+                        </div>
+                        <div class="code-content">
+                            <code>// Delete single employee
+localStorage.removeItem('emp_1');
+
+// Delete all employees
+localStorage.clear();
+
+// Verify deletion
+if (!localStorage.getItem('emp_1')) {
+    console.log('Employee deleted');
+}
+
+// Note: This only affects THIS browser
+// Other browsers still have their data
+// User A on Chrome: emp_1 deleted
+// User B on Firefox: emp_1 still exists
+// (if they had it in their storage)</code>
+                        </div>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-header server">
+                            <span class="icon">🌐</span>
+                            JSON Server (HTTP)
+                        </div>
+                        <div class="code-content">
+                            <code>// Delete single employee
+fetch('http://localhost:3000/employees/1', {
+    method: 'DELETE'
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Employee deleted');
+});
+
+// Verify deletion
+fetch('http://localhost:3000/employees/1')
+    .then(response => {
+        if (response.status === 404) {
+            console.log('Employee not found');
+        }
+    });
+
+// Note: This deletes from server
+// ALL browsers will see the deletion
+// Employee removed for everyone!
+// User A on Chrome: emp_1 deleted
+// User B on Firefox: emp_1 also deleted
+// (everyone sees updated db.json)</code>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: PROS AND CONS -->
+            <section class="section">
+                <h2>⚖️ Advantages and Disadvantages</h2>
+
+                <h3 style="color: #667eea; margin-bottom: 15px;">Local Storage</h3>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul>
+                            <li>No server required</li>
+                            <li>Simple to implement</li>
+                            <li>Fast access (local disk)</li>
+                            <li>Works offline</li>
+                            <li>No network latency</li>
+                            <li>Persistent across sessions</li>
+                            <li>GDPR friendly (local)</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul>
+                            <li>Browser-specific (isolated)</li>
+                            <li>User-account specific</li>
+                            <li>Device-bound data</li>
+                            <li>No multi-user support</li>
+                            <li>No data sharing</li>
+                            <li>5-10 MB capacity limit</li>
+                            <li>Cannot sync across devices</li>
+                            <li>Cleared on app uninstall</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 30px;">JSON Server</h3>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul>
+                            <li>Centralized data storage</li>
+                            <li>Accessible from any browser</li>
+                            <li>True multi-user support</li>
+                            <li>Real-time data sharing</li>
+                            <li>No storage capacity limit</li>
+                            <li>Works across devices</li>
+                            <li>Works across networks</li>
+                            <li>Any HTTP client can access</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul>
+                            <li>Requires server setup</li>
+                            <li>Network dependency</li>
+                            <li>Increased latency</li>
+                            <li>Cannot work offline</li>
+                            <li>Server maintenance needed</li>
+                            <li>JSON Server is dev-only</li>
+                            <li>No built-in authentication</li>
+                            <li>Requires HTTP knowledge</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: DATA LOCATION -->
+            <section class="section">
+                <h2>📂 Where is the Data Stored?</h2>
+
+                <h3 style="color: #667eea; margin-bottom: 15px;">Local Storage - File System Locations</h3>
+                <div class="data-location">
+                    <strong>Windows (Chrome):</strong><br/>
+                    C:\Users\[USERNAME]\AppData\Local\Google\Chrome\User Data\Default\Local Storage\
+                    
+                    <br/><br/>
+                    <strong>Windows (Firefox):</strong><br/>
+                    C:\Users\[USERNAME]\AppData\Roaming\Mozilla\Firefox\Profiles\[PROFILE]\storage\default\
+                    
+                    <br/><br/>
+                    <strong>macOS (Chrome):</strong><br/>
+                    ~/Library/Application Support/Google/Chrome/Default/Local Storage/
+                    
+                    <br/><br/>
+                    <strong>macOS (Firefox):</strong><br/>
+                    ~/Library/Application Support/Firefox/Profiles/[PROFILE]/storage/default/
+                    
+                    <br/><br/>
+                    <strong>Linux (Chrome):</strong><br/>
+                    ~/.config/google-chrome/Default/Local Storage/
+                </div>
+
+                <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 30px;">JSON Server - Server Location</h3>
+                <div class="data-location">
+                    <strong>Default Location:</strong><br/>
+                    ./db.json (in current working directory)
+                    
+                    <br/><br/>
+                    <strong>Example Project Structure:</strong><br/>
+                    /Users/bharati/git/java_rfp/web_intro/Day48/<br/>
+                    ├── index.html<br/>
+                    ├── comparison_demo.html<br/>
+                    ├── http_services.js<br/>
+                    ├── db.json ← Data stored here<br/>
+                    └── README.md
+                    
+                    <br/><br/>
+                    <strong>Accessed Via:</strong><br/>
+                    http://localhost:3000/employees
+                </div>
+            </section>
+
+            <!-- SECTION 4: API REFERENCE -->
+            <section class="section">
+                <h2>📚 API Reference</h2>
+
+                <h3 style="color: #667eea; margin-bottom: 15px;">Local Storage API</h3>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Usage</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method">setItem()</span></td>
+                                <td>Store data</td>
+                                <td>localStorage.setItem('key', 'value')</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">getItem()</span></td>
+                                <td>Retrieve data</td>
+                                <td>localStorage.getItem('key')</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">removeItem()</span></td>
+                                <td>Delete one item</td>
+                                <td>localStorage.removeItem('key')</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">clear()</span></td>
+                                <td>Delete all data</td>
+                                <td>localStorage.clear()</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">key()</span></td>
+                                <td>Get key by index</td>
+                                <td>localStorage.key(0)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method">length</span></td>
+                                <td>Number of items</td>
+                                <td>localStorage.length</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 30px;">JSON Server REST API</h3>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Operation</th>
+                                <th>HTTP Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GET All</td>
+                                <td>GET</td>
+                                <td>/employees</td>
+                                <td>Fetch all employees</td>
+                            </tr>
+                            <tr>
+                                <td>GET One</td>
+                                <td>GET</td>
+                                <td>/employees/:id</td>
+                                <td>Fetch employee by ID</td>
+                            </tr>
+                            <tr>
+                                <td>CREATE</td>
+                                <td>POST</td>
+                                <td>/employees</td>
+                                <td>Add new employee</td>
+                            </tr>
+                            <tr>
+                                <td>UPDATE</td>
+                                <td>PUT</td>
+                                <td>/employees/:id</td>
+                                <td>Update employee</td>
+                            </tr>
+                            <tr>
+                                <td>DELETE</td>
+                                <td>DELETE</td>
+                                <td>/employees/:id</td>
+                                <td>Delete employee</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 5: REAL-WORLD SCENARIOS -->
+            <section class="section">
+                <h2>🎯 Real-World Scenarios</h2>
+
+                <div class="scenario">
+                    <h3>Scenario 1: Team Collaboration</h3>
+                    <p><strong>Requirement:</strong> 5 team members need to access the same employee payroll data from different computers/devices</p>
+
+                    <div class="result result-local">
+                        <div class="result-title">❌ Local Storage Solution:</div>
+                        <p>Each team member sees different data (trapped in their browser). Alice adds 10 employees, but Bob sees an empty list. No real-time updates. Collaboration is impossible.</p>
+                    </div>
+
+                    <div class="result result-server">
+                        <div class="result-title">✅ JSON Server Solution:</div>
+                        <p>All 5 team members connect to the same server. When Alice adds an employee, everyone immediately sees it. Real-time updates for all. Perfect for team collaboration.</p>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h3>Scenario 2: Cross-Device Access</h3>
+                    <p><strong>Requirement:</strong> User needs to access payroll data from office (Chrome), home (Firefox), and mobile (Safari)</p>
+
+                    <div class="result result-local">
+                        <div class="result-title">❌ Local Storage Solution:</div>
+                        <p>Data is isolated per browser. Chrome on office computer has different data than Firefox at home. Mobile phone has empty storage. No way to sync data across devices.</p>
+                    </div>
+
+                    <div class="result result-server">
+                        <div class="result-title">✅ JSON Server Solution:</div>
+                        <p>All devices (Chrome, Firefox, Safari) connect to the same server. Data is always synchronized. User sees identical employee list from any device, anywhere.</p>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h3>Scenario 3: Different User Accounts</h3>
+                    <p><strong>Requirement:</strong> Multiple Windows user accounts need access to payroll data</p>
+
+                    <div class="result result-local">
+                        <div class="result-title">❌ Local Storage Solution:</div>
+                        <p>Each Windows user account has completely separate Local Storage. User A adds employees, but User B cannot see them. Data is completely isolated per-user.</p>
+                    </div>
+
+                    <div class="result result-server">
+                        <div class="result-title">✅ JSON Server Solution:</div>
+                        <p>Both Windows user accounts access the same server. User A and User B see identical employee data. User account is irrelevant - the server is the central authority.</p>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h3>Scenario 4: External Program Access</h3>
+                    <p><strong>Requirement:</strong> Python script, Postman, cURL, and mobile app need to access payroll data</p>
+
+                    <div class="result result-local">
+                        <div class="result-title">❌ Local Storage Solution:</div>
+                        <p>Impossible! Local Storage is only accessible from JavaScript in a browser. External programs have zero access to the data. Not possible to implement.</p>
+                    </div>
+
+                    <div class="result result-server">
+                        <div class="result-title">✅ JSON Server Solution:</div>
+                        <p>All clients (JavaScript, Python, Postman, cURL, mobile) use HTTP to access the same server. Any program with HTTP capability can access the data.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: PRACTICAL COMPARISON -->
+            <section class="section">
+                <h2>🔄 Request/Response Flow Comparison</h2>
+
+                <div class="comparison-flow">
+                    <div class="flow-box">
+                        <h4>Local Storage (No Network)</h4>
+                        <div class="flow-step">
+                            <div class="flow-step-num">1</div>
+                            <div class="flow-step-content">JavaScript runs in browser</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-num">2</div>
+                            <div class="flow-step-content">Direct read/write to browser storage</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-num">3</div>
+                            <div class="flow-step-content">Data stays in browser (isolated)</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-num">4</div>
+                            <div class="flow-step-content">Other browsers have no access</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-box">
+                        <h4>JSON Server (Network Request)</h4>
+                        <div class="flow-step">
+                            <div class="flow-step-num">1</div>
+                            <div class="flow-step-content">Client sends HTTP request</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-num">2</div>
+                            <div class="flow-step-content">Request travels over network</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-num">3</div>
+                            <div class="flow-step-content">Server processes and reads db.json</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-num">4</div>
+                            <div class="flow-step-content">Response sent to all clients simultaneously</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: MIGRATION PATH -->
+            <section class="section">
+                <h2>🚀 Migration: From Local Storage to JSON Server</h2>
+
+                <div class="scenario">
+                    <h3>Step-by-Step Migration Example</h3>
+
+                    <h4 style="color: #333; margin-top: 20px; margin-bottom: 10px;">Phase 1: Local Storage Implementation</h4>
+                    <div class="data-location">
+// Original code - Local Storage only<br/>
+function saveEmployee(emp) {<br/>
+&nbsp;&nbsp;const key = 'emp_' + emp.id;<br/>
+&nbsp;&nbsp;localStorage.setItem(key, JSON.stringify(emp));<br/>
+}<br/>
+<br/>
+function getEmployees() {<br/>
+&nbsp;&nbsp;const employees = [];<br/>
+&nbsp;&nbsp;for (let i = 0; i &lt; localStorage.length; i++) {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;const key = localStorage.key(i);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;employees.push(JSON.parse(localStorage.getItem(key)));<br/>
+&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;return employees;<br/>
+}
+                    </div>
+
+                    <h4 style="color: #333; margin-top: 20px; margin-bottom: 10px;">Phase 2: JSON Server Implementation</h4>
+                    <div class="data-location">
+// New code - JSON Server<br/>
+function saveEmployee(emp) {<br/>
+&nbsp;&nbsp;fetch('http://localhost:3000/employees', {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;method: 'POST',<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;headers: { 'Content-Type': 'application/json' },<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;body: JSON.stringify(emp)<br/>
+&nbsp;&nbsp;})<br/>
+&nbsp;&nbsp;.then(r => r.json())<br/>
+&nbsp;&nbsp;.then(data => console.log('Saved:', data));<br/>
+}<br/>
+<br/>
+function getEmployees() {<br/>
+&nbsp;&nbsp;return fetch('http://localhost:3000/employees')<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;.then(r => r.json());<br/>
+}
+                    </div>
+
+                    <p style="color: #555; margin-top: 15px; line-height: 1.6;">
+                        The main differences:<br/>
+                        • <span class="highlight">Storage</span> changes from browser Local Storage to server db.json<br/>
+                        • <span class="highlight">Access</span> changes from synchronous to asynchronous (Promises)<br/>
+                        • <span class="highlight">Scope</span> changes from per-browser to global (all clients)
+                    </p>
+                </div>
+            </section>
+
+            <!-- FINAL NOTE -->
+            <div class="note">
+                <div class="note-title">💡 Key Takeaway</div>
+                <div class="note-content">
+                    <strong>Local Storage</strong> is a browser API for storing small amounts of data locally on the client machine. 
+                    <strong>JSON Server</strong> implements a Client-Server architecture where the server is the central authority 
+                    and all clients fetch data from it. This fundamental difference enables data sharing, multi-user access, and 
+                    cross-browser/cross-device synchronization.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
