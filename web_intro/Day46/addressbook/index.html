@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Book App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-address-book"></i> My Address Book</h1>
+                <p>Manage your contacts efficiently</p>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar with Form -->
+            <aside class="sidebar">
+                <div class="form-wrapper">
+                    <h2><i class="fas fa-plus-circle"></i> Add New Contact</h2>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select id="category">
+                                <option value="Personal">Personal</option>
+                                <option value="Work">Work</option>
+                                <option value="Family">Family</option>
+                                <option value="Friends">Friends</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <textarea id="address" rows="3" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City:</label>
+                            <input type="text" id="city" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State:</label>
+                            <input type="text" id="state" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zipCode">Zip Code:</label>
+                            <input type="text" id="zipCode" required>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="submit" id="submitBtn"><i class="fas fa-save"></i> Save Contact</button>
+                            <button type="reset" id="resetBtn"><i class="fas fa-redo"></i> Clear</button>
+                        </div>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- Main Content with Contacts List -->
+            <main class="contacts-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Your Contacts</h2>
+                    <div class="controls">
+                        <input type="text" id="searchInput" placeholder="Search contacts..." class="search-box">
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="">All Categories</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="Family">Family</option>
+                            <option value="Friends">Friends</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="contactsGrid" class="contacts-grid">
+                    <div class="no-contacts">
+                        <i class="fas fa-inbox"></i>
+                        <p>No contacts yet. Add your first contact!</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Viewing Contact Details -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Contact</h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editFirstName">First Name:</label>
+                    <input type="text" id="editFirstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editLastName">Last Name:</label>
+                    <input type="text" id="editLastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email:</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone:</label>
+                    <input type="tel" id="editPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCategory">Category:</label>
+                    <select id="editCategory">
+                        <option value="Personal">Personal</option>
+                        <option value="Work">Work</option>
+                        <option value="Family">Family</option>
+                        <option value="Friends">Friends</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editAddress">Address:</label>
+                    <textarea id="editAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editCity">City:</label>
+                    <input type="text" id="editCity" required>
+                </div>
+                <div class="form-group">
+                    <label for="editState">State:</label>
+                    <input type="text" id="editState" required>
+                </div>
+                <div class="form-group">
+                    <label for="editZipCode">Zip Code:</label>
+                    <input type="text" id="editZipCode" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Update Contact</button>
+                    <button type="button" class="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
