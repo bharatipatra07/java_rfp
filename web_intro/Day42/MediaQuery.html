@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Design</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            flex: 1;
+            padding: 20px;
+            background-color: lightblue;
+            border-radius: 10px;
+            box-shadow: 0 0 5px gray;
+        }
+
+        /* Tablet View */
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-wrap: wrap;
+            }
+
+            .card {
+                flex: 100%;
+                background-color: lightgreen;
+            }
+        }
+
+        /* Mobile View */
+        @media screen and (max-width: 480px) {
+            header {
+                background-color: tomato;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .card {
+                background-color: lightcoral;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Responsive Website Using Media Query</h1>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Card 1</h2>
+            <p>Desktop → Blue</p>
+        </div>
+
+        <div class="card">
+            <h2>Card 2</h2>
+            <p>Tablet → Green</p>
+        </div>
+
+        <div class="card">
+            <h2>Card 3</h2>
+            <p>Mobile → Coral</p>
+        </div>
+    </div>
+
+</body>
+</html>
