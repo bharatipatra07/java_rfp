@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Address Book App</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>Address Book App</h1>
+      <p>Practice HTML5, CSS, Flexbox, Forms, JS events, Local Storage, and async-ready design.</p>
+    </div>
+    <nav class="app-nav">
+      <a href="#section-1">Section 1</a>
+      <a href="#section-2">Section 2</a>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <section id="section-1" class="section card">
+      <div class="section-header">
+        <h2>Section 1: Add & Save Contacts</h2>
+        <p>Build the contact form, save entries in Local Storage, and display the list.</p>
+      </div>
+
+      <form id="contact-form" class="form-grid" autocomplete="off">
+        <div class="form-field">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Jane Doe" required />
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="123-456-7890" required />
+        </div>
+        <div class="form-field">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" placeholder="123 Main St" />
+        </div>
+        <div class="form-field">
+          <label for="category">Category</label>
+          <select id="category" name="category">
+            <option value="personal">Personal</option>
+            <option value="work">Work</option>
+            <option value="family">Family</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="save-button">Save Contact</button>
+          <button type="reset">Reset</button>
+        </div>
+      </form>
+
+      <div class="status-bar" id="form-status">Enter a contact and save it to the address book.</div>
+
+      <div class="list-header">
+        <h3>Saved Contacts</h3>
+        <span id="contact-count">0 contacts</span>
+      </div>
+      <div id="contact-list" class="contact-list"></div>
+    </section>
+
+    <section id="section-2" class="section card">
+      <div class="section-header">
+        <h2>Section 2: Search, Edit & Export</h2>
+        <p>Improve the address book with search, filters, edit/delete support, and JSON export/import.</p>
+      </div>
+
+      <div class="controls-grid">
+        <div class="form-field">
+          <label for="search-input">Search Contacts</label>
+          <input type="search" id="search-input" placeholder="Search by name, email, phone, or category" />
+        </div>
+        <div class="form-field">
+          <label for="filter-category">Filter by Category</label>
+          <select id="filter-category">
+            <option value="all">All Categories</option>
+            <option value="personal">Personal</option>
+            <option value="work">Work</option>
+            <option value="family">Family</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button id="clear-storage">Clear All Contacts</button>
+        <button id="export-json">Export JSON</button>
+        <button id="import-json">Import JSON</button>
+      </div>
+
+      <div class="note-box">
+        <p><strong>Workshop note:</strong> Use separate branches for each use case and keep your work review-ready. Section 1 should finish the form and list behavior; Section 2 adds search, edit, delete, and export/import.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
