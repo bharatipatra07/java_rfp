@@ -182,11 +182,7 @@ function deleteEmployee() {
 
     displayMessage('deleteOutput', '⏳ Deleting employee...');
 
-    const deleteOperation = isServerMode()
-        ? httpServices.deleteEmployee(id)
-        : deleteEmployeeFromLocalStorage(id);
-
-    deleteOperation
+    httpServices.deleteEmployee(id)
         .then(response => {
             console.log('Employee Deleted:', response);
             displayMessage('deleteOutput', `✅ Employee with ID ${id} deleted successfully!`, 'success');
