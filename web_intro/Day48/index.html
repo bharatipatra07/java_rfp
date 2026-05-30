@@ -355,9 +355,17 @@
                         <input type="date" id="empStartDate">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="updateEmployeeId">Employee ID to Update:</label>
+                    <input type="number" id="updateEmployeeId" placeholder="e.g., 1" min="1">
+                </div>
                 <button class="success" onclick="addEmployee()">Add Employee</button>
+                <button class="warning" onclick="updateEmployee()" style="margin-left: 10px;">Update Employee</button>
                 <div id="postOutput" class="output" style="display: none;">
                     <pre id="postResult"></pre>
+                </div>
+                <div id="putOutput" class="output" style="display: none;">
+                    <pre id="putResult"></pre>
                 </div>
             </div>
 

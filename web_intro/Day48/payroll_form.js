@@ -100,3 +100,53 @@ function addEmployee() {
             displayMessage('postOutput', `❌ Error: ${error.message}`, 'error');
         });
 }
+
+function updateEmployee() {
+    const id = document.getElementById('updateEmployeeId').value.trim();
+    if (!id) {
+        displayMessage('putOutput', '❌ Please enter an Employee ID to update.', 'error');
+        return;
+    }
+
+    const employeeData = buildEmployeeData();
+    const { name, department, salary, designation, startDate } = employeeData;
+
+    if (!isValidEmployeeName(name)) {
+        displayMessage('putOutput', '❌ Please enter a valid employee name (at least 3 characters).', 'error');
+        return;
+    }
+
+    if (!isValidStartDate(startDate)) {
+        displayMessage('putOutput', '❌ Please enter a valid Start Date that is not in the future.', 'error');
+        return;
+    }
+
+    if (!department || !salary || !designation) {
+        displayMessage('putOutput', '❌ Please fill in all required fields.', 'error');
+        return;
+    }
+
+    const employeePayload = {
+        id: Number(id),
+        name,
+        department,
+        salary,
+        designation,
+        startDate
+    };
+
+    displayMessage('putOutput', '⏳ Updating employee...');
+
+    httpServices.updateEmployee(id, employeePayload)
+        .then(updatedEmployee => {
+            const normalized = normalizeEmployeeRecord(updatedEmployee);
+            console.log('Employee Updated:', normalized);
+            displayMessage('putOutput', `✅ Employee updated successfully!\n\n${formatJSON(normalized)}`, 'success');
+            clearPayrollForm();
+            document.getElementById('updateEmployeeId').value = '';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            displayMessage('putOutput', `❌ Error: ${error.message}`, 'error');
+        });
+}
