@@ -332,6 +332,12 @@
                         <input type="text" id="empDesignation" placeholder="e.g., Developer">
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="empStartDate">Start Date:</label>
+                        <input type="date" id="empStartDate">
+                    </div>
+                </div>
                 <button class="success" onclick="addEmployee()">Add Employee</button>
                 <div id="postOutput" class="output" style="display: none;">
                     <pre id="postResult"></pre>
@@ -365,129 +371,9 @@
         </div>
     </div>
 
-    <!-- Include HTTP Services -->
+    <!-- Include HTTP Services and page script modules -->
     <script src="http_services.js"></script>
-
-    <script>
-        // Display message in the UI
-        function displayMessage(elementId, message, type = 'info') {
-            const output = document.getElementById(elementId);
-            output.style.display = 'block';
-            const result = document.getElementById(elementId.replace('Output', 'Result'));
-            result.textContent = message;
-        }
-
-        // Format JSON for display
-        function formatJSON(data) {
-            return JSON.stringify(data, null, 2);
-        }
-
-        // GET - All Employees
-        function getAllEmployees() {
-            displayMessage('getAllOutput', '⏳ Loading...');
-            
-            httpServices.getEmployees()
-                .then(employees => {
-                    console.log('All Employees:', employees);
-                    displayMessage('getAllOutput', formatJSON(employees), 'success');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    displayMessage('getAllOutput', `❌ Error: ${error.message}`, 'error');
-                });
-        }
-
-        // GET - Employee by ID
-        function getEmployeeById() {
-            const id = document.getElementById('getEmployeeId').value;
-            
-            if (!id) {
-                displayMessage('getByIdOutput', '❌ Please enter an Employee ID', 'error');
-                return;
-            }
-
-            displayMessage('getByIdOutput', '⏳ Loading...');
-            
-            httpServices.getEmployeeById(id)
-                .then(employee => {
-                    console.log('Employee:', employee);
-                    displayMessage('getByIdOutput', formatJSON(employee), 'success');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    displayMessage('getByIdOutput', `❌ Error: ${error.message}`, 'error');
-                });
-        }
-
-        // POST - Add New Employee
-        function addEmployee() {
-            const name = document.getElementById('empName').value;
-            const department = document.getElementById('empDept').value;
-            const salary = document.getElementById('empSalary').value;
-            const designation = document.getElementById('empDesignation').value;
-
-            if (!name || !department || !salary || !designation) {
-                displayMessage('postOutput', '❌ Please fill in all fields', 'error');
-                return;
-            }
-
-            const employeeData = {
-                name: name,
-                department: department,
-                salary: parseFloat(salary),
-                designation: designation
-            };
-
-            displayMessage('postOutput', '⏳ Adding employee...');
-            
-            httpServices.addEmployee(employeeData)
-                .then(newEmployee => {
-                    console.log('New Employee Added:', newEmployee);
-                    displayMessage('postOutput', `✅ Employee added successfully!\n\n${formatJSON(newEmployee)}`, 'success');
-                    // Clear form
-                    document.getElementById('empName').value = '';
-                    document.getElementById('empDept').value = '';
-                    document.getElementById('empSalary').value = '';
-                    document.getElementById('empDesignation').value = '';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    displayMessage('postOutput', `❌ Error: ${error.message}`, 'error');
-                });
-        }
-
-        // DELETE - Remove Employee
-        function deleteEmployee() {
-            const id = document.getElementById('deleteEmployeeId').value;
-            
-            if (!id) {
-                displayMessage('deleteOutput', '❌ Please enter an Employee ID', 'error');
-                return;
-            }
-
-            if (!confirm(`Are you sure you want to delete employee with ID ${id}?`)) {
-                return;
-            }
-
-            displayMessage('deleteOutput', '⏳ Deleting employee...');
-            
-            httpServices.deleteEmployee(id)
-                .then(response => {
-                    console.log('Employee Deleted:', response);
-                    displayMessage('deleteOutput', `✅ Employee with ID ${id} deleted successfully!`, 'success');
-                    document.getElementById('deleteEmployeeId').value = '';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    displayMessage('deleteOutput', `❌ Error: ${error.message}`, 'error');
-                });
-        }
-
-        // Initialize - Show a welcome message
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Employee Payroll REST Services - Ready for Testing');
-            console.log('Ensure JSON Server is running on http://localhost:3000');
-        });
-    </script>
+    <script src="home.js"></script>
+    <script src="payroll_form.js"></script>
 </body>
 </html>
