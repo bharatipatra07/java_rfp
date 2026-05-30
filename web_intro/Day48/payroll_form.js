@@ -59,6 +59,13 @@ function clearPayrollForm() {
     document.getElementById('empStartDate').value = '';
 }
 
+function saveEmployeeToLocalStorage(employee) {
+    const id = employee.id || Date.now();
+    const record = { ...employee, id };
+    localStorage.setItem(`employee_${id}`, JSON.stringify(record));
+    return Promise.resolve(record);
+}
+
 function addEmployee() {
     const employeeData = buildEmployeeData();
     const { name, department, salary, designation, startDate } = employeeData;
@@ -88,7 +95,11 @@ function addEmployee() {
 
     displayMessage('postOutput', '⏳ Adding employee...');
 
-    httpServices.addEmployee(employeePayload)
+    const saveOperation = isServerMode()
+        ? httpServices.addEmployee(employeePayload)
+        : saveEmployeeToLocalStorage(employeePayload);
+
+    saveOperation
         .then(newEmployee => {
             const normalized = normalizeEmployeeRecord(newEmployee);
             console.log('New Employee Added:', normalized);

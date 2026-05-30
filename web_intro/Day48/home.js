@@ -27,6 +27,15 @@ function normalizeEmployeeRecord(employee) {
     return normalized;
 }
 
+function getDataSource() {
+    const selected = document.querySelector('input[name="dataSource"]:checked');
+    return selected ? selected.value : 'server';
+}
+
+function isServerMode() {
+    return getDataSource() === 'server';
+}
+
 function clearEmployeeLocalStorage() {
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -41,10 +50,87 @@ function clearEmployeeLocalStorage() {
     });
 }
 
+function retrieveEmployeePayrollFromServer() {
+    return httpServices.getEmployees();
+}
+
+function getAllEmployeesFromLocalStorage() {
+    const employees = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (/employee|payroll/i.test(key)) {
+            try {
+                const value = localStorage.getItem(key);
+                const parsed = JSON.parse(value);
+                const normalized = normalizeEmployeeRecord(parsed);
+                if (normalized && typeof normalized === 'object') {
+                    if (!normalized.id && key.startsWith('employee_')) {
+                        normalized.id = key.replace('employee_', '');
+                    }
+                    employees.push(normalized);
+                }
+            } catch (e) {
+                console.warn(`Skipping invalid localStorage key: ${key}`);
+            }
+        }
+    }
+    return Promise.resolve(employees);
+}
+
+function getEmployeeByIdFromLocalStorage(id) {
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (/employee|payroll/i.test(key)) {
+            try {
+                const value = localStorage.getItem(key);
+                const parsed = normalizeEmployeeRecord(JSON.parse(value));
+                if (parsed && (String(parsed.id) === String(id) || String(parsed._id) === String(id))) {
+                    return Promise.resolve(parsed);
+                }
+            } catch (e) {
+                console.warn(`Skipping invalid localStorage key: ${key}`);
+            }
+        }
+    }
+    return Promise.reject(new Error('Employee not found in Local Storage'));
+}
+
+function deleteEmployeeFromLocalStorage(id) {
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (/employee|payroll/i.test(key)) {
+            try {
+                const value = localStorage.getItem(key);
+                const parsed = normalizeEmployeeRecord(JSON.parse(value));
+                if (parsed && (String(parsed.id) === String(id) || String(parsed._id) === String(id))) {
+                    localStorage.removeItem(key);
+                    return Promise.resolve({ success: true, removedKey: key });
+                }
+            } catch (e) {
+                console.warn(`Skipping invalid localStorage key: ${key}`);
+            }
+        }
+    }
+    return Promise.reject(new Error('Employee not found in Local Storage'));
+}
+
+function onDataSourceChange() {
+    if (isServerMode()) {
+        clearEmployeeLocalStorage();
+        console.log('JSON Server selected: local storage employee entries cleared.');
+    } else {
+        console.log('Local Storage selected: server operations will not be used for retrieval.');
+    }
+}
+
 function getAllEmployees() {
     displayMessage('getAllOutput', '⏳ Loading...');
 
-    httpServices.getEmployees()
+    const fetchOperation = isServerMode()
+        ? retrieveEmployeePayrollFromServer()
+        : getAllEmployeesFromLocalStorage();
+
+    fetchOperation
         .then(employees => {
             const normalized = Array.isArray(employees)
                 ? employees.map(normalizeEmployeeRecord)
@@ -67,7 +153,11 @@ function getEmployeeById() {
 
     displayMessage('getByIdOutput', '⏳ Loading...');
 
-    httpServices.getEmployeeById(id)
+    const fetchOperation = isServerMode()
+        ? httpServices.getEmployeeById(id)
+        : getEmployeeByIdFromLocalStorage(id);
+
+    fetchOperation
         .then(employee => {
             const normalized = normalizeEmployeeRecord(employee);
             console.log('Employee:', normalized);
@@ -92,7 +182,11 @@ function deleteEmployee() {
 
     displayMessage('deleteOutput', '⏳ Deleting employee...');
 
-    httpServices.deleteEmployee(id)
+    const deleteOperation = isServerMode()
+        ? httpServices.deleteEmployee(id)
+        : deleteEmployeeFromLocalStorage(id);
+
+    deleteOperation
         .then(response => {
             console.log('Employee Deleted:', response);
             displayMessage('deleteOutput', `✅ Employee with ID ${id} deleted successfully!`, 'success');
@@ -105,8 +199,16 @@ function deleteEmployee() {
 }
 
 function initializeHome() {
-    clearEmployeeLocalStorage();
-    console.log('Home initialized. Local storage employee entries cleared.');
+    if (isServerMode()) {
+        clearEmployeeLocalStorage();
+        console.log('Home initialized. Local storage employee entries cleared.');
+    } else {
+        console.log('Home initialized in Local Storage mode. Existing employee entries are available.');
+    }
+
+    document.querySelectorAll('input[name="dataSource"]').forEach(input => {
+        input.addEventListener('change', onDataSourceChange);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', initializeHome);
